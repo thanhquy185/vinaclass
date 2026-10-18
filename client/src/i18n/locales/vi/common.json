@@ -1,0 +1,1019 @@
+{
+  "hello": "Xin chào",
+  "login": {
+    "welcome": "Chào mừng bạn trở lại!",
+    "subtitle": "Vui lòng đăng nhập để bắt đầu phiên làm việc.",
+    "email": "Email",
+    "emailPlaceholder": "Nhập email của bạn",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "********",
+    "rememberMe": "Duy trì đăng nhập",
+    "forgotPassword": "Quên mật khẩu",
+    "submit": "ĐĂNG NHẬP",
+    "noAccount": "Chưa có tài khoản?",
+    "registerNow": "Đăng ký ngay.",
+    "or": "hoặc",
+    "googleLogin": "Đăng nhập với Google"
+  },
+  "register": {
+    "welcome": "Khởi đầu quản lý hiệu quả.",
+    "subtitle": "Giúp việc điều hành kỳ thi trở nên đơn giản và tối ưu hơn!",
+    "username": "Tên đăng nhập",
+    "usernamePlaceholder": "Nhập tên đăng nhập",
+    "email": "Email",
+    "emailPlaceholder": "Nhập email của bạn",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "********",
+    "agreeTerms": "Đồng ý với Chính sách & Điều khoản.",
+    "submit": "ĐĂNG KÝ",
+    "hasAccount": "Bạn đã có tài khoản?",
+    "loginNow": "Đăng nhập ngay.",
+    "or": "hoặc",
+    "googleLogin": "Đăng nhập với Google"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "login": "Đăng nhập",
+    "errorPage": "Trang test lỗi",
+    "lang": "Ngôn ngữ (Nhấn để thấy thay đổi)"
+  },
+  "sidebar": {
+    "overview": "Tổng quan",
+    "sections": {
+      "student": "SINH VIÊN",
+      "management": "QUẢN LÝ",
+      "admin": "QUẢN TRỊ"
+    },
+    "items": {
+      "courses": "Học phần",
+      "exams": "Lịch kiểm tra",
+      "courseGroup": "Nhóm học phần",
+      "questions": "Câu hỏi",
+      "users": "Người dùng",
+      "subjects": "Môn học",
+      "assignments": "Phân công",
+      "tests": "Đề kiểm tra",
+      "notifications": "Thông báo",
+      "permissionGroups": "Nhóm quyền",
+      "difficultyLevel": "Độ khó"
+    }
+  },
+  "header": {
+    "search": "Tìm kiếm",
+    "user": "Người dùng",
+    "actions": {
+      "toggleLanguage": "Chuyển đổi ngôn ngữ",
+      "toggleTheme": "Chế độ sáng/tối"
+    },
+    "menu": {
+      "title": "Tùy chọn đề thi",
+      "profile": "Xem hồ sơ",
+      "logout": "Đăng xuất"
+    }
+  },
+  "message": {
+    "success": {
+      "create": "Thêm thành công",
+      "update": "Cập nhật thành công",
+      "delete": "Xóa thành công"
+    },
+    "error": {
+      "create": "Thêm thất bại",
+      "update": "Cập nhật thất bại",
+      "delete": "Xóa thất bại"
+    },
+    "validation": {
+      "role": {
+        "empty": "Vui lòng chọn ít nhất 1 quyền"
+      }
+    },
+    "login": {
+      "success": "Đăng nhập thành công",
+      "failed": "Đăng nhập thất bại"
+    }
+  },
+  "courseGroup": {
+    "status": {
+      "active": "Đang giảng dạy",
+      "hidden": "Đã ẩn",
+      "label": "Trạng thái"
+    },
+    "search": "Tìm kiếm...",
+    "addGroup": "Thêm nhóm",
+    "noGroupsFound": "Không tìm thấy nhóm phù hợp.",
+    "confirmDeleteGroup": "Bạn có chắc chắn muốn xóa nhóm này?",
+    "loadingGroups": "Đang tải danh sách nhóm...",
+    "studentList": "Danh sách sinh viên",
+    "editInfo": "Sửa thông tin",
+    "showGroup": "Hiển thị lại",
+    "hideGroup": "Ẩn nhóm",
+    "deleteGroup": "Xóa nhóm",
+    "classSizeLabel": "Sĩ số:",
+    "form": {
+      "updateTitle": "Cập nhật thông tin nhóm",
+      "addTitle": "Thêm nhóm",
+      "close": "Đóng",
+      "groupName": "Tên nhóm",
+      "groupNamePlaceholder": "Nhập tên nhóm",
+      "note": "Ghi chú",
+      "notePlaceholder": "Nhập ghi chú",
+      "inviteCode": "Mã mời",
+      "inviteCodePlaceholder": "Nhập mã mời",
+      "classSize": "Sĩ số",
+      "classSizePlaceholder": "Nhập sĩ số",
+      "subject": "Môn học",
+      "subjectPlaceholder": "Chọn môn học",
+      "lecturer": "Giảng viên",
+      "lecturerPlaceholder": "Chọn giảng viên",
+      "academicYear": "Năm học",
+      "academicYearPlaceholder": "Nhập năm học",
+      "semester": "Học kỳ",
+      "semesterPlaceholder": "Nhập học kỳ (1 hoặc 2)",
+      "save": "Lưu",
+      "update": "Cập nhật",
+      "validation": {
+        "groupNameRequired": "Tên nhóm không được để trống",
+        "groupNameMaxLength": "Tên nhóm không được vượt quá 255 ký tự",
+        "inviteCodeMaxLength": "Mã mời không được vượt quá 50 ký tự",
+        "classSizePositive": "Sĩ số phải là số dương",
+        "subjectRequired": "Vui lòng chọn môn học",
+        "academicYearPositive": "Năm học phải là số dương",
+        "semesterInvalid": "Học kỳ phải là 1 hoặc 2",
+        "lecturerRequired": "Vui lòng chọn giảng viên"
+      }
+    }
+  },
+  "courseGroupStudent": {
+    "searchStudents": "Tìm kiếm sinh viên",
+    "exportList": "Xuất danh sách",
+    "exportGrades": "Xuất bảng điểm",
+    "addStudent": "Thêm sinh viên",
+    "classSize": "Sĩ số",
+    "confirmRemoveStudent": "Bạn có chắc chắn muốn xóa sinh viên này khỏi nhóm?",
+    "delete": "Xóa",
+    "table": {
+      "stt": "STT",
+      "fullName": "Họ và tên",
+      "studentCode": "Mã sinh viên",
+      "gender": "Giới tính",
+      "dateOfBirth": "Ngày sinh"
+    },
+    "gender": {
+      "male": "Nam",
+      "female": "Nữ"
+    },
+    "form": {
+      "manualAdd": "Thêm thủ công",
+      "joinByInvite": "Tham gia bằng mã mời",
+      "importExcel": "Nhập file excel",
+      "studentCode": "Mã sinh viên",
+      "studentCodePlaceholder": "Nhập mã sinh viên",
+      "addStudent": "Thêm sinh viên",
+      "copy": "Sao chép",
+      "generateNewCode": "Tạo mã mới",
+      "content": "Nội dung",
+      "chooseFile": "Chọn tệp",
+      "noFileSelected": "Không có tệp được chọn",
+      "formatInstruction": "Vui lòng soạn người dùng theo đúng định dạng.",
+      "downloadSampleFile": "Tải về file mẫu.",
+      "addToSystem": "Thêm vào hệ thống"
+    }
+  },
+  "coursePage": {
+    "searchPlaceholder": "Tìm kiếm",
+    "joinNewClass": "Tham gia lớp học mới",
+    "showHiddenClasses": "Hiển thị các lớp học đã ẩn"
+  },
+  "joinClassForm": {
+    "title": "Tham gia nhóm học phần",
+    "inviteCodeLabel": "Mã mời",
+    "inviteCodePlaceholder": "Nhập mã mời",
+    "helperText": "Đề nghị giảng viên của bạn cung cấp mã lớp rồi nhập mã đó vào đây.",
+    "guide": "Cách đăng nhập bằng mã lớp học\n- Sử dụng tài khoản được cấp phép\n- Sử dụng mã lớp học gồm 8 chữ cái hoặc số, không có dấu cách hoặc ký hiệu",
+    "validation": {
+      "inviteRequired": "Vui lòng nhập mã mời",
+      "inviteFormat": "Mã phải gồm 8 ký tự chữ hoặc số, không chứa khoảng trắng/ký hiệu"
+    },
+    "actions": {
+      "close": "Đóng",
+      "join": "Tham gia nhóm"
+    }
+  },
+  "courseItem": {
+    "teacherAlt": "Giảng viên",
+    "academicInfo": "Năm học {{year}} - Học kỳ {{semester}}",
+    "hide": "Ẩn",
+    "unsubscribe": "Hủy đăng ký"
+  },
+  "examPage": {
+    "searchPlaceholder": "Tìm kiếm ...",
+    "table": {
+      "stt": "STT",
+      "className": "Tên lớp",
+      "testName": "Tên bài kiểm tra",
+      "startTime": "Thời gian bắt đầu",
+      "endTime": "Thời gian kết thúc",
+      "duration": "Thời lượng",
+      "minuteUnit": "Phút"
+    },
+    "actions": {
+      "upcoming": "Sắp đến",
+      "late": "Trễ hạn",
+      "startNow": "Bắt đầu làm ngay"
+    }
+  },
+  "subjectPage": {
+    "table": {
+      "code": "Mã môn",
+      "name": "Tên môn học",
+      "credits": "Tín chỉ",
+      "theoryPeriods": "Lý thuyết",
+      "practicePeriods": "Thực hành"
+    },
+    "filter": {
+      "placeholder": "Chọn tiêu chí",
+      "byName": "Theo tên",
+      "byCode": "Theo mã"
+    },
+    "addNew": "Tạo môn học mới",
+    "confirmDelete": "Bạn có chắc muốn xóa môn: {{subjectName}}?",
+    "confirmDeleteTitle": "Xác nhận xóa môn học",
+    "form": {
+      "addTitle": "Thêm môn học mới",
+      "updateTitle": "Cập nhật môn học",
+      "nameLabel": "Tên môn học",
+      "namePlaceholder": "Ví dụ: Cấu trúc dữ liệu",
+      "codeLabel": "Mã môn học",
+      "codePlaceholder": "Ví dụ: 841010",
+      "creditsLabel": "Số tín chỉ",
+      "creditsPlaceholder": "3",
+      "theoryPeriodsLabel": "Số tiết lý thuyết",
+      "theoryPeriodsPlaceholder": "45",
+      "practicePeriodsLabel": "Số tiết thực hành",
+      "practicePeriodsPlaceholder": "30",
+      "backButton": "Quay lại",
+      "saveButton": "Lưu môn học",
+      "updateButton": "Cập nhật",
+      "validation": {
+        "nameRequired": "Tên môn học không được để trống",
+        "codeRequired": "Mã môn học không được để trống"
+      }
+    },
+    "editChapter": {
+      "title": "Danh sách chương",
+      "empty": "Chưa có chương nào. Hãy thêm ở bên dưới.",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "editing": "Đang chỉnh sửa chương",
+      "addNew": "Thêm chương mới",
+      "cancelEdit": "Hủy sửa",
+      "saveNew": "Lưu chương vào danh sách",
+      "update": "Cập nhật chương"
+    }
+  },
+  "tableActions": {
+    "header": "Thao tác",
+    "detail": "Chi tiết",
+    "edit": "Sửa",
+    "remove": "Xóa",
+    "loading": "Đang tải...",
+    "noData": "Không có dữ liệu"
+  },
+  "common": {
+    "back": "Quay lại",
+    "save": "Lưu",
+    "update": "Cập nhật",
+    "cancel": "Hủy bỏ",
+    "result": "Kết quả",
+    "saveAccount": "Lưu tài khoản",
+    "saveAssignment": "Lưu phân công",
+    "noData": "Không có dữ liệu"
+  },
+  "permissionForm": {
+    "view": "Xem",
+    "create": "Thêm mới",
+    "update": "Cập nhật",
+    "delete": "Xoá",
+    "addPermissionGroup": "Thêm nhóm quyền",
+    "groupName": "Tên nhóm quyền",
+    "groupNamePlaceholder": "VD: Giảng viên",
+    "permissionName": "Tên quyền"
+  },
+  "permissionNames": {
+    "nguoi_dung": "Người dùng",
+    "do_kho": "Độ khó",
+    "hoc_phan": "Học phần",
+    "cau_hoi": "Câu hỏi",
+    "mon_hoc": "Môn học",
+    "phan_cong": "Phân công",
+    "de_thi": "Đề thi",
+    "nhom_quyen": "Nhóm quyền",
+    "thong_bao": "Thông báo"
+  },
+  "addAssignmentForm": {
+    "subjectCode": "Mã môn học",
+    "subjectName": "Tên môn học",
+    "credits": "Số tín chỉ",
+    "theoryPeriods": "Số tiết lý thuyết",
+    "practicePeriods": "Số tiết thực hành",
+    "selectTeacherPrompt": "Vui lòng chọn giảng viên trước khi lưu!",
+    "addManually": "Thêm thủ công",
+    "teacher": "Giảng viên",
+    "selectTeacherPlaceholder": "Chọn giảng viên cần phân công",
+    "searchSubjectPlaceholder": "Tìm kiếm môn học..."
+  },
+  "userForm": {
+    "edit": "Sửa",
+    "detail": "Chi Tiết",
+    "addManually": "Thêm thủ công",
+    "addFromFile": "Thêm từ file",
+    "username": "Tên đăng nhập",
+    "usernamePlaceholder": "Nhập tên đăng nhập",
+    "email": "Email",
+    "emailPlaceholder": "Nhập địa chỉ email",
+    "fullName": "Họ và tên",
+    "fullNamePlaceholder": "Nhập họ và tên",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "dateOfBirth": "Ngày sinh",
+    "permissionGroup": "Nhóm quyền",
+    "permissionGroupPlaceholder": "Chọn nhóm quyền",
+    "newPasswordPrompt": "Mật khẩu mới (Để trống nếu không đổi)",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "Nhập mật khẩu",
+    "lockAccount": "Khóa tài khoản",
+    "isStudent": "Là sinh viên?",
+    "quickResetPassword": "Tạo lại mật khẩu nhanh",
+    "dragDropPrompt": "Kéo thả file vào đây hoặc nhấn để chọn file",
+    "selectExcelFile": "Chọn file Excel"
+  },
+  "userPage": {
+    "table": {
+      "username": "Tên đăng nhập",
+      "fullName": "Họ và tên",
+      "gender": "Giới tính",
+      "dateOfBirth": "Ngày sinh",
+      "role": "Nhóm quyền",
+      "joinDate": "Ngày tham gia",
+      "status": "Trạng thái"
+    },
+    "avatarAlt": "Ảnh đại diện",
+    "status": {
+      "active": "Hoạt động",
+      "locked": "Bị khóa"
+    },
+    "roles": {
+      "admin": "Quản trị viên",
+      "teacher": "Giảng viên",
+      "student": "Sinh viên"
+    },
+    "filter": {
+      "rolePlaceholder": "Lọc theo vai trò",
+      "all": "Tất cả"
+    },
+    "searchPlaceholder": "Tìm kiếm MSSV ...",
+    "addNew": "Tạo tài khoản mới",
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDelete": "Bạn có chắc muốn xóa không?",
+    "confirmResetPassword": "Bạn có chắc muốn đổi mật khẩu không?",
+    "validation": {
+      "usernameRequired": "Tên đăng nhập không được để trống",
+      "emailRequired": "Email không được để trống",
+      "emailInvalid": "Email không đúng định dạng",
+      "fullNameRequired": "Họ tên không được để trống",
+      "fullNameMaxLength": "Họ tên không được vượt quá 255 ký tự",
+      "dobRequired": "Ngày sinh không được để trống",
+      "dobInvalid": "Ngày sinh phải trước ngày hôm nay",
+      "passwordRequired": "Mật khẩu không được để trống",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "passwordLetterRequired": "Mật khẩu phải chứa chữ cái",
+      "passwordNumberRequired": "Mật khẩu phải chứa số",
+      "passwordCaseRequired": "Mật khẩu phải có chữ hoa và chữ thường",
+      "roleRequired": "Vui lòng chọn nhóm quyền"
+    }
+  },
+  "permissionGroupPage": {
+    "table": {
+      "groupCode": "Mã nhóm",
+      "groupName": "Tên nhóm quyền",
+      "userCount": "Số lượng người dùng"
+    },
+    "memberUnit": "thành viên",
+    "confirmDelete": "Bạn có chắc muốn xóa vai trò này không?",
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDeleteMessage": "Bạn có chắc chắn muốn xóa nhóm người dùng này không? Hành động này không thể hoàn tác.",
+    "filter": {
+      "placeholder": "Chọn tiêu chí",
+      "byName": "Theo tên",
+      "byID": "Theo ID"
+    },
+    "addNew": "Tạo nhóm quyền mới"
+  },
+  "confirm": {
+    "title": "Xác nhận hành động",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy",
+    "loading": "Đang xử lý..."
+  },
+  "assignmentPage": {
+    "table": {
+      "subjectCode": "Mã môn",
+      "subjectName": "Môn học",
+      "teacherCode": "Mã giảng viên",
+      "teacherName": "Tên giảng viên"
+    },
+    "filter": {
+      "placeholder": "Chọn tiêu chí",
+      "bySubject": "Theo môn học",
+      "byTeacher": "Theo giảng viên"
+    },
+    "addNew": "Tạo phân công mới",
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDelete": "Bạn có chắc muốn xóa phân công của giảng viên: {{teacherName}}?"
+  },
+  "testPage": {
+    "filter": {
+      "all": "Tất cả",
+      "opening": "Đang mở",
+      "closed": "Đã đóng",
+      "notOpened": "Chưa mở"
+    },
+    "searchPlaceholder": "Tìm kiếm",
+    "subject": "Môn học",
+    "selectSubjectPlaceholder": "Chọn môn học",
+    "addNew": "Tạo bài kiểm tra"
+  },
+  "notificationPage": {
+    "confirmDelete": "Bạn có chắc muốn xóa thông báo này?",
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDeleteMessage": "Bạn có chắc chắn muốn xóa thông báo này không? Hành động này không thể hoàn tác.",
+    "validation": {
+      "titleRequired": "Tiêu đề không được để trống",
+      "contentRequired": "Nội dung không được để trống",
+      "courseGroupRequired": "Vui lòng chọn ít nhất một nhóm học phần"
+    },
+    "filter": {
+      "placeholder": "Chọn trạng thái",
+      "all": "Tất cả",
+      "sent": "Đã gửi",
+      "draft": "Bản nháp"
+    },
+    "searchPlaceholder": "Tìm kiếm",
+    "addNew": "Tạo thông báo mới"
+  },
+  "notificationItem": {
+    "status": {
+      "open": "Đang mở",
+      "closed": "Đã đóng"
+    },
+    "actions": {
+      "view": "Xem chi tiết",
+      "edit": "Sửa",
+      "delete": "Xóa"
+    },
+    "assignedTo": "Giao cho học phần:",
+    "createdAt": "Ngày tạo: {{date}}",
+    "sender": "Người gửi: {{name}}"
+  },
+  "notificationForm": {
+    "title": {
+      "create": "Tạo thông báo mới",
+      "update": "Sửa thông báo",
+      "view": "Chi tiết thông báo"
+    },
+    "fields": {
+      "title": {
+        "label": "Tiêu đề",
+        "placeholder": "Thông báo khai giảng học kỳ ..."
+      },
+      "content": {
+        "label": "Nội dung thông báo",
+        "placeholder": "Nhập nội dung thông báo"
+      }
+    },
+    "assign": {
+      "label": "Giao cho",
+      "placeholder": "Chọn môn học"
+    },
+    "selectAll": "Chọn tất cả",
+    "actions": {
+      "back": "Quay lại",
+      "send": "Gửi thông báo",
+      "save": "Lưu"
+    }
+  },
+  "testDetailPage": {
+    "loading": "Đang tải dữ liệu...",
+    "overview": {
+      "title": "Tổng quan",
+      "assignTo": "Giao cho học phần",
+      "duration": "Diễn ra từ {{start}} đến {{end}}"
+    },
+    "actions": {
+      "preview": "Xem demo",
+      "menu": "Hành động",
+      "menuTitle": "Tùy chọn đề thi",
+      "viewDetail": "Xem chi tiết",
+      "delete": "Xóa đề thi",
+      "edit": "Chỉnh sửa bài thi"
+    },
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa đề thi này không? Hành động này không thể hoàn tác.",
+    "assignedToSection": "Đã giao cho"
+  },
+  "difficultyLevelPage": {
+    "table": {
+      "code": "Mã độ khó",
+      "name": "Tên độ khó"
+    },
+    "filter": {
+      "placeholder": "Chọn tiêu chí",
+      "byName": "Theo tên",
+      "byID": "Theo ID"
+    },
+    "addNew": "Tạo độ khó mới",
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDelete": "Bạn có chắc muốn xóa độ khó này không?",
+    "form": {
+      "addTitle": "Thêm độ khó mới",
+      "updateTitle": "Cập nhật độ khó",
+      "nameLabel": "Tên độ khó",
+      "namePlaceholder": "Ví dụ: Thông hiểu, Vận dụng...",
+      "note": "* Cấp độ khó sẽ được hiển thị khi tạo câu hỏi đề thi.",
+      "backButton": "Quay lại",
+      "saveButton": "Lưu mức độ",
+      "updateButton": "Cập nhật",
+      "validation": {
+        "nameRequired": "Tên độ khó không được để trống",
+        "nameExists": "Tên độ khó đã tồn tại trên hệ thống"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Tổng quan hệ thống",
+    "subtitle": "Chào mừng bạn quay trở lại, đây là dữ liệu mới nhất hôm nay.",
+    "semester": {
+      "placeholder": "Chọn học kỳ",
+      "options": {
+        "sem1": "Học kỳ 1 - 2025",
+        "sem2": "Học kỳ 2 - 2025"
+      }
+    },
+    "stats": {
+      "totalStudents": "Tổng số sinh viên",
+      "activeExams": "Kỳ thi đang diễn ra",
+      "completedAttempts": "Lượt thi hoàn thành",
+      "questionBank": "Ngân hàng câu hỏi"
+    },
+    "traffic": {
+      "title": "Lưu lượng truy cập hệ thống",
+      "last7Days": "7 ngày gần nhất",
+      "tooltip": "{{count}} lượt"
+    },
+    "weekdays": ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+    "upcomingExams": {
+      "title": "Kỳ thi sắp tới",
+      "items": {
+        "dataStructures": "Cấu trúc dữ liệu",
+        "oop": "Lập trình hướng đối tượng",
+        "databases": "Cơ sở dữ liệu",
+        "networks": "Mạng máy tính"
+      }
+    },
+    "status": {
+      "pending": "Chờ duyệt",
+      "ready": "Sẵn sàng"
+    }
+  },
+  "profile": {
+    "avatarAlt": "Ảnh đại diện",
+    "tabs": {
+      "info": "Thông tin tài khoản",
+      "password": "Đổi mật khẩu"
+    },
+    "about": {
+      "title": "Giới thiệu",
+      "location": "TP. Hồ Chí Minh",
+      "socialLink": "facebook.com/manh"
+    },
+    "details": {
+      "title": "Chi tiết tài khoản",
+      "fullName": "Họ và tên",
+      "identityCode": "Mã định danh",
+      "contactEmail": "Email liên hệ",
+      "phone": "Số điện thoại",
+      "birthDate": "Ngày sinh",
+      "gender": "Giới tính",
+      "genderFemale": "Nữ",
+      "genderMale": "Nam"
+    },
+    "systemStatus": {
+      "title": "TRẠNG THÁI HỆ THỐNG",
+      "description": "Tài khoản của bạn đang hoạt động bình thường trên hệ thống {{system}}."
+    },
+    "password": {
+      "title": "Bảo mật & Mật khẩu",
+      "subtitle": "Vui lòng không chia sẻ mật khẩu cho bất kỳ ai.",
+      "current": "Mật khẩu hiện tại",
+      "new": "Mật khẩu mới",
+      "newPlaceholder": "Nhập mật khẩu mới",
+      "confirm": "Xác nhận mật khẩu mới",
+      "confirmPlaceholder": "Nhập lại mật khẩu mới",
+      "update": "Cập nhật mật khẩu",
+      "cancel": "Hủy bỏ"
+    },
+    "validation": {
+      "passwordRequired": "Mật khẩu không được để trống",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "passwordLetterRequired": "Mật khẩu phải chứa chữ cái",
+      "passwordNumberRequired": "Mật khẩu phải chứa số",
+      "passwordCaseRequired": "Mật khẩu phải có chữ hoa và chữ thường",
+      "passwordConfirmMismatch": "Mật khẩu xác nhận không khớp",
+      "passwordDifferent": "Mật khẩu mới phải khác mật khẩu hiện tại",
+      "currentPasswordMismatch": "Mật khẩu cũ không khớp"
+    },
+    "errors": {
+      "userNotSet": "Lỗi chưa set user"
+    }
+  },
+  "questionPage": {
+    "tabs": {
+      "public": "Công khai",
+      "private": "Cá nhân",
+      "archive": "Lưu trữ"
+    },
+    "actions": {
+      "addQuestion": "Thêm câu hỏi"
+    },
+    "filters": {
+      "subject": {
+        "label": "Môn học",
+        "placeholder": "Chọn môn học"
+      },
+      "chapter": {
+        "label": "Chương",
+        "placeholder": "Chọn chương",
+        "options": {
+          "recognize": "Nhận biết",
+          "understand": "Thông hiểu",
+          "apply": "Vận dụng",
+          "highApply": "Vận dụng cao"
+        }
+      },
+      "difficulty": {
+        "label": "Độ khó",
+        "placeholder": "Chọn độ khó"
+      }
+    },
+    "search": {
+      "placeholder": "Tìm kiếm trong {{count}} câu hỏi..."
+    },
+    "empty": "Không tìm thấy câu hỏi nào phù hợp",
+    "deleteConfirm": {
+      "title": "Xác nhận xóa câu hỏi",
+      "message": "Bạn có chắc chắn muốn xóa câu hỏi này không? Hành động này không thể hoàn tác.",
+      "confirm": "Xóa ngay",
+      "cancel": "Hủy bỏ"
+    },
+    "toast": {
+      "addToBank": "Đã thêm câu hỏi vào ngân hàng!"
+    },
+    "validation": {
+      "questionRequired": "Nội dung câu hỏi không được để trống",
+      "subjectRequired": "Vui lòng chọn môn học",
+      "chapterRequired": "Vui lòng chọn chương",
+      "difficultyRequired": "Vui lòng chọn độ khó"
+    }
+  },
+  "addQuestionForm": {
+    "tabs": {
+      "handmade": "Thêm thủ công",
+      "fromFile": "Thêm từ file",
+      "edit": "Sửa"
+    },
+    "fields": {
+      "subject": {
+        "label": "Môn học",
+        "placeholder": "Chọn môn học"
+      },
+      "chapter": {
+        "label": "Chương",
+        "placeholder": "Chọn chương"
+      },
+      "difficulty": {
+        "label": "Độ khó",
+        "placeholder": "Chọn độ khó"
+      }
+    },
+    "content": {
+      "label": "Nội dung câu hỏi"
+    },
+    "answers": {
+      "title": "Danh sách đáp án",
+      "empty": "Chưa có đáp án nào. Hãy thêm ở bên dưới.",
+      "correct": "ĐÚNG",
+      "chooseCorrect": "Chọn đúng",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "editing": "Đang chỉnh sửa đáp án",
+      "addNew": "Thêm câu trả lời mới",
+      "markCorrect": "Đặt làm đáp án đúng?",
+      "cancelEdit": "Hủy sửa",
+      "saveNew": "Lưu đáp án vào danh sách",
+      "update": "Cập nhật đáp án"
+    },
+    "footer": {
+      "public": "Đặt làm câu hỏi công khai",
+      "back": "Quay lại",
+      "saveAll": "Lưu toàn bộ câu hỏi"
+    }
+  },
+  "questionItem": {
+    "showAnswer": "Hiển thị đáp án",
+    "hideAnswer": "Ẩn đáp án",
+    "edit": "Sửa",
+    "archive": "Lưu trữ",
+    "delete": "Xóa",
+    "addToBank": "Thêm vào ngân hàng",
+    "makePublic": "Công khai câu hỏi",
+    "restoreToBank": "Thêm lại vào ngân hàng",
+    "usage": "Lượt sử dụng: {{count}} lần"
+  },
+  "testItem": {
+    "confirmDeleteTitle": "Xác nhận xóa",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa đề thi này không? Hành động này không thể hoàn tác.",
+    "actions": {
+      "viewDetail": "Xem chi tiết",
+      "edit": "Sửa",
+      "delete": "Xóa"
+    },
+    "assignTo": "Giao cho học phần",
+    "duration": "Diễn ra từ {{start}} đến {{end}}"
+  },
+  "testFormPage": {
+    "title": {
+      "edit": "Chỉnh sửa đề thi",
+      "view": "Chi tiết đề thi",
+      "create": "Tạo mới đề thi"
+    },
+    "fields": {
+      "name": {
+        "label": "Tên đề thi",
+        "placeholder": "Nhập tên đề thi"
+      },
+      "startTime": "Thời gian bắt đầu",
+      "endTime": "Thời gian kết thúc",
+      "duration": {
+        "label": "Thời gian làm bài",
+        "unit": "Phút",
+        "placeholder": "00"
+      }
+    },
+    "assignTo": {
+      "label": "Giao cho",
+      "placeholder": "Chọn môn học"
+    },
+    "actions": {
+      "back": "Quay lại",
+      "viewQuestions": "Xem danh sách câu hỏi",
+      "continueQuestions": "Tiếp tục thêm câu hỏi"
+    }
+  },
+  "testConfigSidebar": {
+    "title": "Cấu hình đề thi",
+    "sections": {
+      "shuffle": "Xáo trộn",
+      "antiCheat": "Chống gian lận",
+      "afterExam": "Sau khi thi"
+    },
+    "toggles": {
+      "shuffleQuestions": "Đảo câu hỏi",
+      "shuffleAnswers": "Đảo đáp án",
+      "monitoring": "Giám sát thi (Toàn màn hình)",
+      "blockCopy": "Chặn Copy/Paste/Print",
+      "limitSwitchTab": "Giới hạn chuyển tab (tự động nộp bài)",
+      "showScore": "Hiển thị điểm số",
+      "showDetail": "Xem chi tiết kết quả",
+      "enableResume": "Cho phép làm lại"
+    },
+    "labels": {
+      "maxSwitches": "Số lần tối đa"
+    },
+    "placeholders": {
+      "maxSwitches": "Ví dụ: 3"
+    }
+  },
+  "addQuestionTestPage": {
+    "loading": {
+      "create": "Đang tạo đề thi mới...",
+      "update": "Đang cập nhật đề thi..."
+    },
+    "toast": {
+      "saveSuccess": "Lưu thành công!"
+    },
+    "actions": {
+      "back": "Quay lại",
+      "preview": "Xem demo",
+      "addQuestion": "Thêm câu hỏi",
+      "saveEdit": "Lưu thay đổi",
+      "addTest": "Thêm bài kiểm tra"
+    },
+    "title": {
+      "edit": "Chỉnh sửa danh sách câu hỏi",
+      "view": "Danh sách câu hỏi",
+      "create": "Thêm câu hỏi"
+    },
+    "filters": {
+      "search": "Tìm kiếm câu hỏi",
+      "chapter": "Chọn chương",
+      "difficulty": {
+        "label": "Độ khó",
+        "placeholder": "Chọn độ khó"
+      }
+    },
+    "count": {
+      "label": "Số lượng:"
+    },
+    "tooltips": {
+      "moveUp": "Di chuyển lên",
+      "moveDown": "Di chuyển xuống",
+      "removeFromTest": "Gỡ khỏi đề"
+    },
+    "summary": {
+      "basicInfo": {
+        "title": "Thông tin cơ bản",
+        "assignTo": "Giao cho học phần",
+        "duration": "Diễn ra từ {{start}} đến {{end}}",
+        "workTime": "Thời gian làm bài: {{minutes}} phút"
+      },
+      "security": {
+        "title": "An toàn & Bảo mật",
+        "monitoringOn": "Giám sát thi đang bật",
+        "switchLimit": "Giới hạn chuyển tab:",
+        "switchTimes": "{{count}} lần",
+        "copyBlocked": "Không cho phép sao chép nội dung",
+        "printBlocked": "Đã chặn tính năng in ấn"
+      },
+      "rules": {
+        "title": "Quy tắc làm bài",
+        "shuffle": "Tự động trộn câu hỏi và đáp án",
+        "resume": "Sinh viên có thể làm tiếp bài đang dở",
+        "showDetail": "Hiển thị chi tiết kết quả",
+        "showScore": "Hiển thị điểm số"
+      }
+    }
+  },
+  "resultPage": {
+    "avatarAlt": "Ảnh đại diện",
+    "classAverage": "Trung bình lớp",
+    "overview": {
+      "title": "Tổng quan",
+      "preview": "Xem trước"
+    },
+    "tabs": {
+      "classScore": "Bảng điểm",
+      "stat": "Thống kê"
+    },
+    "filters": {
+      "rolePlaceholder": "Lọc theo vai trò",
+      "roles": {
+        "all": "Tất cả",
+        "student": "Sinh viên",
+        "teacher": "Giảng viên",
+        "admin": "Quản trị"
+      }
+    },
+    "search": {
+      "placeholder": "Tìm kiếm MSSV ..."
+    },
+    "actions": {
+      "exportScores": "Xuất bảng điểm",
+      "result": "Kết quả"
+    },
+    "viewModes": {
+      "user": "Theo người làm",
+      "question": "Theo câu hỏi",
+      "difficulty": "Theo độ khó"
+    },
+    "status": {
+      "inProgress": "Đang làm...",
+      "notJoined": "Chưa tham gia"
+    },
+    "columns": {
+      "studentId": "MSSV",
+      "fullName": "Họ tên",
+      "percent": "Phần trăm",
+      "score": "Điểm",
+      "startTime": "Thời gian vào",
+      "switchCount": "Số lần thoát",
+      "stt": "STT",
+      "difficultyLevel": "Mức độ độ khó",
+      "questionContent": "Nội dung câu hỏi",
+      "correctRate": "Tỉ lệ đúng",
+      "avgScore": "Điểm trung bình"
+    }
+  },
+  "courseElement": {
+    "tabs": {
+      "news": "Bảng tin",
+      "classwork": "Bài tập trên lớp",
+      "everybody": "Mọi người"
+    },
+    "common": {
+      "minuteUnit": "phút"
+    },
+    "classwork": {
+      "columns": {
+        "testName": "Tên bài kiểm tra",
+        "percentage": "Phần trăm",
+        "score": "Điểm số",
+        "duration": "Thời gian làm"
+      },
+      "status": {
+        "notOpen": "Chưa mở",
+        "start": "Bắt đầu làm",
+        "expired": "Quá hạn"
+      },
+      "durationText": "Thời lượng: {{minutes}} {{unit}}"
+    },
+    "news": {
+      "upcomingTitle": "Sắp đến hạn",
+      "upcomingEmpty": "Tuyệt vời, không có bài tập nào sắp đến hạn!",
+      "viewAll": "Xem tất cả",
+      "createAnnouncement": "Thông báo nội dung nào đó cho lớp học của bạn"
+    },
+    "everybody": {
+      "teacher": "Giáo viên",
+      "classmates": "Bạn học"
+    },
+    "announcement": {
+      "defaultAuthor": "Giảng viên",
+      "delete": "Xóa",
+      "copyLink": "Sao chép đường liên kết"
+    },
+    "feed": {
+      "newExamPosted": "Hệ thống đã đăng một đề thi mới:"
+    },
+    "classResult": {
+      "studentCount": "{{count}} sinh viên"
+    }
+  },
+  "examResultOverview": {
+    "loading": "Đang tải kết quả...",
+    "notAvailable": "N/A",
+    "previewMode": "Bạn đang xem trước kết quả ở chế độ Admin",
+    "scoreHidden": "Điểm số được ẩn theo cấu hình đề thi.",
+    "labels": {
+      "score": "Điểm số:",
+      "duration": "Thời gian làm:",
+      "startedAt": "Bắt đầu lúc:",
+      "finishedAt": "Kết thúc lúc:",
+      "violations": "Số lần vi phạm:"
+    },
+    "tabs": {
+      "all": "Tất cả ({{count}})",
+      "success": "Câu đúng",
+      "error": "Câu sai"
+    },
+    "emptyFiltered": "Không có dữ liệu phù hợp.",
+    "detailLocked": "Xem chi tiết đáp án đã bị khóa cho bài thi này.",
+    "actions": {
+      "print": "In trang này",
+      "exit": "Thoát",
+      "showDetail": "Xem chi tiết đáp án",
+      "hideDetail": "Ẩn chi tiết đáp án"
+    }
+  },
+  "examInstruction": {
+    "title": "Hướng dẫn",
+    "timeLimit": "Giới hạn thời gian làm bài",
+    "attempts": "Số lần làm bài:",
+    "questionCount": "Số lượng câu hỏi:",
+    "shuffleQuestions": "Xáo trộn câu hỏi",
+    "shuffleAnswers": "Xáo trộn đáp án",
+    "monitoring": "Giám sát quá trình thi: toàn màn hình, giới hạn chuột",
+    "limitSwitchTab": "Giới hạn chuyển tab: {{count}} lần",
+    "welcome": "Chào mừng bạn đến với {{testName}}. Hãy đảm bảo đường truyền ổn định trước khi bắt đầu.",
+    "start": "Bắt đầu",
+    "pagination": "Hiển thị:",
+    "questionsPerPage": "câu mỗi trang",
+    "noBackWarning": "LƯU Ý: Không được phép quay lại câu hỏi trước sau khi đã chuyển trang!"
+  },
+  "statSection": {
+    "summary": {
+      "submitted": "Thí sinh đã nộp",
+      "unsubmitted": "Thí sinh chưa nộp",
+      "totalStudents": "Tổng số sinh viên",
+      "avgScore": "Điểm trung bình",
+      "scoreLE": "Điểm <= {{score}}",
+      "scoreGE": "Điểm >= {{score}}",
+      "maxScore": "Điểm cao nhất"
+    },
+    "chart": {
+      "title": "Thống kê điểm thi",
+      "subtitle": "Phân phối số lượng sinh viên theo thang điểm hệ 10",
+      "tooltipScale": "Thang điểm: {{label}}",
+      "tooltipStudents": "Số sinh viên"
+    }
+  }
+}

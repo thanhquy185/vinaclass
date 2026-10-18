@@ -1,0 +1,323 @@
+{
+  "types": {
+    "DoKho": "Difficulty",
+    "DoKhoRequest": "DifficultyRequest",
+    "TaiKhoan": "User",
+    "Answer": "AnswerOption",
+    "Chuong": "Chapter",
+    "CauTraLoi": "AnswerOptionInput",
+    "CauHoiBase": "QuestionBase",
+    "CauHoiCreate": "QuestionCreate",
+    "CauHoiUpdate": "QuestionUpdate",
+    "MonHocWithChuong": "SubjectWithChapters",
+    "DeThiSvienResponse": "StudentExamResponse",
+    "DeThiSvien": "StudentExam",
+    "Assign": "TeacherSubject",
+    "DeThi": "Exam",
+    "DeThiStatus": "ExamStatusType",
+    "ThongBaoBase": "NotificationBase",
+    "ThongBaoCreate": "NotificationCreate",
+    "ThongBaoUpdate": "NotificationUpdate",
+    "ThongBaoResponse": "NotificationResponse",
+    "ThongBao": "Notification",
+    "NhomHocPhanJoinGroup": "CourseGroupJoinGroup",
+    "NhomHocPhanDetailSv": "CourseGroupDetailStudent",
+    "NhomHocPhan": "CourseGroup",
+    "NhomHocPhanBase": "CourseGroupBase",
+    "NhomHocPhanCreate": "CourseGroupCreate",
+    "NhomHocPhanUpdate": "CourseGroupUpdate",
+    "NhomHocPhanSinhViensResponse": "CourseGroupStudentsResponse",
+    "CauHinhThi": "ExamConfiguration",
+    "BaiLam": "ExamAttempt",
+    "ChiTietBaiLam": "ExamAttemptAnswer",
+    "LogBaiLam": "ExamAttemptLog",
+    "CreateDeThiPayload": "CreateExamPayload",
+    "ChuongItemRequest": "ChapterItemRequest",
+    "DsChuongRequest": "ChapterListRequest"
+  },
+  "properties": {
+    "ChangePassForm": { "newPassword_confirmation": "newPasswordConfirmation" },
+    "AuthResponse": { "access_token": "accessToken" },
+    "LoginResponse.original": { "access_token": "accessToken" },
+
+    "DoKhoRequest": { "tenDoKho": "difficultyName" },
+    "DoKho": {
+      "tenDoKho": "difficultyName",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt"
+    },
+    "TaiKhoan": {
+      "ma": "code",
+      "hoTen": "fullName",
+      "nhomQuyenId": "roleId",
+      "sdt": "phone",
+      "ngaySinh": "dateOfBirth",
+      "laGioiTinhNu": "isFemale",
+      "urlAvatar": "avatarUrl",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "nhom_hoc_phans": "courseGroups"
+    },
+
+    "CauTraLoi": { "noiDungLuaChon": "optionContent" },
+    "CauHoiBase": {
+      "monHocId": "subjectId",
+      "chuongId": "chapterId",
+      "doKhoId": "difficultyId",
+      "nguoiTaoId": "creatorId",
+      "noiDungCauHoi": "questionContent",
+      "giaiThichDapAn": "answerExplanation",
+      "diemMacDinh": "defaultScore",
+      "cauTraLois": "answerOptions"
+    },
+    "Question": {
+      "noiDungCauHoi": "questionContent",
+      "giaiThichDapAn": "answerExplanation",
+      "diemMacDinh": "defaultScore",
+      "soLuotSuDung": "usageCount",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "doKhoId": "difficultyId",
+      "monHocId": "subjectId",
+      "chuongId": "chapterId",
+      "nguoiTaoId": "creatorId",
+      "de_this_count": "examsCount",
+      "mon_hoc": "subject",
+      "chuong": "chapter",
+      "do_kho": "difficulty",
+      "nguoi_tao": "creator",
+      "cau_tra_lois": "answerOptions",
+      "dapAnDaChon": "selectedAnswer"
+    },
+    "Answer": {
+      "noiDungLuaChon": "optionContent",
+      "cauHoiId": "questionId"
+    },
+
+    "Subject": {
+      "maMonHoc": "subjectCode",
+      "tenMonHoc": "subjectName",
+      "soTinChi": "creditCount",
+      "soTietLyThuyet": "theoryHours",
+      "soTietThucHanh": "practiceHours",
+      "nhom_hoc_phans": "courseGroups",
+      "chuongs": "chapters"
+    },
+    "SubjectWithGroup": {
+      "maMonHoc": "subjectCode",
+      "tenMonHoc": "subjectName",
+      "soTinChi": "creditCount",
+      "soTietLyThuyet": "theoryHours",
+      "soTietThucHanh": "practiceHours",
+      "nhom_hoc_phans": "courseGroups"
+    },
+    "MonHocWithChuong": {
+      "maMonHoc": "subjectCode",
+      "tenMonHoc": "subjectName",
+      "soTinChi": "creditCount",
+      "soTietLyThuyet": "theoryHours",
+      "soTietThucHanh": "practiceHours",
+      "chuongs": "chapters"
+    },
+    "Chuong": { "tenChuong": "chapterName", "monHocId": "subjectId" },
+    "ChuongItemRequest": { "tenChuong": "chapterName" },
+    "DsChuongRequest": { "chuongs": "chapters" },
+
+    "Role": {
+      "tenNhomQuyen": "roleName",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "total_users": "totalUsers"
+    },
+    "RoleBase": { "tenNhomQuyen": "roleName", "role_details": "roleDetails" },
+    "RoleDetailItem": { "tenChucNang": "functionName" },
+    "UserBase": {
+      "hoTen": "fullName",
+      "nhomQuyenId": "roleId",
+      "sdt": "phone",
+      "ngaySinh": "dateOfBirth",
+      "laGioiTinhNu": "isFemale",
+      "urlAvatar": "avatarUrl"
+    },
+
+    "AssignmentRequest": {
+      "giangVienId": "teacherId",
+      "monHocIds": "subjectIds"
+    },
+    "Assign": {
+      "giangVienId": "teacherId",
+      "monHocId": "subjectId",
+      "mon_hoc": "subject",
+      "giang_vien": "teacher"
+    },
+
+    "DeThiSvienResponse": { "de_this": "exams" },
+    "DeThiSvien": {
+      "monThiId": "subjectId",
+      "tenDe": "examName",
+      "thoiGianBatDau": "startTime",
+      "thoiGianKetThuc": "endTime",
+      "thoiGianLamBai": "durationMinutes",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "nguoiTaoId": "creatorId",
+      "bai_lam": "examAttempt"
+    },
+    "DeThi": {
+      "monThiId": "subjectId",
+      "tenDe": "examName",
+      "thoiGianBatDau": "startTime",
+      "thoiGianKetThuc": "endTime",
+      "thoiGianLamBai": "durationMinutes",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "nguoiTaoId": "creatorId",
+      "mon_thi": "subject",
+      "nguoiTao": "creator",
+      "nhom_hoc_phans": "courseGroups",
+      "cau_hois": "questions",
+      "cau_hinh_thi": "examConfiguration"
+    },
+    "DeThi.pivot": {
+      "nhomHocPhanId": "courseGroupId",
+      "deThiId": "examId"
+    },
+
+    "ThongBaoBase": {
+      "tieuDe": "title",
+      "noiDung": "content",
+      "nguoiGuiId": "senderId"
+    },
+    "ThongBaoCreate": { "nhomHocPhanIds": "courseGroupIds" },
+    "ThongBaoResponse": {
+      "nhom_hoc_phans": "courseGroups",
+      "thoiGianGui": "sentAt",
+      "uuTien": "priority",
+      "nguoi_gui": "sender"
+    },
+    "ThongBao": {
+      "tieuDe": "title",
+      "noiDung": "content",
+      "thoiGianGui": "sentAt",
+      "uuTien": "priority",
+      "nguoiGuiId": "senderId",
+      "nguoi_gui": "sender"
+    },
+
+    "NhomHocPhanJoinGroup": { "sinhVienId": "studentId", "maMoi": "joinCode" },
+    "NhomHocPhanDetailSv": {
+      "tenNhom": "groupName",
+      "thong_baos": "notifications",
+      "de_this": "exams",
+      "sinh_viens": "students",
+      "giang_vien": "teacher"
+    },
+    "NhomHocPhan": {
+      "tenNhom": "groupName",
+      "maMoi": "joinCode",
+      "siSo": "studentCount",
+      "hocKy": "semester",
+      "namHoc": "academicYear",
+      "giangVienId": "teacherId",
+      "isHide": "isHidden",
+      "monHocId": "subjectId",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "giang_vien": "teacher",
+      "mon_hoc": "subject"
+    },
+    "NhomHocPhan.pivot": {
+      "sinhVienId": "studentId",
+      "nhomHocPhanId": "courseGroupId"
+    },
+    "NhomHocPhanBase": {
+      "monHocId": "subjectId",
+      "tenNhom": "groupName",
+      "hocKy": "semester",
+      "namHoc": "academicYear",
+      "giangVienId": "teacherId",
+      "isHide": "isHidden"
+    },
+    "NhomHocPhanSinhViensResponse": { "sinhViens": "students" },
+
+    "CauHinhThi": {
+      "cauHinhId": "examConfigurationId",
+      "deThiId": "examId",
+      "limitQuestionPerPage": "limitQuestionsPerPage",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt"
+    },
+    "BaiLam": {
+      "thoiGianBatDau": "startTime",
+      "thoiGianNopBai": "submissionTime",
+      "tongDiem": "totalScore",
+      "soCauDung": "correctAnswerCount",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt",
+      "thiSinhId": "studentId",
+      "thiSinh": "student",
+      "deThiId": "examId",
+      "deThi": "exam",
+      "chitiet_bailams": "examAttemptAnswers",
+      "logBaiLam": "examAttemptLog"
+    },
+    "ChiTietBaiLam": {
+      "baiLamId": "examAttemptId",
+      "cauHoiId": "questionId",
+      "dapAnId": "answerOptionId",
+      "isCorrectChooser": "isSelectedCorrect",
+      "diem": "score",
+      "updateAt": "updatedAt"
+    },
+    "LogBaiLam": {
+      "logId": "examAttemptLogId",
+      "baiLamId": "examAttemptId",
+      "soLanChuyenTab": "tabSwitchCount"
+    },
+
+    "CreateDeThiPayload": {
+      "monThiId": "subjectId",
+      "nguoiTaoId": "creatorId",
+      "tenDe": "examName",
+      "thoiGianBatDau": "startTime",
+      "thoiGianKetThuc": "endTime",
+      "thoiGianLamBai": "durationMinutes",
+      "nhomHocPhanIds": "courseGroupIds",
+      "cauHois": "questions",
+      "cauHinh": "examConfiguration"
+    },
+    "CreateDeThiPayload.cauHois": { "thuTu": "questionOrder", "diem": "score" },
+
+    "ExamResponseData": {
+      "baiLam": "examAttempt",
+      "deThi": "exam",
+      "cauHois": "questions"
+    },
+    "StudentResult": {
+      "nhomHocPhan": "courseGroup",
+      "baiLam": "examAttempt"
+    },
+    "ExamReviewResponse": {
+      "deThi": "exam",
+      "baiLams": "examAttempts"
+    },
+    "ExamReviewResponse.baiLams": {
+      "baiLam": "examAttempt",
+      "cauHois": "questions"
+    }
+  },
+  "stringLiterals": {
+    "CreateDeThiPayload.cauHinh": {
+      "cauHinhId": "examConfigurationId",
+      "deThiId": "examId",
+      "created_at": "createdAt",
+      "updated_at": "updatedAt"
+    },
+    "ExamStatus": {
+      "DANG_LAM": "IN_PROGRESS",
+      "TAM_LUU": "SAVED",
+      "DA_NOP": "SUBMITTED",
+      "BI_HUY": "CANCELLED"
+    }
+  }
+}

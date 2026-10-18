@@ -1,0 +1,80 @@
+@import "./generated/colors.css";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import "./generated/typography.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== PRIMARY COLOR PALETTES ===== */
+/* Mặc định (red) — đã định nghĩa trong colors.css, không cần override */
+
+[data-primary="blue"] {
+  --color-primary-main: #666cff;
+  --color-primary-dark: #5a5fe0;
+  --color-primary-light: #7a80ff;
+  --color-primary-contrast: #ffffff;
+  --color-action-selected: #666cff14;
+  --color-states-active-menu: #666cff14;
+}
+
+[data-primary="green"] {
+  --color-primary-main: #72e128;
+  --color-primary-dark: #64c623;
+  --color-primary-light: #83e542;
+  --color-primary-contrast: #ffffff;
+  --color-action-selected: #72e12814;
+  --color-states-active-menu: #72e12814;
+}
+
+[data-primary="orange"] {
+  --color-primary-main: #fdb528;
+  --color-primary-dark: #df9f23;
+  --color-primary-light: #fdbe42;
+  --color-primary-contrast: #ffffff;
+  --color-action-selected: #fdb52814;
+  --color-states-active-menu: #fdb52814;
+}
+
+[data-primary="teal"] {
+  --color-primary-main: #26c6f9;
+  --color-primary-dark: #21aedb;
+  --color-primary-light: #40cdfa;
+  --color-primary-contrast: #ffffff;
+  --color-action-selected: #26c6f914;
+  --color-states-active-menu: #26c6f914;
+}
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+  }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* track */
+  ::-webkit-scrollbar-track {
+    /* background: transparent; */
+  }
+
+  /* thumb */
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-other-outlined-border);
+    border-radius: 999px;
+  }
+
+  /* hover */
+  ::-webkit-scrollbar-thumb:hover {
+    /* background: var(--color-primary-main); */
+  }
+
+  .flex-bet-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

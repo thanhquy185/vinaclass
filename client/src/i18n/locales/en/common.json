@@ -1,0 +1,1016 @@
+{
+  "hello": "Hello",
+  "login": {
+    "welcome": "Welcome back!",
+    "subtitle": "Please login to start your session.",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "********",
+    "rememberMe": "Keep me logged in",
+    "forgotPassword": "Forgot password",
+    "submit": "LOGIN",
+    "noAccount": "Don't have an account?",
+    "registerNow": "Register now.",
+    "or": "or",
+    "googleLogin": "Login with Google"
+  },
+  "register": {
+    "welcome": "Start managing effectively.",
+    "subtitle": "Makes exam management simpler and more optimal!",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "********",
+    "agreeTerms": "Agree to the Terms & Conditions.",
+    "submit": "REGISTER",
+    "hasAccount": "Already have an account?",
+    "loginNow": "Login now.",
+    "or": "or",
+    "googleLogin": "Login with Google"
+  },
+  "navigation": {
+    "home": "Home",
+    "login": "Login",
+    "errorPage": "error page",
+    "lang": "Language (Click to change)"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "sections": {
+      "student": "STUDENT",
+      "management": "MANAGEMENT",
+      "admin": "ADMIN"
+    },
+    "items": {
+      "courses": "Courses",
+      "exams": "Exams",
+      "courseGroup": "Course Groups",
+      "questions": "Questions",
+      "users": "Users",
+      "subjects": "Subjects",
+      "assignments": "Assignments",
+      "tests": "Tests",
+      "notifications": "Notifications",
+      "permissionGroups": "Permission Groups",
+      "difficultyLevel": "Difficulty Level"
+    }
+  },
+  "header": {
+    "search": "Search",
+    "user": "User",
+    "actions": {
+      "toggleLanguage": "Switch language",
+      "toggleTheme": "Light/Dark mode"
+    },
+    "menu": {
+      "title": "Exam options",
+      "profile": "View profile",
+      "logout": "Log out"
+    }
+  },
+  "message": {
+    "success": {
+      "create": "Created successfully",
+      "update": "Updated successfully",
+      "delete": "Deleted successfully"
+    },
+    "error": {
+      "create": "Create failed",
+      "update": "Update failed",
+      "delete": "Delete failed"
+    },
+    "validation": {
+      "role": {
+        "empty": "Please select at least one permission"
+      }
+    },
+    "login": {
+      "success": "Login successful",
+      "failed": "Login failed"
+    }
+  },
+  "courseGroup": {
+    "status": {
+      "active": "Teaching",
+      "hidden": "Hidden",
+      "label": "Status"
+    },
+    "search": "Search...",
+    "addGroup": "Add Group",
+    "noGroupsFound": "No matching groups found.",
+    "confirmDeleteGroup": "Are you sure you want to delete this group?",
+    "loadingGroups": "Loading groups list...",
+    "studentList": "Student list",
+    "editInfo": "Edit information",
+    "showGroup": "Show again",
+    "hideGroup": "Hide group",
+    "deleteGroup": "Delete group",
+    "classSizeLabel": "Class size:",
+    "form": {
+      "updateTitle": "Update group information",
+      "addTitle": "Add group",
+      "close": "Close",
+      "groupName": "Group name",
+      "groupNamePlaceholder": "Enter group name",
+      "note": "Note",
+      "notePlaceholder": "Enter note",
+      "inviteCode": "Invite code",
+      "inviteCodePlaceholder": "Enter invite code",
+      "classSize": "Class size",
+      "classSizePlaceholder": "Enter class size",
+      "subject": "Subject",
+      "subjectPlaceholder": "Select subject",
+      "lecturer": "Lecturer",
+      "lecturerPlaceholder": "Select lecturer",
+      "academicYear": "Academic year",
+      "academicYearPlaceholder": "Enter academic year",
+      "semester": "Semester",
+      "semesterPlaceholder": "Enter semester (1 or 2)",
+      "save": "Save",
+      "update": "Update",
+      "validation": {
+        "groupNameRequired": "Group name cannot be empty",
+        "groupNameMaxLength": "Group name cannot exceed 255 characters",
+        "inviteCodeMaxLength": "Invite code cannot exceed 50 characters",
+        "classSizePositive": "Class size must be a positive number",
+        "subjectRequired": "Please select a subject",
+        "academicYearPositive": "Academic year must be a positive number",
+        "semesterInvalid": "Semester must be 1 or 2",
+        "lecturerRequired": "Please select a lecturer"
+      }
+    }
+  },
+  "courseGroupStudent": {
+    "searchStudents": "Search students",
+    "exportList": "Export list",
+    "exportGrades": "Export grades",
+    "addStudent": "Add student",
+    "classSize": "Class size",
+    "confirmRemoveStudent": "Are you sure you want to remove this student from the group?",
+    "delete": "Delete",
+    "table": {
+      "stt": "No.",
+      "fullName": "Full name",
+      "studentCode": "Student code",
+      "gender": "Gender",
+      "dateOfBirth": "Date of birth"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "form": {
+      "manualAdd": "Manual add",
+      "joinByInvite": "Join by invite code",
+      "importExcel": "Import Excel file",
+      "studentCode": "Student code",
+      "studentCodePlaceholder": "Enter student code",
+      "addStudent": "Add student",
+      "copy": "Copy",
+      "generateNewCode": "Generate new code",
+      "content": "Content",
+      "chooseFile": "Choose file",
+      "noFileSelected": "No file selected",
+      "formatInstruction": "Please format users correctly.",
+      "downloadSampleFile": "Download sample file.",
+      "addToSystem": "Add to system"
+    }
+  },
+  "coursePage": {
+    "searchPlaceholder": "Search",
+    "joinNewClass": "Join new class",
+    "showHiddenClasses": "Show hidden classes"
+  },
+  "joinClassForm": {
+    "title": "Join course group",
+    "inviteCodeLabel": "Invite code",
+    "inviteCodePlaceholder": "Enter invite code",
+    "helperText": "Please ask your lecturer for the class code and enter it here.",
+    "guide": "How to join with a class code\n- Use an authorized account\n- Use an 8-character class code (letters or numbers), without spaces or symbols",
+    "validation": {
+      "inviteRequired": "Please enter invite code",
+      "inviteFormat": "Code must contain 8 alphanumeric characters without spaces or symbols"
+    },
+    "actions": {
+      "close": "Close",
+      "join": "Join group"
+    }
+  },
+  "courseItem": {
+    "teacherAlt": "Teacher",
+    "academicInfo": "Academic year {{year}} - Semester {{semester}}",
+    "hide": "Hide",
+    "unsubscribe": "Unenroll"
+  },
+  "examPage": {
+    "searchPlaceholder": "Search ...",
+    "table": {
+      "stt": "No.",
+      "className": "Class name",
+      "testName": "Test name",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "duration": "Duration",
+      "minuteUnit": "minutes"
+    },
+    "actions": {
+      "upcoming": "Upcoming",
+      "late": "Late",
+      "startNow": "Start now"
+    }
+  },
+  "subjectPage": {
+    "table": {
+      "code": "Code",
+      "name": "Subject Name",
+      "credits": "Credits",
+      "theoryPeriods": "Theory",
+      "practicePeriods": "Practice"
+    },
+    "filter": {
+      "placeholder": "Select criteria",
+      "byName": "By name",
+      "byCode": "By code"
+    },
+    "addNew": "Create new subject",
+    "confirmDeleteTitle": "Confirm delete subject",
+    "confirmDelete": "Are you sure you want to delete subject: {{subjectName}}?",
+    "form": {
+      "addTitle": "Add New Subject",
+      "updateTitle": "Update Subject",
+      "nameLabel": "Subject Name",
+      "namePlaceholder": "Example: Data Structures",
+      "codeLabel": "Subject Code",
+      "codePlaceholder": "Example: 841010",
+      "creditsLabel": "Credits",
+      "creditsPlaceholder": "3",
+      "theoryPeriodsLabel": "Theory Periods",
+      "theoryPeriodsPlaceholder": "45",
+      "practicePeriodsLabel": "Practice Periods",
+      "practicePeriodsPlaceholder": "30",
+      "backButton": "Back",
+      "saveButton": "Save Subject",
+      "updateButton": "Update",
+      "validation": {
+        "nameRequired": "Subject name is required",
+        "codeRequired": "Subject code is required"
+      }
+    },
+    "editChapter": {
+      "title": "Chapter List",
+      "empty": "No chapters yet. Add one below.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editing": "Editing chapter",
+      "addNew": "Add new chapter",
+      "cancelEdit": "Cancel edit",
+      "saveNew": "Save chapter",
+      "update": "Update chapter"
+    }
+  },
+  "tableActions": {
+    "header": "Actions",
+    "detail": "Detail",
+    "edit": "Edit",
+    "remove": "Remove",
+    "loading": "Loading...",
+    "noData": "No data"
+  },
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "update": "Update",
+    "cancel": "Cancel",
+    "result": "Result",
+    "saveAccount": "Save Account",
+    "saveAssignment": "Save Assignment",
+    "noData": "No data"
+  },
+  "permissionForm": {
+    "view": "View",
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "addPermissionGroup": "Add Permission Group",
+    "groupName": "Group Name",
+    "groupNamePlaceholder": "E.g., Lecturer",
+    "permissionName": "Permission Name"
+  },
+  "permissionNames": {
+    "nguoi_dung": "Users",
+    "do_kho": "Difficulty",
+    "hoc_phan": "Course",
+    "cau_hoi": "Question",
+    "mon_hoc": "Subject",
+    "phan_cong": "Assignment",
+    "de_thi": "Exam",
+    "nhom_quyen": "Permission Group",
+    "thong_bao": "Notification"
+  },
+  "addAssignmentForm": {
+    "subjectCode": "Subject Code",
+    "subjectName": "Subject Name",
+    "credits": "Credits",
+    "theoryPeriods": "Theory Periods",
+    "practicePeriods": "Practice Periods",
+    "selectTeacherPrompt": "Please select a teacher before saving!",
+    "addManually": "Add Manually",
+    "teacher": "Teacher",
+    "selectTeacherPlaceholder": "Select teacher to assign",
+    "searchSubjectPlaceholder": "Search for subject..."
+  },
+  "userForm": {
+    "edit": "Edit",
+    "detail": "Detail",
+    "addManually": "Add Manually",
+    "addFromFile": "Add From File",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "email": "Email",
+    "emailPlaceholder": "Enter email address",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter full name",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "dateOfBirth": "Date of Birth",
+    "permissionGroup": "Permission Group",
+    "permissionGroupPlaceholder": "Select permission group",
+    "newPasswordPrompt": "New Password (leave blank if no change)",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "lockAccount": "Lock Account",
+    "isStudent": "Is Student?",
+    "quickResetPassword": "Quick Reset Password",
+    "dragDropPrompt": "Drag and drop file here or click to select file",
+    "selectExcelFile": "Select Excel File"
+  },
+  "userPage": {
+    "table": {
+      "username": "Username",
+      "fullName": "Full Name",
+      "gender": "Gender",
+      "dateOfBirth": "Date of Birth",
+      "role": "Role",
+      "joinDate": "Join Date",
+      "status": "Status"
+    },
+    "avatarAlt": "Avatar",
+    "status": {
+      "active": "Active",
+      "locked": "Locked"
+    },
+    "roles": {
+      "admin": "Admin",
+      "teacher": "Teacher",
+      "student": "Student"
+    },
+    "filter": {
+      "rolePlaceholder": "Filter by role",
+      "all": "All"
+    },
+    "searchPlaceholder": "Search Student ID...",
+    "addNew": "Create new account",
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDelete": "Are you sure you want to delete?",
+    "confirmResetPassword": "Are you sure you want to reset the password?",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "fullNameRequired": "Full name is required",
+      "fullNameMaxLength": "Full name cannot exceed 255 characters",
+      "dobRequired": "Date of birth is required",
+      "dobInvalid": "Date of birth must be before today",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordLetterRequired": "Password must contain letters",
+      "passwordNumberRequired": "Password must contain numbers",
+      "passwordCaseRequired": "Password must contain uppercase and lowercase letters",
+      "roleRequired": "Please select a permission group"
+    }
+  },
+  "permissionGroupPage": {
+    "table": {
+      "groupCode": "Group Code",
+      "groupName": "Group Name",
+      "userCount": "User Count"
+    },
+    "memberUnit": "members",
+    "confirmDelete": "Are you sure you want to delete this role?",
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete this user group? This action cannot be undone.",
+    "filter": {
+      "placeholder": "Select criteria",
+      "byName": "By Name",
+      "byID": "By ID"
+    },
+    "addNew": "Create New Permission Group"
+  },
+  "confirm": {
+    "title": "Confirm action",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "loading": "Processing..."
+  },
+  "assignmentPage": {
+    "table": {
+      "subjectCode": "Subject Code",
+      "subjectName": "Subject Name",
+      "teacherCode": "Teacher Code",
+      "teacherName": "Teacher Name"
+    },
+    "filter": {
+      "placeholder": "Select criteria",
+      "bySubject": "By Subject",
+      "byTeacher": "By Teacher"
+    },
+    "addNew": "Create new assignment",
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDelete": "Are you sure you want to delete the assignment for teacher: {{teacherName}}?"
+  },
+  "testPage": {
+    "filter": {
+      "all": "All",
+      "opening": "Opening",
+      "closed": "Closed",
+      "notOpened": "Not Opened"
+    },
+    "searchPlaceholder": "Search",
+    "subject": "Subject",
+    "selectSubjectPlaceholder": "Select subject",
+    "addNew": "Create test"
+  },
+  "notificationPage": {
+    "confirmDelete": "Are you sure you want to delete this notification?",
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete this notification? This action cannot be undone.",
+    "validation": {
+      "titleRequired": "Title is required",
+      "contentRequired": "Content is required",
+      "courseGroupRequired": "Please select at least one course group"
+    },
+    "filter": {
+      "placeholder": "Select status",
+      "all": "All",
+      "sent": "Sent",
+      "draft": "Draft"
+    },
+    "searchPlaceholder": "Search",
+    "addNew": "Create new notification"
+  },
+  "notificationItem": {
+    "status": {
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "assignedTo": "Assigned to subject:",
+    "createdAt": "Created at: {{date}}",
+    "sender": "Sender: {{name}}"
+  },
+  "notificationForm": {
+    "title": {
+      "create": "Create new notification",
+      "update": "Edit notification",
+      "view": "Notification details"
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Semester opening notification ..."
+      },
+      "content": {
+        "label": "Notification content",
+        "placeholder": "Enter notification content"
+      }
+    },
+    "assign": {
+      "label": "Assign to",
+      "placeholder": "Select subject"
+    },
+    "selectAll": "Select all",
+    "actions": {
+      "back": "Back",
+      "send": "Send notification",
+      "save": "Save"
+    }
+  },
+  "testDetailPage": {
+    "loading": "Loading data...",
+    "overview": {
+      "title": "Overview",
+      "assignTo": "Assigned to subject",
+      "duration": "From {{start}} to {{end}}"
+    },
+    "actions": {
+      "preview": "Preview",
+      "menu": "Actions",
+      "menuTitle": "Test options",
+      "viewDetail": "View details",
+      "delete": "Delete test",
+      "edit": "Edit test"
+    },
+    "deleteConfirm": "Are you sure you want to delete this test? This action cannot be undone.",
+    "assignedToSection": "Assigned to"
+  },
+  "difficultyLevelPage": {
+    "table": {
+      "code": "Difficulty Code",
+      "name": "Difficulty Name"
+    },
+    "filter": {
+      "placeholder": "Select criteria",
+      "byName": "By name",
+      "byID": "By ID"
+    },
+    "addNew": "Create new difficulty level",
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDelete": "Are you sure you want to delete this difficulty level?",
+    "form": {
+      "addTitle": "Add New Difficulty Level",
+      "updateTitle": "Update Difficulty Level",
+      "nameLabel": "Difficulty Name",
+      "namePlaceholder": "Example: Comprehension, Application...",
+      "note": "* Difficulty level will be displayed when creating exam questions.",
+      "backButton": "Back",
+      "saveButton": "Save Difficulty",
+      "updateButton": "Update",
+      "validation": {
+        "nameRequired": "Difficulty name is required",
+        "nameExists": "Difficulty name already exists"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "System Overview",
+    "subtitle": "Welcome back, here is the latest data for today.",
+    "semester": {
+      "placeholder": "Select semester",
+      "options": {
+        "sem1": "Semester 1 - 2025",
+        "sem2": "Semester 2 - 2025"
+      }
+    },
+    "stats": {
+      "totalStudents": "Total students",
+      "activeExams": "Active exams",
+      "completedAttempts": "Completed attempts",
+      "questionBank": "Question bank"
+    },
+    "traffic": {
+      "title": "System traffic",
+      "last7Days": "Last 7 days",
+      "tooltip": "{{count}} visits"
+    },
+    "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "upcomingExams": {
+      "title": "Upcoming exams",
+      "items": {
+        "dataStructures": "Data Structures",
+        "oop": "Object-Oriented Programming",
+        "databases": "Databases",
+        "networks": "Computer Networks"
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "ready": "Ready"
+    }
+  },
+  "profile": {
+    "avatarAlt": "Avatar",
+    "tabs": {
+      "info": "Account information",
+      "password": "Change password"
+    },
+    "about": {
+      "title": "About",
+      "location": "Ho Chi Minh City",
+      "socialLink": "facebook.com/manh"
+    },
+    "details": {
+      "title": "Account details",
+      "fullName": "Full name",
+      "identityCode": "Identity code",
+      "contactEmail": "Contact email",
+      "phone": "Phone number",
+      "birthDate": "Date of birth",
+      "gender": "Gender",
+      "genderFemale": "Female",
+      "genderMale": "Male"
+    },
+    "systemStatus": {
+      "title": "SYSTEM STATUS",
+      "description": "Your account is active on the {{system}} system."
+    },
+    "password": {
+      "title": "Security & Password",
+      "subtitle": "Please do not share your password with anyone.",
+      "current": "Current password",
+      "new": "New password",
+      "newPlaceholder": "Enter a new password",
+      "confirm": "Confirm new password",
+      "confirmPlaceholder": "Re-enter the new password",
+      "update": "Update password",
+      "cancel": "Cancel"
+    },
+    "validation": {
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordLetterRequired": "Password must contain letters",
+      "passwordNumberRequired": "Password must contain numbers",
+      "passwordCaseRequired": "Password must contain uppercase and lowercase letters",
+      "passwordConfirmMismatch": "Password confirmation does not match",
+      "passwordDifferent": "New password must be different from the current password",
+      "currentPasswordMismatch": "Current password is incorrect"
+    },
+    "errors": {
+      "userNotSet": "User is not set"
+    }
+  },
+  "questionPage": {
+    "tabs": {
+      "public": "Public",
+      "private": "Private",
+      "archive": "Archive"
+    },
+    "actions": {
+      "addQuestion": "Add question"
+    },
+    "filters": {
+      "subject": {
+        "label": "Subject",
+        "placeholder": "Select subject"
+      },
+      "chapter": {
+        "label": "Chapter",
+        "placeholder": "Select chapter",
+        "options": {
+          "recognize": "Recognition",
+          "understand": "Understanding",
+          "apply": "Application",
+          "highApply": "Advanced application"
+        }
+      },
+      "difficulty": {
+        "label": "Difficulty",
+        "placeholder": "Select difficulty"
+      }
+    },
+    "search": {
+      "placeholder": "Search in {{count}} questions..."
+    },
+    "empty": "No matching questions found",
+    "deleteConfirm": {
+      "title": "Confirm delete question",
+      "message": "Are you sure you want to delete this question? This action cannot be undone.",
+      "confirm": "Delete now",
+      "cancel": "Cancel"
+    },
+    "toast": {
+      "addToBank": "Question added to the bank"
+    },
+    "validation": {
+      "questionRequired": "Question content is required",
+      "subjectRequired": "Please select a subject",
+      "chapterRequired": "Please select a chapter",
+      "difficultyRequired": "Please select a difficulty"
+    }
+  },
+  "addQuestionForm": {
+    "tabs": {
+      "handmade": "Add manually",
+      "fromFile": "Add from file",
+      "edit": "Edit"
+    },
+    "fields": {
+      "subject": {
+        "label": "Subject",
+        "placeholder": "Select subject"
+      },
+      "chapter": {
+        "label": "Chapter",
+        "placeholder": "Select chapter"
+      },
+      "difficulty": {
+        "label": "Difficulty",
+        "placeholder": "Select difficulty"
+      }
+    },
+    "content": {
+      "label": "Question content"
+    },
+    "answers": {
+      "title": "Answer list",
+      "empty": "No answers yet. Add one below.",
+      "correct": "CORRECT",
+      "chooseCorrect": "Mark as correct",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editing": "Editing answer",
+      "addNew": "Add new answer",
+      "markCorrect": "Set as correct answer?",
+      "cancelEdit": "Cancel edit",
+      "saveNew": "Save answer to list",
+      "update": "Update answer"
+    },
+    "footer": {
+      "public": "Make this question public",
+      "back": "Back",
+      "saveAll": "Save question"
+    }
+  },
+  "questionItem": {
+    "showAnswer": "Show answers",
+    "hideAnswer": "Hide answers",
+    "edit": "Edit",
+    "archive": "Archive",
+    "delete": "Delete",
+    "addToBank": "Add to bank",
+    "makePublic": "Make public",
+    "restoreToBank": "Restore to bank",
+    "usage": "Usage: {{count}} times"
+  },
+  "testItem": {
+    "confirmDeleteTitle": "Confirm deletion",
+    "confirmDelete": "Are you sure you want to delete this test? This action cannot be undone.",
+    "actions": {
+      "viewDetail": "View details",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "assignTo": "Assigned to subject",
+    "duration": "From {{start}} to {{end}}"
+  },
+  "testFormPage": {
+    "title": {
+      "edit": "Edit test",
+      "view": "Test details",
+      "create": "Create test"
+    },
+    "fields": {
+      "name": {
+        "label": "Test name",
+        "placeholder": "Enter test name"
+      },
+      "startTime": "Start time",
+      "endTime": "End time",
+      "duration": {
+        "label": "Duration",
+        "unit": "Minutes",
+        "placeholder": "00"
+      }
+    },
+    "assignTo": {
+      "label": "Assign to",
+      "placeholder": "Select subject"
+    },
+    "actions": {
+      "back": "Back",
+      "viewQuestions": "View questions",
+      "continueQuestions": "Continue adding questions"
+    }
+  },
+  "testConfigSidebar": {
+    "title": "Test configuration",
+    "sections": {
+      "shuffle": "Shuffle",
+      "antiCheat": "Anti-cheat",
+      "afterExam": "After exam"
+    },
+    "toggles": {
+      "shuffleQuestions": "Shuffle questions",
+      "shuffleAnswers": "Shuffle answers",
+      "monitoring": "Exam monitoring (full screen)",
+      "blockCopy": "Block Copy/Paste/Print",
+      "limitSwitchTab": "Limit tab switching (auto submit)",
+      "showScore": "Show score",
+      "showDetail": "Show detailed results",
+      "enableResume": "Allow retake"
+    },
+    "labels": {
+      "maxSwitches": "Max switches"
+    },
+    "placeholders": {
+      "maxSwitches": "Example: 3"
+    }
+  },
+  "addQuestionTestPage": {
+    "loading": {
+      "create": "Creating new test...",
+      "update": "Updating test..."
+    },
+    "toast": {
+      "saveSuccess": "Saved successfully"
+    },
+    "actions": {
+      "back": "Back",
+      "preview": "Preview",
+      "addQuestion": "Add question",
+      "saveEdit": "Save changes",
+      "addTest": "Add test"
+    },
+    "title": {
+      "edit": "Edit question list",
+      "view": "Question list",
+      "create": "Add questions"
+    },
+    "filters": {
+      "search": "Search questions",
+      "chapter": "Select chapter",
+      "difficulty": {
+        "label": "Difficulty",
+        "placeholder": "Select difficulty"
+      }
+    },
+    "count": {
+      "label": "Count:"
+    },
+    "tooltips": {
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "removeFromTest": "Remove from test"
+    },
+    "summary": {
+      "basicInfo": {
+        "title": "Basic information",
+        "assignTo": "Assigned to subject",
+        "duration": "From {{start}} to {{end}}",
+        "workTime": "Duration: {{minutes}} minutes"
+      },
+      "security": {
+        "title": "Safety & Security",
+        "monitoringOn": "Monitoring is enabled",
+        "switchLimit": "Tab switch limit:",
+        "switchTimes": "{{count}} times",
+        "copyBlocked": "Copying is disabled",
+        "printBlocked": "Printing is blocked"
+      },
+      "rules": {
+        "title": "Exam rules",
+        "shuffle": "Automatically shuffle questions and answers",
+        "resume": "Students can resume unfinished attempts",
+        "showDetail": "Show detailed results",
+        "showScore": "Show score"
+      }
+    }
+  },
+  "resultPage": {
+    "avatarAlt": "Avatar",
+    "classAverage": "Class average",
+    "overview": {
+      "title": "Overview",
+      "preview": "Preview"
+    },
+    "tabs": {
+      "classScore": "Scoreboard",
+      "stat": "Statistics"
+    },
+    "filters": {
+      "rolePlaceholder": "Filter by role",
+      "roles": {
+        "all": "All",
+        "student": "Student",
+        "teacher": "Teacher",
+        "admin": "Admin"
+      }
+    },
+    "search": {
+      "placeholder": "Search student ID..."
+    },
+    "actions": {
+      "exportScores": "Export score table",
+      "result": "Result"
+    },
+    "viewModes": {
+      "user": "By student",
+      "question": "By question",
+      "difficulty": "By difficulty"
+    },
+    "status": {
+      "inProgress": "In progress...",
+      "notJoined": "Not joined yet"
+    },
+    "columns": {
+      "studentId": "Student ID",
+      "fullName": "Full name",
+      "percent": "Percent",
+      "score": "Score",
+      "startTime": "Start time",
+      "switchCount": "Tab switches",
+      "stt": "No.",
+      "difficultyLevel": "Difficulty level",
+      "questionContent": "Question content",
+      "correctRate": "Correct rate",
+      "avgScore": "Average score"
+    }
+  },
+  "courseElement": {
+    "tabs": {
+      "news": "News",
+      "classwork": "Classwork",
+      "everybody": "People"
+    },
+    "common": {
+      "minuteUnit": "minutes"
+    },
+    "classwork": {
+      "columns": {
+        "testName": "Test name",
+        "percentage": "Percentage",
+        "score": "Score",
+        "duration": "Duration"
+      },
+      "status": {
+        "notOpen": "Not open",
+        "start": "Start",
+        "expired": "Expired"
+      },
+      "durationText": "Duration: {{minutes}} {{unit}}"
+    },
+    "news": {
+      "upcomingTitle": "Due soon",
+      "upcomingEmpty": "Great, there are no assignments due soon!",
+      "viewAll": "View all",
+      "createAnnouncement": "Announce something to your class"
+    },
+    "everybody": {
+      "teacher": "Teacher",
+      "classmates": "Classmates"
+    },
+    "announcement": {
+      "defaultAuthor": "Teacher",
+      "delete": "Delete",
+      "copyLink": "Copy link"
+    },
+    "feed": {
+      "newExamPosted": "The system posted a new exam:"
+    },
+    "classResult": {
+      "studentCount": "{{count}} students"
+    }
+  },
+  "examResultOverview": {
+    "loading": "Loading result...",
+    "notAvailable": "N/A",
+    "previewMode": "You are previewing results in Admin mode",
+    "scoreHidden": "Scores are hidden by exam configuration.",
+    "labels": {
+      "score": "Score:",
+      "duration": "Duration:",
+      "startedAt": "Started at:",
+      "finishedAt": "Finished at:",
+      "violations": "Violations:"
+    },
+    "tabs": {
+      "all": "All ({{count}})",
+      "success": "Correct",
+      "error": "Incorrect"
+    },
+    "emptyFiltered": "No matching data.",
+    "detailLocked": "Detailed answers are locked for this exam.",
+    "actions": {
+      "print": "Print this page",
+      "exit": "Exit",
+      "showDetail": "Show detailed answers",
+      "hideDetail": "Hide detailed answers"
+    }
+  },
+  "examInstruction": {
+    "title": "Instructions",
+    "timeLimit": "Time limit",
+    "attempts": "Attempts:",
+    "questionCount": "Number of questions:",
+    "shuffleQuestions": "Shuffle questions",
+    "shuffleAnswers": "Shuffle answers",
+    "monitoring": "Exam monitoring: full screen, mouse restriction",
+    "limitSwitchTab": "Tab switch limit: {{count}} times",
+    "welcome": "Welcome to {{testName}}. Please ensure a stable connection before starting.",
+    "start": "Start"
+  },
+  "statSection": {
+    "summary": {
+      "submitted": "Submitted",
+      "unsubmitted": "Not submitted",
+      "totalStudents": "Total students",
+      "avgScore": "Average score",
+      "scoreLE": "Score <= {{score}}",
+      "scoreGE": "Score >= {{score}}",
+      "maxScore": "Highest score"
+    },
+    "chart": {
+      "title": "Score statistics",
+      "subtitle": "Student distribution by 10-point scale",
+      "tooltipScale": "Score scale: {{label}}",
+      "tooltipStudents": "Students"
+    }
+  }
+}

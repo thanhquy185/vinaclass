@@ -1,0 +1,549 @@
+{
+  "Light": {
+    "Text": {
+      "Primary": {
+        "$type": "color",
+        "$description": "Text primary",
+        "$value": "#000000de"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$description": "Text secondary",
+        "$value": "#000000ad"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$value": "#00000061"
+      }
+    },
+    "Action": {
+      "Active": {
+        "$type": "color",
+        "$description": "Fill color for components in active state (List, Table, etc)",
+        "$value": "#4c4e648a"
+      },
+      "Hover": {
+        "$type": "color",
+        "$description": "Fill background for components in hover state (List, Table, etc)",
+        "$value": "#f6f6f8"
+      },
+      "Selected": {
+        "$type": "color",
+        "$description": "Fill background for components in selected state (List, Table, etc)",
+        "$value": "#fb331114"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$description": "Content color for components in disabled state (Button, List, Table, etc)",
+        "$value": "#4c4e6442"
+      },
+      "Disabled Background": {
+        "$type": "color",
+        "$description": "Fill background for components in disabled state (List, Table, etc)",
+        "$value": "#4c4e641f"
+      },
+      "Focus": {
+        "$type": "color",
+        "$description": "Fill background for components in focus state (List, Table, etc)",
+        "$value": "#4c4e641f"
+      },
+      "Infor-back": {
+        "$type": "color",
+        "$value": "#e4f1fb"
+      },
+      "Success-back": {
+        "$type": "color",
+        "$value": "#e6fff2"
+      }
+    },
+    "Other": {
+      "Divider": {
+        "$type": "color",
+        "$description": "Divider fill color",
+        "$value": "#4c4e641f"
+      },
+      "Outlined Border": {
+        "$type": "color",
+        "$description": "Border style for outlined variant components in resting state (Text Field, Select, Chips, etc)",
+        "$value": "#4c4e6438"
+      },
+      "Backdrop Overlay": {
+        "$type": "color",
+        "$description": "Backdrop overlay style",
+        "$value": "#4c4e6480"
+      },
+      "Filled Input Background": {
+        "$type": "color",
+        "$value": "#4c4e640a"
+      },
+      "Input Border": {
+        "$type": "color",
+        "$description": "Border style for standard variant Text Field & Select",
+        "$value": "#4c4e6438"
+      },
+      "Snackbar": {
+        "$type": "color",
+        "$description": "Snackbar background color",
+        "$value": "#212121"
+      },
+      "Chip Background": {
+        "$type": "color",
+        "$value": "#3a354114"
+      },
+      "Rating Active": {
+        "$type": "color",
+        "$description": "Active state color for Rating component",
+        "$value": "#fdb528"
+      },
+      "Tooltip": {
+        "$type": "color",
+        "$value": "#262732e6"
+      }
+    },
+    "Background": {
+      "Paper": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "Body Background": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "Page Header Background": {
+        "$type": "color",
+        "$value": "#f5f5f7"
+      },
+      "Border": {
+        "$type": "color",
+        "$value": "#3a35414d"
+      },
+      "Extra BG": {
+        "$type": "color",
+        "$value": "#f9f8f9"
+      },
+      "Section": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "body": {
+        "$type": "color",
+        "$value": "#f6f6f8"
+      }
+    },
+    "Primary": {
+      "Main": {
+        "$type": "color",
+        "$description": "Main color used by most components",
+        "$value": "#fb3311"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#5a5fe0"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#df2e0f"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "States": {
+      "Outlined Resting Border": {
+        "$type": "color",
+        "$description": "Fill background color for outlined & text variant components in hover state (Button, etc)",
+        "$value": "#72e12880"
+      },
+      "Outlined Hover Background": {
+        "$type": "color",
+        "$description": "Used for outlined variant components in resting state (Button, Chip, etc)",
+        "$value": "#72e1280d"
+      },
+      "Contained Hover Background": {
+        "$type": "color",
+        "$description": "Fill background color for contained variant components in hover state (Button, FAB, etc)",
+        "$value": "#5db921"
+      },
+      "Active Menu": {
+        "$type": "color",
+        "$value": "#ff331114"
+      },
+      "Outline Selected Background": {
+        "$type": "color",
+        "$value": "#666cff14"
+      }
+    },
+    "Secondary": {
+      "Main": {
+        "$type": "color",
+        "$description": "Secondary color used by most components",
+        "$value": "#6d788d"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#606a7c"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#7f889b"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "Error": {
+      "Main": {
+        "$type": "color",
+        "$description": "Used for alert component",
+        "$value": "#ff4d49"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#e04440"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#ff625f"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "Alert": {
+      "Error Content": {
+        "$type": "color",
+        "$description": "Text color for the error Alert component",
+        "$value": "#0000001a"
+      },
+      "Warning Content": {
+        "$type": "color",
+        "$description": "Text color for the error Alert component",
+        "$value": "#0000001a"
+      },
+      "Info Content": {
+        "$type": "color",
+        "$description": "Text color for the info Alert component",
+        "$value": "#0000001a"
+      },
+      "Success Content": {
+        "$type": "color",
+        "$description": "Text color for the info Alert component",
+        "$value": "#0000001a"
+      }
+    },
+    "Warning": {
+      "Main": {
+        "$type": "color",
+        "$description": "Used for alert component",
+        "$value": "#fdb528"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#df9f23"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#fdbe42"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "Info": {
+      "Main": {
+        "$type": "color",
+        "$description": "Used for alert component",
+        "$value": "#26c6f9"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#21aedb"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#40cdfa"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "Success": {
+      "Main": {
+        "$type": "color",
+        "$description": "Used for alert component",
+        "$value": "#72e128"
+      },
+      "Dark": {
+        "$type": "color",
+        "$description": "Alternative dark shade",
+        "$value": "#64c623"
+      },
+      "Light": {
+        "$type": "color",
+        "$description": "Alternative light shade",
+        "$value": "#83e542"
+      },
+      "Contrast": {
+        "$type": "color",
+        "$description": "Color that keeps a contrast ratio above AA when XX.main is used as a bg. color",
+        "$value": "#ffffff"
+      }
+    },
+    "Common": {
+      "White": {
+        "$type": "color",
+        "$value": "#ffffff"
+      },
+      "Black": {
+        "$type": "color",
+        "$value": "#000000"
+      }
+    },
+    "Grey": {
+      "Grey 50": {
+        "$type": "color",
+        "$value": "#fafafa"
+      },
+      "Grey 100": {
+        "$type": "color",
+        "$value": "#f5f5f5"
+      },
+      "Grey 200": {
+        "$type": "color",
+        "$value": "#eeeeee"
+      },
+      "Grey 300": {
+        "$type": "color",
+        "$value": "#e0e0e0"
+      },
+      "Grey 400": {
+        "$type": "color",
+        "$value": "#bdbdbd"
+      },
+      "Grey 500": {
+        "$type": "color",
+        "$value": "#9e9e9e"
+      },
+      "Grey 600": {
+        "$type": "color",
+        "$value": "#757575"
+      },
+      "Grey 700": {
+        "$type": "color",
+        "$value": "#616161"
+      },
+      "Grey 800": {
+        "$type": "color",
+        "$value": "#424242"
+      },
+      "Grey 900": {
+        "$type": "color",
+        "$value": "#212121"
+      },
+      "Grey A100": {
+        "$type": "color",
+        "$value": "#d5d5d5"
+      },
+      "Grey A200": {
+        "$type": "color",
+        "$value": "#aaaaaa"
+      },
+      "Grey A400": {
+        "$type": "color",
+        "$value": "#616161"
+      },
+      "Grey A700": {
+        "$type": "color",
+        "$value": "#303030"
+      }
+    },
+    "Custom Background": {
+      "Error Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      },
+      "Warning Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      },
+      "Info Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      },
+      "Success Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      },
+      "Primary Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      },
+      "Secondary Background": {
+        "$type": "color",
+        "$value": "#ffffffe0"
+      }
+    }
+  },
+  "Dark": {
+    "Text": {
+      "Primary": {
+        "$type": "color",
+        "$value": "#eaeaffde"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "#e7e3fcad"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$value": "#e7e3fc61"
+      }
+    },
+    "Action": {
+      "Active": {
+        "$type": "color",
+        "$value": "#eaeaff8a"
+      },
+      "Hover": {
+        "$type": "color",
+        "$value": "#eaeaff0d"
+      },
+      "Selected": {
+        "$type": "color",
+        "$value": "#eaeaff14"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$value": "#eaeaff42"
+      },
+      "Disabled Background": {
+        "$type": "color",
+        "$value": "#eaeaff1f"
+      },
+      "Focus": {
+        "$type": "color",
+        "$value": "#eaeaff1f"
+      }
+    },
+    "Other": {
+      "Divider": {
+        "$type": "color",
+        "$value": "#eaeaff1f"
+      },
+      "Outlined Border": {
+        "$type": "color",
+        "$value": "#eaf2ff38"
+      },
+      "Input Border": {
+        "$type": "color",
+        "$value": "#eaeaff38"
+      },
+      "Filled Input Background": {
+        "$type": "color",
+        "$value": "#e7e3fc0a"
+      },
+      "Backdrop Overlay": {
+        "$type": "color",
+        "$value": "#10112199"
+      },
+      "Snackbar": {
+        "$type": "color",
+        "$value": "#f5f5f5"
+      },
+      "Chip Background": {
+        "$type": "color",
+        "$value": "#e7e3fc14"
+      },
+      "Rating Active": {
+        "$type": "color",
+        "$value": "#ffb400"
+      },
+      "Tooltip": {
+        "$type": "color",
+        "$value": "#464a65e6"
+      }
+    },
+    "Background": {
+      "Paper": {
+        "$type": "color",
+        "$value": "#30334e"
+      },
+      "Body Background": {
+        "$type": "color",
+        "$value": "#282a42"
+      },
+      "Page Header Background": {
+        "$type": "color",
+        "$value": "#3a3e5b"
+      },
+      "Border": {
+        "$type": "color",
+        "$value": "#e7e3fc4d"
+      },
+      "Extra BG": {
+        "$type": "color",
+        "$value": "#3e4461"
+      }
+    },
+    "Custom Background": {
+      "Error Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      },
+      "Warning Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      },
+      "Info Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      },
+      "Success Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      },
+      "Primary Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      },
+      "Secondary Background": {
+        "$type": "color",
+        "$value": "#30334ee0"
+      }
+    }
+  },
+  "Styles": {
+    "Statistics Card": {
+      "$type": "color",
+      "$value": "#f7f7f9"
+    },
+    "Menu Drawer": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "Logo": {
+      "$type": "color",
+      "$value": "#f7f7f9"
+    }
+  }
+}

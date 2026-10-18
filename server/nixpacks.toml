@@ -1,0 +1,38 @@
+[phases.setup]
+# Cài PHP 8.2 + Composer + các extension phổ biến cho Laravel
+nixPkgs = [
+  "php82",
+  "php82Packages.composer",
+  "php82Extensions.gd",
+  "php82Extensions.mbstring",
+  "php82Extensions.zip",
+  "php82Extensions.openssl",
+  "php82Extensions.pdo",
+  "php82Extensions.pdo_mysql",     # nếu dùng MySQL
+  "php82Extensions.tokenizer",
+  "php82Extensions.xml",
+  "php82Extensions.curl",
+  "php82Extensions.bcmath",        # thường cần
+  "php82Extensions.ctype",
+  "php82Extensions.iconv",
+]
+
+[phases.install]
+# Composer install chỉ dùng cho production, tối ưu autoloader
+cmds = [
+  "composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist"
+]
+
+[phases.build]
+# Các lệnh Laravel tối ưu sau khi install
+# (bạn có thể thêm npm install && npm run build nếu có frontend assets)
+cmds = [
+  "php artisan optimize:clear"
+  # "php artisan migrate --force"   # <-- Bỏ comment nếu muốn chạy migrate tự động khi build (cẩn thận với production)
+]
+
+# Start command (Nixpacks PHP provider sẽ tự generate nginx + php-fpm, bạn chỉ cần override nếu cần)
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"   # Railway sẽ override $PORT tự động
+# Hoặc để Nixpacks dùng mặc định (khuyến nghị cho Laravel):
+# cmd = ""   # để trống để Nixpacks tự xử lý nginx + php-fpm
