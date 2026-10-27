@@ -11,18 +11,23 @@ use App\Models\ExamAttempt;
 use App\Models\CourseGroup;
 use App\Models\Exam;
 use App\Models\User;
-use App\Traits\ApiResponseTrait;
+use App\Services\ExamAttemptQueryService;
 use App\Services\ExamAttemptService;
+use App\Traits\ApiResponseTrait;
 
 class ExamAttemptController extends Controller
 {
     use ApiResponseTrait;
 
     protected ExamAttemptService $examAttemptService;
+    protected ExamAttemptQueryService $examAttemptQueryService;
 
-    public function __construct(ExamAttemptService $examAttemptService)
-    {
+    public function __construct(
+        ExamAttemptService $examAttemptService,
+        ExamAttemptQueryService $examAttemptQueryService
+    ) {
         $this->examAttemptService = $examAttemptService;
+        $this->examAttemptQueryService = $examAttemptQueryService;
     }
 
     /**
@@ -30,20 +35,20 @@ class ExamAttemptController extends Controller
      */
     public function index()
     {
-        return $this->success($this->examAttemptService->getAll());
+        return $this->success($this->examAttemptQueryService->getAll(request()->user()));
     }
 
     public function store(StoreExamAttemptRequest $request)
     {
         return $this->success(
-            $this->examAttemptService->add($request->validated())
+            $this->examAttemptService->add($request->validated(), $request->user())
         );
     }
 
     public function show(ExamAttempt $examAttempt)
     {
         return $this->success(
-            $this->examAttemptService->getOne($examAttempt)
+            $this->examAttemptQueryService->getOne($examAttempt, request()->user())
         );
     }
 
@@ -53,27 +58,21 @@ class ExamAttemptController extends Controller
     ) {
         return $this->examAttemptService->update(
             $request->validated(),
-            $examAttempt
+            $examAttempt,
+            $request->user()
         );
     }
 
     public function destroy(ExamAttempt $examAttempt)
     {
-        return $this->examAttemptService->delete($examAttempt);
+        return $this->examAttemptService->delete($examAttempt, request()->user());
     }
 
     public function startTest(StartTestRequest $request)
     {
-        try {
-            return $this->success(
-                $this->examAttemptService->startTest($request->validated())
-            );
-        } catch (\Throwable $e) {
-            return response()->json([
-                'message' => 'Có lỗi xảy ra',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        $data = $request->validated();
+        $data['student_id'] = (int) $request->user()->id;
+        return $this->success($this->examAttemptService->startTest($data, $request->user()));
     }
 
     public function updateStudentTest(
@@ -83,7 +82,8 @@ class ExamAttemptController extends Controller
         return $this->success(
             $this->examAttemptService->updateStudentTest(
                 $request->validated(),
-                $examAttempt
+                $examAttempt,
+                $request->user()
             )
         );
     }
@@ -95,7 +95,8 @@ class ExamAttemptController extends Controller
         return $this->success(
             $this->examAttemptService->submitTest(
                 $request->validated(),
-                $examAttempt->id
+                $examAttempt->id,
+                $request->user()
             )
         );
     }
@@ -103,14 +104,14 @@ class ExamAttemptController extends Controller
     public function reviewResult(ExamAttempt $examAttempt)
     {
         return $this->success(
-            $this->examAttemptService->reviewResult($examAttempt)
+            $this->examAttemptQueryService->reviewResult($examAttempt, request()->user())
         );
     }
 
     public function getOfStudent(User $user)
     {
         return $this->success(
-            $this->examAttemptService->getOfStudent($user)
+            $this->examAttemptQueryService->getOfStudent($user, request()->user())
         );
     }
 
@@ -118,10 +119,12 @@ class ExamAttemptController extends Controller
         CourseGroup $courseGroup,
         User $user
     ) {
+        $viewer = request()->user();
         return $this->success(
-            $this->examAttemptService->getByCourseGroupAndStudent(
+            $this->examAttemptQueryService->getByCourseGroupAndStudent(
                 $courseGroup,
-                $user
+                $user,
+                $viewer
             )
         );
     }
@@ -130,10 +133,12 @@ class ExamAttemptController extends Controller
         CourseGroup $courseGroup,
         Exam $exam
     ) {
+        $viewer = request()->user();
         return $this->success(
-            $this->examAttemptService->getOfCourseGroupAndExam(
+            $this->examAttemptQueryService->getOfCourseGroupAndExam(
                 $courseGroup,
-                $exam
+                $exam,
+                $viewer
             )
         );
     }

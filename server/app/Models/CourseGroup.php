@@ -41,7 +41,8 @@ class CourseGroup extends Model
 
     public function exams()
     {
-        return $this->belongsToMany(Exam::class, 'exam_assignments', 'course_group_id', 'exam_id');
+        return $this->belongsToMany(Exam::class, 'exam_assignments', 'course_group_id', 'exam_id')
+            ->withPivot(['start_time', 'end_time']);
     }
 
     public function students()
@@ -57,5 +58,10 @@ class CourseGroup extends Model
     public function notifications()
     {
         return $this->belongsToMany(Notification::class, 'course_group_notifications', 'course_group_id', 'notification_id');
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(CourseGroupMaterial::class, 'course_group_id');
     }
 }

@@ -19,7 +19,7 @@ export const ChapterMultiSelect = () => {
 
   const selectedItems = MOCK_CHAPTERS.filter((c) => selectedIds.includes(c.id));
 
-  // Logic: Không hiện những cái đã chọn và lọc theo input
+  // Hide selected items and filter the remaining items by the input.
   const filteredOptions = MOCK_CHAPTERS.filter(
     (c) =>
       !selectedIds.includes(c.id) &&
@@ -50,7 +50,7 @@ export const ChapterMultiSelect = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto overflow-x-hidden rounded-md border border-other-outlined-border bg-background-body-background shadow-xl">
-          {/* Những item ĐÃ CHỌN (hiển thị màu xám như trong ảnh) */}
+          {/* Selected items, displayed in gray. */}
           {selectedItems.map((item) => (
             <li
               key={item.id}
@@ -60,7 +60,7 @@ export const ChapterMultiSelect = () => {
             </li>
           ))}
 
-          {/* Những item CHƯA CHỌN */}
+          {/* Unselected items. */}
           {filteredOptions.map((option) => (
             <li
               key={option.id}
@@ -80,7 +80,7 @@ export const ChapterMultiSelect = () => {
         </ul>
       )}
 
-      {/* Overlay để đóng khi click ra ngoài */}
+      {/* Overlay that closes the menu when clicked outside. */}
       {isOpen && (
         <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
       )}

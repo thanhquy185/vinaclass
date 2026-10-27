@@ -4,11 +4,11 @@ use App\Http\Controllers\ExamAttemptController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/exam-attempts', [ExamAttemptController::class, 'index']);
-Route::get('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'show']);
-Route::post('/exam-attempts', [ExamAttemptController::class, 'store']);
-Route::put('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'update']);
-Route::delete('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'destroy']);
+Route::get('/exam-attempts', [ExamAttemptController::class, 'index'])->middleware('permission:view_de_thi');
+Route::get('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'show'])->middleware('permission:view_de_thi');
+Route::post('/exam-attempts', [ExamAttemptController::class, 'store'])->middleware('permission:create_de_thi');
+Route::put('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'update'])->middleware('permission:update_de_thi');
+Route::delete('/exam-attempts/{examAttempt}', [ExamAttemptController::class, 'destroy'])->middleware('permission:delete_de_thi');
 
 Route::post('/exam-attempts/start-test', [ExamAttemptController::class, 'startTest']);
 Route::put(

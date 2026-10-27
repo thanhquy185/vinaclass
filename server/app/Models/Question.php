@@ -14,10 +14,10 @@ class Question extends Model
     protected $fillable = [
         "subject_id",
         "chapter_id",
-        "question_text",
+        "question_content",
         "difficulty_id",
         "image_url",
-        "explanation",
+        "answer_explanation",
         "default_score",
         "creator_id",
         "usage_count",
@@ -62,5 +62,10 @@ class Question extends Model
     public function answerOptions()
     {
         return $this->hasMany(AnswerOption::class, 'question_id');
+    }
+
+    public function answers()
+    {
+        return $this->answerOptions();
     }
 }

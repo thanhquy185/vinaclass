@@ -14,9 +14,9 @@ class Subject extends Model
     protected $fillable = [
         "subject_code",
         "subject_name",
-        "credits",
+        "credit_count",
         "theory_hours",
-        "practical_hours",
+        "practice_hours",
         "is_deleted"
     ];
 

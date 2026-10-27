@@ -9,17 +9,17 @@ const svgRawFiles = import.meta.glob("./icons/*.svg", {
   import: "default",
 });
 
-// Tự động thay màu cứng (black, #000, #000000) → currentColor
-// Cho phép điều chỉnh màu icon qua className="text-{color}" hoặc style={{ color }}
+// Automatically replace hard-coded black values (black, #000, #000000) with currentColor.
+// Icon colors can be customized with className="text-{color}" or style={{ color }}.
 function normalizeColors(svg: string): string {
   return (
     svg
-      // Xóa opacity khi đi kèm với màu đen
+      // Remove opacity when it is paired with black.
       .replace(
         /(fill|stroke)="(black|#000|#000000)"\s+\1-opacity="[^"]*"/gi,
         '$1="currentColor"'
       )
-      // Chuyển màu đen thành currentColor
+      // Replace black with currentColor.
       .replace(/(fill|stroke)="(black|#000|#000000)"/gi, '$1="currentColor"')
   );
 }
@@ -47,13 +47,13 @@ function createSvgComponent(rawSvg: string): SvgComponent {
 
 export const Icons: Record<string, SvgComponent> = {};
 
-// Chuyển đổi đường dẫn file thành tên key (ví dụ: ./icons/academic-cap.svg → academicCap)
+// Convert a file path into a key (for example, ./icons/academic-cap.svg becomes academicCap).
 Object.entries(svgRawFiles).forEach(([path, component]) => {
   const name = path
     .split("/")
     .pop()
     ?.replace(".svg", "")
-    .replace(/-([a-z])/g, (_, c: string) => c.toUpperCase()); // kebab-case → camelCase
+    .replace(/-([a-z])/g, (_, c: string) => c.toUpperCase()); // Convert kebab-case to camelCase.
 
   if (name && typeof component === "string") {
     Icons[name] = createSvgComponent(component);

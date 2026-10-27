@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\FunctionModel;
+use App\Policies\RolePolicy;
+use App\Services\IdentityV2\IdentityV2Definitions;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Schema;
 
 class FunctionController extends Controller
 {
     use ApiResponseTrait;
+
+    public function __construct(private RolePolicy $rolePolicy)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,33 @@ class FunctionController extends Controller
      */
     public function index()
     {
-        $data = FunctionModel::all();
+        abort_unless($this->rolePolicy->viewAny(request()->user()), 403);
+
+        $query = FunctionModel::query()->where('is_deleted', false);
+
+        if (Schema::hasColumn('functions', 'status')) {
+            $query->where('status', true);
+        }
+
+        if (Schema::hasTable('permissions')) {
+            $query->whereHas('permissions', function ($permissionQuery): void {
+                if (Schema::hasColumn('permissions', 'status')) {
+                    $permissionQuery->where('status', true);
+                }
+            });
+        }
+
+        if (Schema::hasColumn('functions', 'sort_order')) {
+            $query->orderBy('sort_order');
+        }
+
+        $data = $query->orderBy('id')->get()->each(function (FunctionModel $function): void {
+            $function->setAttribute(
+                'action_codes',
+                IdentityV2Definitions::FUNCTION_ACTIONS[$function->function_name] ?? []
+            );
+        });
+
         return $this->success($data);
     }
 

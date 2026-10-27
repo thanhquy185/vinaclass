@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUpload } from "@/hooks/useUpload";
+import { useUpload } from "@/shared/uploads/useUpload";
 import { Icon } from "@/components/atomic/atoms";
 
 const TestUpload = () => {
@@ -10,18 +10,17 @@ const TestUpload = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 1. Tạo preview tạm thời bằng Blob (để hiện ảnh ngay lập tức trên máy khách)
+    // 1. Create a temporary Blob preview so the image appears immediately in the browser.
     const localPreview = URL.createObjectURL(file);
     setPreviewUrl(localPreview);
 
     try {
-      // 2. Gọi hàm upload từ Hook (đẩy lên Cloudinary)
+      // 2. Call the upload hook to send the image to Cloudinary.
       const remoteUrl = await upload(file);
 
       if (remoteUrl) {
-        // 3. Cập nhật preview bằng link thật từ Cloudinary
+        // 3. Replace the preview with the Cloudinary URL.
         setPreviewUrl(remoteUrl);
-        console.log("Link ảnh từ Cloudinary:", remoteUrl);
         alert("Upload thành công!");
       }
     } catch (err) {
@@ -37,7 +36,7 @@ const TestUpload = () => {
     <div className="mx-auto max-w-md space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-md">
       <h2 className="text-xl font-bold text-gray-800">Kiểm tra Upload Ảnh</h2>
 
-      {/* Khung hiển thị ảnh */}
+      {/* Image preview container. */}
       <div className="relative flex h-64 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
         {previewUrl ? (
           <>
@@ -73,7 +72,7 @@ const TestUpload = () => {
         )}
       </div>
 
-      {/* Input chọn file */}
+      {/* File input. */}
       <div className="flex flex-col gap-3">
         <label className="block text-sm font-medium text-gray-700">
           Chọn ảnh từ máy tính:

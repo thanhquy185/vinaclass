@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\BusinessException;
 use App\Helpers\XlsxExportHelper;
-use App\Traits\ApiResponseTrait;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exceptions\NotFoundException;
+use App\Http\Requests\AddCourseGroupStudentRequest;
+use App\Http\Requests\ImportCourseGroupRosterRequest;
 use App\Http\Requests\JoinGroupRequest;
+use App\Http\Requests\RemoveCourseGroupStudentRequest;
 use App\Http\Requests\StoreCourseGroupRequest;
 use App\Http\Requests\UpdateCourseGroupRequest;
+use App\Http\Resources\CourseGroupResource;
+use App\Http\Resources\UserResource;
 use App\Models\CourseGroup;
 use App\Models\User;
+use App\Services\CourseGroupInvitationService;
+use App\Services\CourseGroupMembershipService;
+use App\Services\CourseGroupQueryService;
+use App\Services\CourseGroupRosterQueryService;
+use App\Services\CourseGroupRosterService;
 use App\Services\CourseGroupService;
+use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CourseGroupController extends Controller
@@ -21,11 +28,28 @@ class CourseGroupController extends Controller
     use ApiResponseTrait;
 
     private CourseGroupService $courseGroupService;
+    private CourseGroupQueryService $courseGroupQueryService;
+    private CourseGroupRosterService $courseGroupRosterService;
+    private CourseGroupRosterQueryService $courseGroupRosterQueryService;
+    private CourseGroupMembershipService $courseGroupMembershipService;
+    private CourseGroupInvitationService $courseGroupInvitationService;
     private XlsxExportHelper $xlsxExportHelper;
 
-    public function __construct(CourseGroupService $courseGroupService, XlsxExportHelper $xlsxExportHelper)
-    {
+    public function __construct(
+        CourseGroupService $courseGroupService,
+        CourseGroupQueryService $courseGroupQueryService,
+        CourseGroupRosterService $courseGroupRosterService,
+        CourseGroupRosterQueryService $courseGroupRosterQueryService,
+        CourseGroupMembershipService $courseGroupMembershipService,
+        CourseGroupInvitationService $courseGroupInvitationService,
+        XlsxExportHelper $xlsxExportHelper
+    ) {
         $this->courseGroupService = $courseGroupService;
+        $this->courseGroupQueryService = $courseGroupQueryService;
+        $this->courseGroupRosterService = $courseGroupRosterService;
+        $this->courseGroupRosterQueryService = $courseGroupRosterQueryService;
+        $this->courseGroupMembershipService = $courseGroupMembershipService;
+        $this->courseGroupInvitationService = $courseGroupInvitationService;
         $this->xlsxExportHelper = $xlsxExportHelper;
     }
 
@@ -34,8 +58,11 @@ class CourseGroupController extends Controller
      */
     public function index()
     {
-        $data = $this->courseGroupService->getAll();
-        return $this->success($data);
+        $data = $this->courseGroupQueryService->getAll(request()->user());
+        if (request()->user()->hasRoleCode('STUDENT')) {
+            $data->each(fn ($group) => $group->makeHidden('join_code'));
+        }
+        return $this->success(CourseGroupResource::collection($data)->resolve(request()));
     }
 
     /**
@@ -43,7 +70,8 @@ class CourseGroupController extends Controller
      */
     public function store(StoreCourseGroupRequest $request)
     {
-        $data = $this->courseGroupService->add($request->validated());
+        $payload = $request->validated();
+        $data = $this->courseGroupService->add($payload, $request->user());
         return $this->created($data);
     }
 
@@ -52,8 +80,8 @@ class CourseGroupController extends Controller
      */
     public function show(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->getOne($courseGroup);
-        // $data = $courseGroup;
+        $data = $this->courseGroupQueryService->getOne($courseGroup, request()->user());
+        if (request()->user()->hasRoleCode('STUDENT')) $data->makeHidden('join_code');
         return $this->success($data);
     }
 
@@ -62,7 +90,9 @@ class CourseGroupController extends Controller
      */
     public function update(UpdateCourseGroupRequest $request, CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->update($request->validated(), $courseGroup);
+        $actor = $request->user();
+        $this->courseGroupService->assertCanManage($courseGroup, $actor, 'update');
+        $data = $this->courseGroupService->update($request->validated(), $courseGroup, $actor);
         return $this->success($data);
     }
 
@@ -71,80 +101,116 @@ class CourseGroupController extends Controller
      */
     public function destroy(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->delete($courseGroup);
+        $actor = request()->user();
+        $this->courseGroupService->assertCanManage($courseGroup, $actor, 'delete');
+        $data = $this->courseGroupService->delete($courseGroup, $actor);
         return $this->success($data);
     }
 
     public function hide(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->hide($courseGroup);
+        $actor = request()->user();
+        $this->courseGroupService->assertCanManage($courseGroup, $actor, 'update');
+        $data = $this->courseGroupService->hide($courseGroup, $actor);
         return $this->success($data);
     }
 
     public function getWithTeacherAndSubject(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->getWithTeacherAndSubject($courseGroup);
-        return $this->success($data);
+        $data = $this->courseGroupQueryService->getWithTeacherAndSubject(
+            $courseGroup,
+            request()->user()
+        );
+        if (request()->user()->hasRoleCode('STUDENT')) {
+            $data->makeHidden('join_code');
+        }
+        return $this->success(CourseGroupResource::make($data)->resolve(request()));
     }
 
     public function getWithExams(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->getWithExams($courseGroup);
+        $data = $this->courseGroupQueryService->getWithExams($courseGroup, request()->user());
+        if (request()->user()->hasRoleCode('STUDENT')) $data->makeHidden('join_code');
         return $this->success($data);
     }
 
     public function joinGroup(JoinGroupRequest $request)
     {
-        $data = $this->courseGroupService->joinGroup($request->validated());
-        return $this->success($data, 201);
+        $data = $this->courseGroupInvitationService->joinGroup(
+            $request->validated(),
+            $request->user()
+        );
+        return $this->created($data);
     }
 
     public function getOfStudent(User $user)
     {
-        $data = $this->courseGroupService->getOfStudent($user);
-        return $this->success($data);
+        $actor = request()->user();
+        $data = $this->courseGroupQueryService->getOfStudent($user, $actor);
+        return $this->success(UserResource::make($data)->resolve(request()));
     }
 
     public function getStudentList(CourseGroup $courseGroup, Request $request)
     {
+        $actor = $request->user();
         $keyword = $request->query('keyword');
-        $data = $this->courseGroupService->getStudentList($courseGroup, $keyword);
+        $data = $this->courseGroupRosterQueryService->getStudentList(
+            $courseGroup,
+            $keyword,
+            $actor
+        );
+        $data['students'] = UserResource::collection($data['students'])->resolve($request);
         return $this->success($data);
     }
 
-    public function addStudentToGroup(Request $request, CourseGroup $courseGroup)
+    public function addStudentToGroup(
+        AddCourseGroupStudentRequest $request,
+        CourseGroup $courseGroup
+    )
     {
-        $username = $request->input('username');
-        if (empty($username)) {
-            throw new BusinessException('Mã sinh viên không hợp lệ');
-        }
-        $data = $this->courseGroupService->addStudentToGroup($username, $courseGroup);
-        return $this->success($data, 201);
+        $actor = $request->user();
+        $data = $this->courseGroupMembershipService->addStudentToGroup(
+            $request->validated('username'),
+            $courseGroup,
+            $actor
+        );
+        return $this->created($data);
     }
 
     public function resetInviteCode(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->resetInviteCode($courseGroup);
+        $actor = request()->user();
+        $this->courseGroupService->assertCanManage($courseGroup, $actor, 'update');
+        $data = $this->courseGroupInvitationService->resetInviteCode($courseGroup, $actor);
         return $this->success($data);
     }
 
     /**
-     * Hiển thị danh sách học phần / nhóm lớp được phân công giảng dạy của một giảng viên.
+     * List course groups assigned to a teacher.
      *
-     * Query params:
-     *   - includeHidden (bool, default false): có lấy cả nhóm đang ẩn không
+     * Query parameters:
+     * - includeHidden (bool, default false): include hidden groups.
      */
     public function getAssignedTeaching(User $user, Request $request)
     {
         $includeHidden = filter_var($request->query('includeHidden', false), FILTER_VALIDATE_BOOLEAN);
-        $data = $this->courseGroupService->getAssignedTeachingByTeacherId($user->id, $includeHidden);
+        $data = $this->courseGroupQueryService->getAssignedTeachingByTeacherId(
+            $user->id,
+            $request->user(),
+            $includeHidden
+        );
         return $this->success($data);
     }
 
     public function exportStudents(CourseGroup $courseGroup, Request $request): BinaryFileResponse
     {
+        $actor = $request->user();
         $keyword = $request->query('keyword');
-        $export = $this->courseGroupService->getStudentsExport($courseGroup, $keyword);
+        $export = $this->courseGroupRosterQueryService->getStudentsExport(
+            $courseGroup,
+            $keyword,
+            $actor
+        );
 
         return $this->xlsxExportHelper->download(
             $export['fileNameAttributes'],
@@ -153,55 +219,61 @@ class CourseGroupController extends Controller
         );
     }
 
-    public function importStudents(CourseGroup $courseGroup, Request $request)
+    public function importStudents(
+        ImportCourseGroupRosterRequest $request,
+        CourseGroup $courseGroup
+    )
     {
-        $request->validate([
-            'file' => ['required', 'file', 'mimes:xlsx,xls,csv'],
-        ]);
-        $file = $request->file('file');
-
-        $sheets = Excel::toArray(null, $file);
-        if (empty($sheets) || empty($sheets[0])) {
-            throw new NotFoundException('Import file is empty');
-        }
-
-        $rows = $sheets[0];
-
-        $firstRow = $rows[0] ?? null;
-        if ($firstRow && count($firstRow) >= 2 && in_array(trim((string)$firstRow[1]), ['MSSV', 'mssv', 'Mã sinh viên'])) {
-            array_shift($rows);
-        }
-
-        $result = $this->courseGroupService->importStudentsToGroup($courseGroup, $rows);
+        $actor = $request->user();
+        $result = $this->courseGroupRosterService->importStudentsFromFile(
+            $courseGroup,
+            $request->validated('file'),
+            $actor
+        );
         return $this->success($result);
     }
 
-    public function removeStudentFromGroup(CourseGroup $courseGroup, Request $request)
+    public function removeStudentFromGroup(
+        RemoveCourseGroupStudentRequest $request,
+        CourseGroup $courseGroup
+    )
     {
-        $studentId = $request->input('student_id');
-        if (!is_numeric($studentId)) {
-            throw new BusinessException('ID sinh viên không hợp lệ');
-        }
-
-        $data = $this->courseGroupService->removeStudentFromGroup((int)$studentId, $courseGroup);
+        $actor = $request->user();
+        $data = $this->courseGroupMembershipService->removeStudentFromGroup(
+            (int) $request->validated('student_id'),
+            $courseGroup,
+            $actor
+        );
         return $this->success($data);
     }
 
     public function getWithNotifications(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->getWithNotifications($courseGroup);
-        return $this->success($data);
+        $data = $this->courseGroupQueryService->getWithNotifications(
+            $courseGroup,
+            request()->user()
+        );
+        if (request()->user()->hasRoleCode('STUDENT')) {
+            $data->makeHidden('join_code');
+        }
+        return $this->success(CourseGroupResource::make($data)->resolve(request()));
     }
 
     public function getForStudentDetail(CourseGroup $courseGroup)
     {
-        $data = $this->courseGroupService->getForStudentDetail($courseGroup);
-        return $this->success($data);
+        $data = $this->courseGroupQueryService->getForStudentDetail(
+            $courseGroup,
+            request()->user()
+        );
+        if (request()->user()->hasRoleCode('STUDENT')) {
+            $data->makeHidden('join_code');
+        }
+        return $this->success(CourseGroupResource::make($data)->resolve(request()));
     }
 
     public function getOfTeacher(User $user)
     {
-        $data = $this->courseGroupService->getOfTeacher($user);
+        $data = $this->courseGroupQueryService->getOfTeacher($user, request()->user());
         return $this->success($data);
     }
 }

@@ -40,6 +40,8 @@ class ExamConfiguration extends Model
         'show_detail_results' => 'boolean',
         'is_limit_switch_tab' => 'boolean',
         'tab_switch_limit' => 'integer',
+        'limit_questions_per_page' => 'integer',
+        'allow_back_last_question' => 'boolean',
     ];
 
     public function exam(): BelongsTo

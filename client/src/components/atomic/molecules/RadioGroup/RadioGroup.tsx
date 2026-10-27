@@ -1,4 +1,4 @@
-import { RadioButton } from "@/components/atomic/atoms/RadioButton/RadioButton";
+import { RadioButton } from "@/shared/components/ui";
 
 interface Option {
   label: string;

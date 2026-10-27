@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\ExamPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreExamConfigurationRequest extends FormRequest
@@ -11,9 +13,11 @@ class StoreExamConfigurationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->create($actor);
     }
 
     /**
@@ -25,18 +29,18 @@ class StoreExamConfigurationRequest extends FormRequest
     {
         return [
             'exam_id' => ['required', 'integer', 'exists:exams,id', 'unique:exam_configurations,exam_id'],
-            'has_monitoring' => ['sometimes', 'nullable', 'boolean'],
-            'limit_questions_per_page' => ['sometimes', 'nullable', 'integer'],
-            'allow_back_last_question' => ['sometimes', 'nullable', 'boolean'],
-            'allow_copy' => ['sometimes', 'nullable', 'boolean'],
-            'allow_print' => ['sometimes', 'nullable', 'boolean'],
-            'is_enable_resume' => ['sometimes', 'nullable', 'boolean'],
-            'shuffle_questions' => ['sometimes', 'nullable', 'boolean'],
-            'shuffle_answers' => ['sometimes', 'nullable', 'boolean'],
-            'show_score' => ['sometimes', 'nullable', 'boolean'],
-            'show_detail_results' => ['sometimes', 'nullable', 'boolean'],
-            'is_limit_switch_tab' => ['sometimes', 'nullable', 'boolean'],
-            'tab_switch_limit' => ['sometimes', 'nullable', 'integer', 'min:0'],
+            'has_monitoring' => ['sometimes', 'boolean'],
+            'limit_questions_per_page' => ['sometimes', 'integer', 'min:-1', 'not_in:0'],
+            'allow_back_last_question' => ['sometimes', 'boolean'],
+            'allow_copy' => ['sometimes', 'boolean'],
+            'allow_print' => ['sometimes', 'boolean'],
+            'is_enable_resume' => ['sometimes', 'boolean'],
+            'shuffle_questions' => ['sometimes', 'boolean'],
+            'shuffle_answers' => ['sometimes', 'boolean'],
+            'show_score' => ['sometimes', 'boolean'],
+            'show_detail_results' => ['sometimes', 'boolean'],
+            'is_limit_switch_tab' => ['sometimes', 'boolean'],
+            'tab_switch_limit' => ['sometimes', 'integer', 'min:0'],
             'message_on_warning' => ['sometimes', 'nullable', 'string'],
         ];
     }
@@ -51,6 +55,8 @@ class StoreExamConfigurationRequest extends FormRequest
 
             'has_monitoring.boolean' => ':attribute phải là kiểu đúng/sai',
             'limit_questions_per_page.integer' => ':attribute phải là số nguyên',
+            'limit_questions_per_page.min' => ':attribute phải là -1 hoặc số nguyên dương',
+            'limit_questions_per_page.not_in' => ':attribute không được bằng 0',
             'allow_back_last_question.boolean' => ':attribute phải là kiểu đúng/sai',
             'allow_copy.boolean' => ':attribute phải là kiểu đúng/sai',
             'allow_print.boolean' => ':attribute phải là kiểu đúng/sai',

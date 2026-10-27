@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ExamConfiguration;
+use App\Models\User;
+use App\Policies\ExamPolicy;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateExamConfigurationRequest extends FormRequest
 {
@@ -12,9 +14,18 @@ class UpdateExamConfigurationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $configuration = $this->route('examConfiguration');
+
+        if (!$actor instanceof User || !$configuration instanceof ExamConfiguration) {
+            return false;
+        }
+
+        $exam = $configuration->loadMissing('exam')->exam;
+
+        return $exam !== null && $policy->manage($actor, $exam, 'update');
     }
 
     /**
@@ -24,28 +35,19 @@ class UpdateExamConfigurationRequest extends FormRequest
      */
     public function rules()
     {
-        $routeValue = $this->route('examConfiguration');
-        $examConfigurationId = is_object($routeValue) ? $routeValue->getKey() : $routeValue;
-
         return [
-            'exam_id' => [
-                'sometimes',
-                'integer',
-                'exists:exams,id',
-                Rule::unique('exam_configurations', 'exam_id')->ignore($examConfigurationId),
-            ],
-            'has_monitoring' => ['sometimes', 'nullable', 'boolean'],
-            'limit_questions_per_page' => ['sometimes', 'nullable', 'integer'],
-            'allow_back_last_question' => ['sometimes', 'nullable', 'boolean'],
-            'allow_copy' => ['sometimes', 'nullable', 'boolean'],
-            'allow_print' => ['sometimes', 'nullable', 'boolean'],
-            'is_enable_resume' => ['sometimes', 'nullable', 'boolean'],
-            'shuffle_questions' => ['sometimes', 'nullable', 'boolean'],
-            'shuffle_answers' => ['sometimes', 'nullable', 'boolean'],
-            'show_score' => ['sometimes', 'nullable', 'boolean'],
-            'show_detail_results' => ['sometimes', 'nullable', 'boolean'],
-            'is_limit_switch_tab' => ['sometimes', 'nullable', 'boolean'],
-            'tab_switch_limit' => ['sometimes', 'nullable', 'integer', 'min:0'],
+            'has_monitoring' => ['sometimes', 'boolean'],
+            'limit_questions_per_page' => ['sometimes', 'integer', 'min:-1', 'not_in:0'],
+            'allow_back_last_question' => ['sometimes', 'boolean'],
+            'allow_copy' => ['sometimes', 'boolean'],
+            'allow_print' => ['sometimes', 'boolean'],
+            'is_enable_resume' => ['sometimes', 'boolean'],
+            'shuffle_questions' => ['sometimes', 'boolean'],
+            'shuffle_answers' => ['sometimes', 'boolean'],
+            'show_score' => ['sometimes', 'boolean'],
+            'show_detail_results' => ['sometimes', 'boolean'],
+            'is_limit_switch_tab' => ['sometimes', 'boolean'],
+            'tab_switch_limit' => ['sometimes', 'integer', 'min:0'],
             'message_on_warning' => ['sometimes', 'nullable', 'string'],
         ];
     }
@@ -53,12 +55,10 @@ class UpdateExamConfigurationRequest extends FormRequest
     public function messages()
     {
         return [
-            'exam_id.integer' => ':attribute phải là số nguyên',
-            'exam_id.exists' => ':attribute không tồn tại trong hệ thống',
-            'exam_id.unique' => ':attribute đã được cấu hình cho đề thi khác',
-
             'has_monitoring.boolean' => ':attribute phải là kiểu đúng/sai',
             'limit_questions_per_page.integer' => ':attribute phải là số nguyên',
+            'limit_questions_per_page.min' => ':attribute phải là -1 hoặc số nguyên dương',
+            'limit_questions_per_page.not_in' => ':attribute không được bằng 0',
             'allow_back_last_question.boolean' => ':attribute phải là kiểu đúng/sai',
             'allow_copy.boolean' => ':attribute phải là kiểu đúng/sai',
             'allow_print.boolean' => ':attribute phải là kiểu đúng/sai',
@@ -79,7 +79,6 @@ class UpdateExamConfigurationRequest extends FormRequest
     public function attributes()
     {
         return [
-            'exam_id' => 'Mã đề thi',
             'has_monitoring' => 'Giám sát thi',
             'limit_questions_per_page' => 'Số câu hỏi mỗi trang',
             'allow_back_last_question' => 'Cho phép quay lại câu trước',

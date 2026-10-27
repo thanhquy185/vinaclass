@@ -4,67 +4,75 @@ namespace App\Services;
 
 use App\Exceptions\BusinessException;
 use App\Models\Chapter;
+use App\Models\ExamAttemptAnswer;
 use App\Models\Question;
+use App\Models\Subject;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+use App\Policies\QuestionPolicy;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class QuestionService
 {
-    public function getAll(array $filters = [])
-    {
-        $query = Question::query()
-            ->with(['subject', 'chapter', 'difficulty', 'creator', 'answerOptions'])
-            ->withCount('exams')
-            ->where('is_deleted', false)
-            ->where('status', 'public');
-
-        $this->applyFilters($query, $filters);
-
-        return $query
-            ->orderByDesc('created_at')
-            ->get();
+    public function __construct(
+        private QuestionPolicy $questionPolicy,
+        private QuestionQueryService $questionQueryService,
+        private QuestionAnswerSynchronizer $questionAnswerSynchronizer
+    ) {
     }
 
-    public function getWithPrivate(int $userId)
+    public function add(array $data, User $actor)
     {
-        return Question::query()
-            ->with(['subject', 'chapter', 'difficulty', 'creator', 'answerOptions'])
-            ->withCount('exams')
-            ->where('is_deleted', false)
-            ->where('status', 'private')
-            ->where('creator_id', $userId)
-            ->orderByDesc('created_at')
-            ->get();
-    }
+        $actorId = (int) $actor->id;
 
-    public function getOne(Question $question)
-    {
-        return $question
-            ->load(['answerOptions', 'subject', 'chapter', 'difficulty', 'creator'])
-            ->loadCount('exams');
-    }
+        return DB::transaction(function () use ($data, $actorId) {
+            $actor = $this->lockActor($actorId);
+            $answerOptions = Arr::pull($data, 'answer_options', []);
 
-    public function add(array $data)
-    {
-        return DB::transaction(function () use ($data) {
-            $answerOptions = Arr::pull($data, 'answerOptions', []);
-
+            abort_unless($this->questionPolicy->create($actor), 403);
+            abort_unless(
+                $this->questionPolicy->manageSubject($actor, (int) $data['subject_id']),
+                403
+            );
+            $this->questionAnswerSynchronizer->validateOptions($answerOptions);
             $this->validateReferenceConsistency($data);
+            $data['creator_id'] = $actor->id;
+            $data['status'] = 'private';
+            $data['is_deleted'] = false;
 
             $question = Question::create($data);
 
             $question->answerOptions()->createMany($answerOptions);
 
-            return $this->getOne($question);
+            return $this->questionQueryService->loadQuestionDetails($question);
         });
     }
 
-    public function update(array $data, Question $question)
+    public function update(array $data, Question $question, User $actor)
     {
-        return DB::transaction(function () use ($data, $question) {
-            $answerOptions = Arr::pull($data, 'answerOptions', null);
+        $questionId = (int) $question->id;
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($data, $questionId, $actorId) {
+            $actor = $this->lockActor($actorId);
+            // Attempt creation locks the same question rows before recording its snapshot references.
+            $question = Question::query()->lockForUpdate()->findOrFail($questionId);
+            abort_unless(
+                $this->questionPolicy->manage($actor, $question, 'update'),
+                403
+            );
+            if (array_key_exists('status', $data)) {
+                throw new BusinessException('Hãy dùng thao tác trạng thái riêng để chuyển nơi chứa câu hỏi.', 422);
+            }
+
+            $subjectId = (int) ($data['subject_id'] ?? $question->subject_id);
+            abort_unless($this->questionPolicy->manageSubject($actor, $subjectId), 403);
+
+            if (ExamAttemptAnswer::query()->where('question_id', $question->id)->exists()) {
+                throw new BusinessException('Không thể sửa câu hỏi đã được sử dụng trong lượt thi', 409);
+            }
+
+            $answerOptions = Arr::pull($data, 'answer_options', null);
 
             $mergedData = array_merge($question->only(['subject_id', 'chapter_id']), $data);
             $this->validateReferenceConsistency($mergedData);
@@ -74,32 +82,83 @@ class QuestionService
             }
 
             if (is_array($answerOptions)) {
-                $this->syncAnswers($question, $answerOptions);
+                $this->questionAnswerSynchronizer->sync($question, $answerOptions);
             }
 
-            return $this->getOne($question->refresh());
+            return $this->questionQueryService->loadQuestionDetails($question->refresh());
         });
     }
 
-    public function delete(Question $question)
+    public function delete(Question $question, User $actor)
     {
-        $question->update(['is_deleted' => true]);
-        return true;
+        $questionId = (int) $question->id;
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($questionId, $actorId): bool {
+            $actor = $this->lockActor($actorId);
+            $question = Question::query()->lockForUpdate()->findOrFail($questionId);
+            abort_unless(
+                $this->questionPolicy->manage($actor, $question, 'delete'),
+                403
+            );
+
+            if ($question->status !== 'archive') {
+                throw new BusinessException('Chỉ có thể xoá câu hỏi sau khi đã lưu trữ.', 409);
+            }
+
+            return (bool) $question->update(['is_deleted' => true]);
+        });
     }
 
-    public function changeStatus(Question $question, string $status)
+    public function changeStatus(Question $question, string $status, User $actor)
     {
-        $question->update(['status' => $status]);
-        return $this->getOne($question->refresh());
+        $questionId = (int) $question->id;
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($questionId, $status, $actorId) {
+            $actor = $this->lockActor($actorId);
+            $question = Question::query()->lockForUpdate()->findOrFail($questionId);
+            abort_unless($this->questionPolicy->changeStatus($actor, $question, $status), 403);
+
+            $allowedTransitions = [
+                'private' => ['public', 'archive'],
+                'archive' => ['private'],
+                'public' => ['private'],
+            ];
+            if (
+                $question->status !== $status
+                && !in_array($status, $allowedTransitions[$question->status] ?? [], true)
+            ) {
+                throw new BusinessException('Không thể chuyển câu hỏi từ trạng thái hiện tại sang trạng thái đã chọn.', 409);
+            }
+
+            $question->update(['status' => $status]);
+
+            return $this->questionQueryService->loadQuestionDetails($question->refresh());
+        });
     }
 
-    public function copyFromPublic(Question $source, int $creatorId)
+    public function copyFromPublic(Question $source, User $actor)
     {
-        if ($source->status !== 'public') {
-            throw new BusinessException('Can only copy from public questions', 422);
-        }
+        $sourceId = (int) $source->id;
+        $actorId = (int) $actor->id;
 
-        return DB::transaction(function () use ($source, $creatorId) {
+        return DB::transaction(function () use ($sourceId, $actorId) {
+            $actor = $this->lockActor($actorId);
+            $source = Question::query()->lockForUpdate()->findOrFail($sourceId);
+            abort_unless($this->questionPolicy->create($actor), 403);
+            abort_unless(
+                $this->questionPolicy->manageSubject($actor, (int) $source->subject_id),
+                403
+            );
+            abort_unless(
+                $this->questionPolicy->view($actor, $source),
+                403
+            );
+            if ($source->is_deleted || $source->status !== 'public') {
+                throw new BusinessException('Can only copy from public questions', 422);
+            }
+
             $source->load('answerOptions');
             $source->increment('usage_count');
 
@@ -111,7 +170,7 @@ class QuestionService
                 'image_url'          => $source->image_url,
                 'answer_explanation' => $source->answer_explanation,
                 'default_score'      => $source->default_score,
-                'creator_id'         => $creatorId,
+                'creator_id'         => $actor->id,
                 'usage_count'        => 0,
                 'status'             => 'private',
                 'is_deleted'         => false,
@@ -128,133 +187,36 @@ class QuestionService
 
             $newQuestion->answerOptions()->createMany($answerOptions);
 
-            return $this->getOne($newQuestion);
+            return $this->questionQueryService->loadQuestionDetails($newQuestion);
         });
-    }
-
-    public function getById(int $id)
-    {
-        $question = Question::findOrFail($id);
-        return $question;
-    }
-
-    public function getAnswers(int $id)
-    {
-        $question = Question::findOrFail($id);
-        $question->load('answerOptions');
-        return $question->answerOptions;
-    }
-
-    private function applyFilters(Builder $query, array $filters): void
-    {
-        if (!empty($filters['subject_id'])) {
-            $query->where('subject_id', $filters['subject_id']);
-        }
-
-        if (!empty($filters['difficulty_id'])) {
-            $query->where('difficulty_id', $filters['difficulty_id']);
-        }
-
-        if (!empty($filters['chapter_id'])) {
-            $query->where('chapter_id', $filters['chapter_id']);
-        }
-
-        if (!empty($filters['creator_id'])) {
-            $query->where('creator_id', $filters['creator_id']);
-        }
-
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
-
-        if (!empty($filters['keyword'])) {
-            $keyword = trim((string) $filters['keyword']);
-            $query->where(function (Builder $inner) use ($keyword) {
-                $inner->where('question_content', 'like', "%{$keyword}%")
-                    ->orWhere('answer_explanation', 'like', "%{$keyword}%")
-                    ->orWhereHas('answerOptions', function (Builder $answerQuery) use ($keyword) {
-                        $answerQuery->where('option_content', 'like', "%{$keyword}%");
-                    });
-            });
-        }
-
-        if (!empty($filters['bank'])) {
-            if ($filters['bank'] === 'public') {
-                $query->where('status', 'public');
-            }
-
-            if ($filters['bank'] === 'personal' && !empty($filters['creator_id'])) {
-                $query->where('creator_id', $filters['creator_id']);
-            }
-        }
-    }
-
-    private function syncAnswers(Question $question, array $answerOptions): void
-    {
-        $answerIds = [];
-
-        foreach ($answerOptions as $answer) {
-            if (!empty($answer['id'])) {
-                $answerModel = $question->answerOptions()->where('id', $answer['id'])->first();
-                if ($answerModel) {
-                    $answerModel->update([
-                        'option_content'    => $answer['option_content'],
-                        'is_correct_answer' => $answer['is_correct_answer'],
-                    ]);
-                    $answerIds[] = $answerModel->id;
-                    continue;
-                }
-            }
-
-            $newAnswer = $question->answerOptions()->create([
-                'option_content'    => $answer['option_content'],
-                'is_correct_answer' => $answer['is_correct_answer'],
-            ]);
-            $answerIds[] = $newAnswer->id;
-        }
-
-        $question->answerOptions()->whereNotIn('id', $answerIds)->delete();
     }
 
     private function validateReferenceConsistency(array $data): void
     {
-        if (empty($data['chapter_id']) || empty($data['subject_id'])) {
-            return;
+        if (!empty($data['subject_id']) && !Subject::query()
+            ->whereKey($data['subject_id'])->where('is_deleted', false)->exists()) {
+            throw new BusinessException('Học phần không tồn tại hoặc đã ngừng hoạt động', 422);
         }
+
+        if (empty($data['chapter_id']) || empty($data['subject_id'])) return;
 
         $belongsToSubject = Chapter::query()
             ->where('id', $data['chapter_id'])
             ->where('subject_id', $data['subject_id'])
+            ->where('is_deleted', false)
             ->exists();
 
         if (!$belongsToSubject) {
-            throw new \InvalidArgumentException('Chapter does not belong to the selected subject');
+            throw new BusinessException('Chương không thuộc học phần đã chọn', 422);
         }
     }
 
-    public function getAllPublic()
+    private function lockActor(int $actorId): User
     {
-        return Question::where('status', 'public')->get()->load(
-            [
-                "subject",
-                "chapter",
-                "difficulty",
-                "creator",
-                "answerOptions"
-            ]
-        );
+        return User::query()
+            ->with(['role', 'assignedSubjects'])
+            ->lockForUpdate()
+            ->findOrFail($actorId);
     }
 
-    public function getAllOfUser(User $user)
-    {
-        return Question::where('creator_id', $user->id)->get()->load(
-            [
-                "subject",
-                "chapter",
-                "difficulty",
-                "creator",
-                "answerOptions"
-            ]
-        );
-    }
 }

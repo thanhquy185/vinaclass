@@ -21,24 +21,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'full_name',
         'email',
         'password',
         'role_id',
-        'phone',
         'username',
-        'date_of_birth',
-        'is_female',
-        'is_student',
         'is_locked',
         'ggid',
-        'avatar_url',
         'is_deleted',
-    ];
-
-    protected $attributes = [
-        'avatar_url' => 'example.png',
-        'is_student' => true,
     ];
 
     /**
@@ -57,9 +46,6 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'date_of_birth' => 'date:Y-m-d',
-        'is_female' => 'boolean',
-        'is_student' => 'boolean',
         'is_locked' => 'boolean',
         'is_deleted' => 'boolean',
         'last_login' => 'datetime',
@@ -98,6 +84,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Subject::class, 'teacher_subjects', 'teacher_id', 'subject_id');
     }
 
+    public function subjects()
+    {
+        return $this->assignedSubjects();
+    }
+
     public function examAttempts()
     {
         return $this->hasMany(ExamAttempt::class, 'student_id');
@@ -106,5 +97,60 @@ class User extends Authenticatable implements JWTSubject
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function roleCode(): ?string
+    {
+        $role = $this->role;
+        if ($role !== null) {
+            return $role->is_deleted ? null : $role->canonicalCode();
+        }
+
+        return $this->role_id === null && $this->hasLegacyStudentMarker()
+            ? 'STUDENT'
+            : null;
+    }
+
+    public function hasRoleCode(string ...$roleCodes): bool
+    {
+        $roleCode = $this->roleCode();
+
+        return $roleCode !== null && in_array($roleCode, $roleCodes, true);
+    }
+
+    public function isCustomRole(): bool
+    {
+        $role = $this->role;
+
+        return $role !== null
+            && !$role->is_deleted
+            && !in_array($role->canonicalCode(), ['ADMIN', 'TEACHER', 'STUDENT'], true);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
+
+    public function teacherProfile()
+    {
+        return $this->hasOne(TeacherProfile::class, 'user_id');
+    }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(StudentProfile::class, 'user_id');
+    }
+
+    public function permissionDetails()
+    {
+        return $this->hasMany(PermissionDetail::class, 'user_id');
+    }
+
+    private function hasLegacyStudentMarker(): bool
+    {
+        // Compatibility for accounts on the pre-cutover schema only.
+        return array_key_exists('is_student', $this->attributes)
+            && (bool) $this->attributes['is_student'];
     }
 }

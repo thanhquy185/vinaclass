@@ -2,13 +2,18 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\QuestionPolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreQuestionRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(QuestionPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->create($actor);
     }
 
     public function rules()
@@ -17,17 +22,31 @@ class StoreQuestionRequest extends FormRequest
             'subject_id' => ['required', 'integer', 'exists:subjects,id'],
             'chapter_id' => ['nullable', 'integer', 'exists:chapters,id'],
             'difficulty_id' => ['nullable', 'integer', 'exists:difficulties,id'],
-            'creator_id' => ['required', 'integer', 'exists:users,id'],
             'question_content' => ['required', 'string'],
             'image_url' => ['nullable', 'string'],
             'answer_explanation' => ['nullable', 'string'],
             'default_score' => ['nullable', 'numeric', 'min:0'],
-            'status' => ['nullable', 'in:public,private,archive'],
-            'is_deleted' => ['nullable', 'boolean'],
-            'answerOptions' => ['required', 'array', 'min:2'],
-            'answerOptions.*.option_content' => ['required', 'string'],
-            'answerOptions.*.is_correct_answer' => ['required', 'boolean'],
+            'status' => ['prohibited'],
+            'answer_options' => ['required', 'array', 'min:2'],
+            'answer_options.*.option_content' => ['required', 'string'],
+            'answer_options.*.is_correct_answer' => ['required', 'boolean'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
+
+            $correctAnswerCount = collect($this->input('answer_options', []))
+                ->filter(fn ($option) => filter_var($option['is_correct_answer'] ?? false, FILTER_VALIDATE_BOOLEAN))
+                ->count();
+            if ($correctAnswerCount !== 1) {
+                $validator->errors()->add('answer_options', 'Câu hỏi phải có chính xác một đáp án đúng.');
+            }
+        });
     }
 
     public function messages()
@@ -43,10 +62,6 @@ class StoreQuestionRequest extends FormRequest
             'difficulty_id.integer' => ':attribute phải là số nguyên',
             'difficulty_id.exists' => ':attribute không tồn tại trong hệ thống',
 
-            'creator_id.required' => ':attribute không được để trống',
-            'creator_id.integer' => ':attribute phải là số nguyên',
-            'creator_id.exists' => ':attribute không tồn tại trong hệ thống',
-
             'question_content.required' => ':attribute không được để trống',
             'question_content.string' => ':attribute phải là chuỗi ký tự',
 
@@ -56,18 +71,16 @@ class StoreQuestionRequest extends FormRequest
             'default_score.numeric' => ':attribute phải là số',
             'default_score.min' => ':attribute phải lớn hơn hoặc bằng 0',
 
-            'status.in' => ':attribute chỉ nhận một trong các giá trị: public, private, archive',
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
+            'status.prohibited' => 'Câu hỏi mới luôn được lưu trong Cá nhân. Hãy dùng thao tác Công khai câu hỏi để chia sẻ.',
+            'answer_options.required' => ':attribute không được để trống',
+            'answer_options.array' => ':attribute phải là mảng',
+            'answer_options.min' => ':attribute phải có ít nhất 2 lựa chọn',
 
-            'answerOptions.required' => ':attribute không được để trống',
-            'answerOptions.array' => ':attribute phải là mảng',
-            'answerOptions.min' => ':attribute phải có ít nhất 2 lựa chọn',
+            'answer_options.*.option_content.required' => ':attribute không được để trống',
+            'answer_options.*.option_content.string' => ':attribute phải là chuỗi ký tự',
 
-            'answerOptions.*.option_content.required' => ':attribute không được để trống',
-            'answerOptions.*.option_content.string' => ':attribute phải là chuỗi ký tự',
-
-            'answerOptions.*.is_correct_answer.required' => ':attribute không được để trống',
-            'answerOptions.*.is_correct_answer.boolean' => ':attribute phải là kiểu đúng/sai',
+            'answer_options.*.is_correct_answer.required' => ':attribute không được để trống',
+            'answer_options.*.is_correct_answer.boolean' => ':attribute phải là kiểu đúng/sai',
         ];
     }
 
@@ -77,16 +90,14 @@ class StoreQuestionRequest extends FormRequest
             'subject_id' => 'Mã môn học',
             'chapter_id' => 'Mã chương',
             'difficulty_id' => 'Mã độ khó',
-            'creator_id' => 'Mã người tạo',
             'question_content' => 'Nội dung câu hỏi',
             'image_url' => 'Đường dẫn ảnh',
             'answer_explanation' => 'Giải thích đáp án',
             'default_score' => 'Điểm mặc định',
             'status' => 'Trạng thái',
-            'is_deleted' => 'Trạng thái xóa',
-            'answerOptions' => 'Danh sách câu trả lời',
-            'answerOptions.*.option_content' => 'Nội dung lựa chọn',
-            'answerOptions.*.is_correct_answer' => 'Trạng thái đáp án đúng',
+            'answer_options' => 'Danh sách câu trả lời',
+            'answer_options.*.option_content' => 'Nội dung lựa chọn',
+            'answer_options.*.is_correct_answer' => 'Trạng thái đáp án đúng',
         ];
     }
 }

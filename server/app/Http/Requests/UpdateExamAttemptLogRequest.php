@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ExamAttempt;
+use App\Models\User;
+use App\Policies\ExamAttemptPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateExamAttemptLogRequest extends FormRequest
@@ -11,9 +14,14 @@ class UpdateExamAttemptLogRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamAttemptPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $examAttempt = $this->route('examAttempt');
+
+        return $actor instanceof User
+            && $examAttempt instanceof ExamAttempt
+            && $policy->updateOwnLog($actor, $examAttempt);
     }
 
     /**

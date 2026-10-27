@@ -3,8 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\IdentityV2\IdentityV2CatalogBackfillService;
+use App\Services\IdentityV2\IdentityV2Definitions;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class RoleSeeder extends Seeder
 {
@@ -13,21 +17,26 @@ class RoleSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(IdentityV2CatalogBackfillService $catalogBackfill): void
     {
-        $roles = [
-            [
-                'role_name' => 'admin'
-            ],
-            [
-                'role_name' => 'teacher'
-            ],
-        ];
+        DB::transaction(function () use ($catalogBackfill): void {
+            if (Schema::hasColumn('roles', 'code')) {
+                $catalogBackfill->prepareRoles();
+                return;
+            }
 
-        Role::upsert(
-            $roles,
-            ['role_name'], // khóa xác định trùng
-            [] // không update gì khi trùng
-        );
+            $roles = Role::query()->orderBy('id')->get();
+            $roleTargets = IdentityV2Definitions::activeSystemRoleTargets($roles);
+
+            foreach (IdentityV2Definitions::ROLE_CODES as $code) {
+                if (isset($roleTargets[$code])) {
+                    continue;
+                }
+
+                $roleTargets[$code] = Role::query()->create([
+                    'role_name' => Str::lower($code),
+                ]);
+            }
+        });
     }
 }

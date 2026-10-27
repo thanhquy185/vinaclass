@@ -1,7 +1,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useState } from "react";
 
-// Component test cho ErrorBoundary wrapper
+// Test component for the ErrorBoundary wrapper.
 function BoundaryWrapperTest() {
   const [shouldThrow, setShouldThrow] = useState(false);
 
@@ -19,7 +19,7 @@ function BoundaryWrapperTest() {
   );
 }
 
-// Component test cho ErrorPage (route error)
+// Test component for route errors handled by ErrorPage.
 function RouteErrorTest() {
   const [shouldThrow, setShouldThrow] = useState(false);
 
@@ -37,7 +37,7 @@ function RouteErrorTest() {
   );
 }
 
-// Component test cho async error (KHÔNG được catch)
+// Async error test component (must not be caught).
 function AsyncErrorTest() {
   const handleAsyncError = () => {
     setTimeout(() => {
@@ -55,7 +55,7 @@ function AsyncErrorTest() {
   );
 }
 
-// Component test cho event handler error (cần try-catch)
+// Event handler error test component (requires try/catch).
 function EventHandlerErrorTest() {
   const handleClick = () => {
     try {
@@ -76,7 +76,7 @@ function EventHandlerErrorTest() {
   );
 }
 
-// Component test cho Promise rejection
+// Test component for a rejected promise.
 function PromiseRejectionTest() {
   const handlePromiseError = () => {
     Promise.reject(new Error("🚫 Promise Rejection - Won't be caught!")).catch(

@@ -9,6 +9,7 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Services\ChapterService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 
 class ChapterController extends Controller
 {
@@ -20,9 +21,9 @@ class ChapterController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Chapter::with('subject')->get();
+        $data = $this->chapterService->getAll($request->user());
         return $this->success(ChapterResource::collection($data));
     }
 
@@ -34,7 +35,7 @@ class ChapterController extends Controller
      */
     public function store(StoreChapterRequest $request)
     {
-        $chapter = $this->chapterService->create($request->validated());
+        $chapter = $this->chapterService->create($request->validated(), $request->user());
         return $this->created(new ChapterResource($chapter->load('subject')));
     }
 
@@ -44,15 +45,19 @@ class ChapterController extends Controller
      * @param  Chapter  $chapter
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Chapter $chapter)
+    public function show(Chapter $chapter, Request $request)
     {
-        return $this->success(new ChapterResource($chapter->load('subject')));
+        $chapter = $this->chapterService->getOne($chapter, $request->user());
+        return $this->success(new ChapterResource($chapter));
     }
 
-    // update chương cho môn học
     public function update(UpdateChapterRequest $request, Subject $subject)
     {
-        $updatedChapter = $this->chapterService->update($subject, $request->validated());
+        $updatedChapter = $this->chapterService->update(
+            $subject,
+            $request->validated(),
+            $request->user()
+        );
         return $this->success($updatedChapter);
     }
 
@@ -62,15 +67,15 @@ class ChapterController extends Controller
      * @param  Chapter  $chapter
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Chapter $chapter)
+    public function destroy(Chapter $chapter, Request $request)
     {
-        $chapter->deleteOrFail();
+        $this->chapterService->delete($chapter, $request->user());
         return $this->deleted();
     }
 
-    public function getBySubject(Subject $subject)
+    public function getBySubject(Subject $subject, Request $request)
     {
-        $data = $this->chapterService->getBySubject($subject);
+        $data = $this->chapterService->getBySubject($subject, $request->user());
         return $this->success($data);
     }
 }

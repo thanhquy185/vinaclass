@@ -1,9 +1,13 @@
 import { Input } from "../../atoms";
 import { Tag } from "../../atoms/Tag/Tag";
 
+interface SelectableItem {
+  id: number;
+  name: string;
+}
+
 interface MultiSelectInputProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  selectedItems: any[];
+  selectedItems: SelectableItem[];
   onRemoveItem: (id: number) => void;
   inputValue: string;
   setInputValue: (val: string) => void;

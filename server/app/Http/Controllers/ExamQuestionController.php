@@ -12,55 +12,35 @@ class ExamQuestionController extends Controller
 {
     use ApiResponseTrait;
 
-    protected ExamQuestionService $examQuestionService;
-
-    public function __construct(ExamQuestionService $examQuestionService)
+    public function __construct(private ExamQuestionService $examQuestionService)
     {
-        $this->examQuestionService = $examQuestionService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data = $this->examQuestionService->getAll();
-        return $this->success($data);
+        return $this->success($this->examQuestionService->getAll());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreExamQuestionRequest $request)
     {
-        $chiTiet = $this->examQuestionService->add($request->validated());
-        return $this->success($chiTiet, 201);
+        return $this->success($this->examQuestionService->add($request->validated()), 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ExamQuestion $examQuestion)
     {
-        $data = $this->examQuestionService->getOne($examQuestion);
-        return $this->success($data);
+        return $this->success($this->examQuestionService->getOne($examQuestion));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateExamQuestionRequest $request, ExamQuestion $examQuestion)
     {
-        $chiTiet = $this->examQuestionService->update($request->validated(), $examQuestion);
-        return $this->success($chiTiet);
+        return $this->success($this->examQuestionService->update(
+            $request->validated(),
+            $examQuestion
+        ));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ExamQuestion $examQuestion)
     {
-        $result = $this->examQuestionService->delete($examQuestion);
-        return $this->success($result);
+        return $this->success($this->examQuestionService->delete($examQuestion));
     }
 }

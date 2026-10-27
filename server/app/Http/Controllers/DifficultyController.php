@@ -8,6 +8,7 @@ use App\Http\Resources\DifficultyResource;
 use App\Models\Difficulty;
 use App\Services\DifficultyService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 
 class DifficultyController extends Controller
 {
@@ -19,23 +20,23 @@ class DifficultyController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->difficultyService->getAll();
+        $data = $this->difficultyService->getAll($request->user());
 
         return $this->success(DifficultyResource::collection($data));
     }
 
     public function store(StoreDifficultyRequest $request)
     {
-        $difficulty = $this->difficultyService->create($request->validated());
+        $difficulty = $this->difficultyService->create($request->validated(), $request->user());
 
         return $this->created(new DifficultyResource($difficulty));
     }
 
-    public function show(Difficulty $difficulty)
+    public function show(Difficulty $difficulty, Request $request)
     {
-        $data = $this->difficultyService->getOne($difficulty);
+        $data = $this->difficultyService->getOne($difficulty, $request->user());
 
         return $this->success(new DifficultyResource($data));
     }
@@ -46,15 +47,16 @@ class DifficultyController extends Controller
     ) {
         $difficulty = $this->difficultyService->update(
             $difficulty,
-            $request->validated()
+            $request->validated(),
+            $request->user()
         );
 
         return $this->updated(new DifficultyResource($difficulty));
     }
 
-    public function destroy(Difficulty $difficulty)
+    public function destroy(Difficulty $difficulty, Request $request)
     {
-        $data = $this->difficultyService->delete($difficulty);
+        $data = $this->difficultyService->delete($difficulty, $request->user());
 
         return $this->success($data);
     }

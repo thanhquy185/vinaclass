@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AnswerOption;
+use App\Models\User;
+use App\Policies\QuestionPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAnswerOptionRequest extends FormRequest
@@ -11,9 +14,18 @@ class UpdateAnswerOptionRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(QuestionPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $answerOption = $this->route('answerOption');
+
+        if (!$actor instanceof User || !$answerOption instanceof AnswerOption) {
+            return false;
+        }
+
+        $question = $answerOption->loadMissing('question')->question;
+
+        return $question !== null && $policy->manage($actor, $question, 'update');
     }
 
     /**

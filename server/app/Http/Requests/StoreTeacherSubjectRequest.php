@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\TeacherSubjectPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,9 +14,11 @@ class StoreTeacherSubjectRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(TeacherSubjectPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->manage($actor, 'assign');
     }
 
     /**
@@ -28,12 +32,14 @@ class StoreTeacherSubjectRequest extends FormRequest
             'teacher_id' => [
                 'required',
                 'integer',
-                'exists:users,id',
+                Rule::exists('users', 'id')
+                    ->where('is_locked', false)
+                    ->where('is_deleted', false),
             ],
             'subject_id' => [
                 'required',
                 'integer',
-                'exists:subjects,id',
+                Rule::exists('subjects', 'id')->where('is_deleted', false),
                 Rule::unique('teacher_subjects')
                     ->where(function ($query) {
                         return $query->where('teacher_id', $this->teacher_id);

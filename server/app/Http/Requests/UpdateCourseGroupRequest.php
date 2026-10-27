@@ -2,30 +2,23 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateCourseGroupRequest extends FormRequest
+class UpdateCourseGroupRequest extends CourseGroupScopedRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'subject_id' => ['sometimes', 'integer', 'exists:subjects,id'],
+            'subject_id' => [
+                'sometimes',
+                'integer',
+                Rule::exists('subjects', 'id')->where('is_deleted', false),
+            ],
             'group_name' => ['sometimes', 'string', 'max:100'],
             'join_code' => [
                 'sometimes',
@@ -39,11 +32,10 @@ class UpdateCourseGroupRequest extends FormRequest
             'background_url' => ['sometimes', 'nullable', 'string'],
             'teacher_id' => ['sometimes', 'integer', 'exists:users,id'],
             'is_hidden' => ['sometimes', 'boolean'],
-            'is_deleted' => ['sometimes', 'boolean'],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'subject_id.integer' => ':attribute phải là số nguyên',
@@ -71,11 +63,10 @@ class UpdateCourseGroupRequest extends FormRequest
             'teacher_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'is_hidden.boolean' => ':attribute phải là kiểu đúng/sai',
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'subject_id' => 'Mã môn học',
@@ -87,7 +78,6 @@ class UpdateCourseGroupRequest extends FormRequest
             'background_url' => 'URL ảnh nền',
             'teacher_id' => 'Mã giảng viên',
             'is_hidden' => 'Trạng thái ẩn',
-            'is_deleted' => 'Trạng thái xóa',
         ];
     }
 }

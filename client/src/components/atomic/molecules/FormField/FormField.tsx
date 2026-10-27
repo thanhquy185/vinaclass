@@ -26,7 +26,7 @@ export default function FormField({
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      {/* Label: Sử dụng text-muted cho nhẹ nhàng, chuyên nghiệp */}
+      {/* Use muted label text for a softer visual hierarchy. */}
       <label
         className="text-muted mb-0.5 text-[13px] font-medium"
         htmlFor={name}
@@ -40,7 +40,7 @@ export default function FormField({
           name={name}
           type={currentType}
           placeholder={placeholder}
-          // Đảm bảo Input bên trong cũng sử dụng text-main và border-neutral
+          // Keep the nested input text and border colors aligned with the shared theme.
           className={`pr-10 ${isPasswordType ? "font-normal" : ""}`}
         />
 
@@ -48,7 +48,7 @@ export default function FormField({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            // Icon mặc định màu muted, khi hover đổi sang primary
+            // Use the muted icon color by default and the primary color on hover.
             className="text-muted hover:text-primary absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

@@ -6,18 +6,23 @@ use App\Http\Requests\StoreExamAttemptLogRequest;
 use App\Http\Requests\UpdateExamAttemptLogRequest;
 use App\Models\ExamAttempt;
 use App\Models\ExamAttemptLog;
+use App\Models\User;
 use App\Services\ExamAttemptLogService;
+use App\Services\ExamAttemptService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\DB;
 
 class ExamAttemptLogController extends Controller
 {
     use ApiResponseTrait;
 
     protected ExamAttemptLogService $examAttemptLogService;
+    protected ExamAttemptService $examAttemptService;
 
-    public function __construct(ExamAttemptLogService $examAttemptLogService)
+    public function __construct(ExamAttemptLogService $examAttemptLogService, ExamAttemptService $examAttemptService)
     {
         $this->examAttemptLogService = $examAttemptLogService;
+        $this->examAttemptService = $examAttemptService;
     }
 
     /**
@@ -34,7 +39,7 @@ class ExamAttemptLogController extends Controller
     {
         $data = $this->examAttemptLogService->add($request->validated());
 
-        return $this->success($data, 201);
+        return $this->created($data);
     }
 
     public function show(ExamAttemptLog $examAttemptLog)
@@ -48,12 +53,35 @@ class ExamAttemptLogController extends Controller
         UpdateExamAttemptLogRequest $request,
         ExamAttempt $examAttempt
     ) {
-        $data = $this->examAttemptLogService->update(
-            $request->validated(),
-            $examAttempt
-        );
+        return DB::transaction(function () use ($request, $examAttempt) {
+            $actor = User::query()
+                ->with('role')
+                ->lockForUpdate()
+                ->findOrFail((int) $request->user()->id);
+            $lockedAttempt = ExamAttempt::query()
+                ->whereKey($examAttempt->id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        return $this->success($data);
+            $count = $this->examAttemptLogService->update(
+                $request->validated(),
+                $lockedAttempt,
+                $actor
+            );
+
+            $lockedAttempt->load('exam.examConfiguration');
+            $configuration = $lockedAttempt->exam?->examConfiguration;
+            if ($configuration?->is_limit_switch_tab
+                && $count >= $configuration->tab_switch_limit
+                && $lockedAttempt->status !== 'SUBMITTED') {
+                $this->examAttemptService->submitAfterTabSwitchLimit(
+                    $lockedAttempt->id,
+                    $actor
+                );
+            }
+
+            return $this->success(['tab_switch_count' => $count]);
+        });
     }
 
     public function destroy(ExamAttemptLog $examAttemptLog)

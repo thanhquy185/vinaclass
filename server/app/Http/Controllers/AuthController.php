@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterStudentRequest;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -25,12 +27,26 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        return $this->success($this->authService->login($request->validated()));
+        $data = $this->authService->login($request->validated());
+        $data['me'] = new UserResource($data['me']);
+
+        return $this->success($data);
+    }
+
+    public function register(RegisterStudentRequest $request)
+    {
+        $data = $this->authService->registerStudent($request->validated());
+        $data['me'] = new UserResource($data['me']);
+
+        return $this->created($data, 'Tạo tài khoản sinh viên thành công.');
     }
 
     public function me()
     {
-        return $this->success($this->authService->me());
+        $data = $this->authService->me();
+        $data['me'] = new UserResource($data['me']);
+
+        return $this->success($data);
     }
 
 
@@ -41,17 +57,17 @@ class AuthController extends Controller
 
     public function redirectToGoogle(Request $request): RedirectResponse
     {
-        // session(['frontend_redirect_url' => $request->query()["redirect_url"]]);
-        // Log::info(session()->all());
-        return $this->authService->redirectToGoogle($request, $request->query()["redirect_url"]);
+        $frontendUrl = $this->authService->resolveGoogleFrontendRedirectUrl(
+            $request,
+            (string) config('app.frontend_url')
+        );
+
+        return $this->authService->redirectToGoogle($request, $frontendUrl);
     }
 
     public function handleGoogleCallback(Request $request)
     {
-        $state = $request->input('state');
-
-        parse_str($state, $result);
-        $frontendUrl = $result['frontend_url'];
+        $frontendUrl = $request->session()->pull('google_frontend_redirect', (string) config('app.frontend_url'));
 
         if (!$request->filled('code') && !$request->filled('error')) {
             if ($request->expectsJson()) {
@@ -65,9 +81,9 @@ class AuthController extends Controller
             $data = $this->authService->handleGoogleCallback();
 
             if (isset($data['error'])) {
-                return redirect($frontendUrl . '?error=' . $data['error']);
+                return redirect($frontendUrl . '?error=' . urlencode($data['error']));
             }
-            return redirect($frontendUrl . "?token=" . $data['access_token']);
+            return redirect($frontendUrl . '#token=' . urlencode($data['access_token']));
         } catch (HttpException $e) {
             return $this->error(null, $e->getMessage(), $e->getStatusCode());
         } catch (Throwable $e) {

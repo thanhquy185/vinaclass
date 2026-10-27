@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\DifficultyPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,9 +14,11 @@ class UpdateDifficultyRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(DifficultyPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->manage($actor, 'update');
     }
 
     /**

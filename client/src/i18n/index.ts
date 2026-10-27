@@ -10,6 +10,10 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: "vi",
+    detection: {
+      order: ["localStorage"],
+      caches: ["localStorage"],
+    },
     resources: {
       vi: { common: viCommon },
       en: { common: enCommon },

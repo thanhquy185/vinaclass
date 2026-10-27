@@ -2,8 +2,31 @@
 
 namespace App\Providers;
 
+use App\Models\Chapter;
+use App\Models\CourseGroup;
+use App\Models\CourseGroupMaterial;
+use App\Models\Difficulty;
+use App\Models\Exam;
+use App\Models\ExamAttempt;
+use App\Models\Notification;
+use App\Models\Question;
+use App\Models\Role;
+use App\Models\Subject;
+use App\Models\TeacherSubject;
+use App\Models\User;
+use App\Policies\ChapterPolicy;
+use App\Policies\CourseGroupPolicy;
+use App\Policies\CourseGroupMaterialPolicy;
+use App\Policies\DifficultyPolicy;
+use App\Policies\ExamPolicy;
+use App\Policies\ExamAttemptPolicy;
+use App\Policies\NotificationPolicy;
+use App\Policies\QuestionPolicy;
+use App\Policies\RolePolicy;
+use App\Policies\SubjectPolicy;
+use App\Policies\TeacherSubjectPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +36,18 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Chapter::class => ChapterPolicy::class,
+        CourseGroup::class => CourseGroupPolicy::class,
+        CourseGroupMaterial::class => CourseGroupMaterialPolicy::class,
+        Difficulty::class => DifficultyPolicy::class,
+        Exam::class => ExamPolicy::class,
+        ExamAttempt::class => ExamAttemptPolicy::class,
+        Notification::class => NotificationPolicy::class,
+        Question::class => QuestionPolicy::class,
+        Role::class => RolePolicy::class,
+        Subject::class => SubjectPolicy::class,
+        TeacherSubject::class => TeacherSubjectPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**
@@ -21,10 +55,8 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
-
-        //
     }
 }

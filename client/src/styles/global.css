@@ -6,16 +6,69 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .vinaclass-checkbox
+    .vinaclass-checkbox-icon:not(.ant-checkbox-checked):not(
+      .ant-checkbox-disabled
+    ) {
+    border-color: var(--color-text-secondary) !important;
+  }
+
+  .user-management-table .ant-table {
+    background: transparent;
+  }
+
+  .user-management-table .ant-table-container {
+    overflow: hidden;
+    border: 1px solid var(--color-other-divider);
+    border-radius: 12px;
+  }
+
+  .user-management-table .ant-table-thead > tr > th {
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--color-other-divider);
+    background: var(--color-background-body);
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .user-management-table .ant-table-thead > tr > th::before {
+    display: none;
+  }
+
+  .user-management-table .ant-table-tbody > tr > td {
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--color-other-divider);
+    background: var(--color-background-paper);
+  }
+
+  .user-management-table .ant-table-tbody > tr:last-child > td {
+    border-bottom: 0;
+  }
+
+  .user-management-table .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: var(--color-action-hover);
+  }
+
+  .user-management-table .ant-pagination {
+    margin: 16px 4px 4px;
+  }
+}
+
 /* ===== PRIMARY COLOR PALETTES ===== */
-/* Mặc định (red) — đã định nghĩa trong colors.css, không cần override */
+/* Default red is already defined in colors.css, so no override is needed. */
 
 [data-primary="blue"] {
   --color-primary-main: #666cff;
   --color-primary-dark: #5a5fe0;
   --color-primary-light: #7a80ff;
   --color-primary-contrast: #ffffff;
+  --color-custom-background-primary-background: #666cff1a;
   --color-action-selected: #666cff14;
   --color-states-active-menu: #666cff14;
+  --color-states-outline-selected-background: #666cff14;
 }
 
 [data-primary="green"] {
@@ -23,8 +76,10 @@
   --color-primary-dark: #64c623;
   --color-primary-light: #83e542;
   --color-primary-contrast: #ffffff;
+  --color-custom-background-primary-background: #72e1281a;
   --color-action-selected: #72e12814;
   --color-states-active-menu: #72e12814;
+  --color-states-outline-selected-background: #72e12814;
 }
 
 [data-primary="orange"] {
@@ -32,8 +87,10 @@
   --color-primary-dark: #df9f23;
   --color-primary-light: #fdbe42;
   --color-primary-contrast: #ffffff;
+  --color-custom-background-primary-background: #fdb5281a;
   --color-action-selected: #fdb52814;
   --color-states-active-menu: #fdb52814;
+  --color-states-outline-selected-background: #fdb52814;
 }
 
 [data-primary="teal"] {
@@ -41,8 +98,10 @@
   --color-primary-dark: #21aedb;
   --color-primary-light: #40cdfa;
   --color-primary-contrast: #ffffff;
+  --color-custom-background-primary-background: #26c6f91a;
   --color-action-selected: #26c6f914;
   --color-states-active-menu: #26c6f914;
+  --color-states-outline-selected-background: #26c6f914;
 }
 
 @layer base {
@@ -76,5 +135,69 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+.statistics-print-only {
+  display: none;
+}
+
+@media print {
+  body.printing-statistics {
+    background: #fff !important;
+  }
+
+  body.printing-statistics #root,
+  body.printing-statistics .app-main-shell,
+  body.printing-statistics .app-main-content,
+  body.printing-statistics .app-main-scroll {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  body.printing-statistics * {
+    visibility: hidden !important;
+  }
+
+  body.printing-statistics .statistics-print-root,
+  body.printing-statistics .statistics-print-root * {
+    visibility: visible !important;
+  }
+
+  body.printing-statistics .app-main-shell,
+  body.printing-statistics .app-main-content,
+  body.printing-statistics .app-main-scroll {
+    display: block !important;
+  }
+
+  body.printing-statistics .statistics-print-root {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    gap: 16px !important;
+  }
+
+  body.printing-statistics .statistics-print-hide {
+    display: none !important;
+  }
+
+  body.printing-statistics .statistics-print-only {
+    display: block !important;
+  }
+
+  body.printing-statistics .statistics-print-root article,
+  body.printing-statistics .statistics-print-root section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body.printing-statistics .statistics-print-root svg {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 }

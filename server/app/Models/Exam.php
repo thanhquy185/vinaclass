@@ -41,12 +41,15 @@ class Exam extends Model
 
     public function courseGroups()
     {
-        return $this->belongsToMany(CourseGroup::class, 'exam_assignments', 'exam_id', 'course_group_id');
+        return $this->belongsToMany(CourseGroup::class, 'exam_assignments', 'exam_id', 'course_group_id')
+            ->withPivot(['start_time', 'end_time']);
     }
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'exam_questions', 'exam_id', 'question_id');
+        return $this->belongsToMany(Question::class, 'exam_questions', 'exam_id', 'question_id')
+            ->withPivot(['question_order', 'score'])
+            ->orderByPivot('question_order');
     }
 
     public function examConfiguration()
@@ -54,8 +57,18 @@ class Exam extends Model
         return $this->hasOne(ExamConfiguration::class, 'exam_id');
     }
 
+    public function configuration()
+    {
+        return $this->examConfiguration();
+    }
+
     public function examAttempts()
     {
         return $this->hasMany(ExamAttempt::class, 'exam_id');
+    }
+
+    public function attempts()
+    {
+        return $this->examAttempts();
     }
 }

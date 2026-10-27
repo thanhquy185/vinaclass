@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import { forwardRef, type InputHTMLAttributes } from "react";
 
 interface ToggleProps extends Omit<
@@ -47,10 +47,10 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
             {...props}
           />
 
-          {/* Đường ray (Track) */}
+          {/* Track. */}
           <div className="peer-checked:bg-primary-main/30 h-4 w-9 rounded-full bg-other-outlined-border transition-colors duration-200" />
 
-          {/* Nút tròn (Thumb) */}
+          {/* Thumb. */}
           <div className="absolute left-0 h-5 w-5 rounded-full border border-other-outlined-border bg-white shadow-sm transition-transform duration-200 peer-checked:translate-x-4 peer-checked:border-primary-main peer-checked:bg-primary-main" />
         </label>
       </div>

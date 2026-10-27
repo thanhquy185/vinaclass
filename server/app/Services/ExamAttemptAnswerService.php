@@ -52,7 +52,7 @@ class ExamAttemptAnswerService
         });
     }
 
-    public function addManyNonTrans(Collection $answers): array
+    public function addManyNonTrans(Collection $answers)
     {
         $data = $answers->toArray();
         ExamAttemptAnswer::insert($data);
@@ -61,10 +61,10 @@ class ExamAttemptAnswerService
 
     public function updateBatch(array $data): void
     {
-        ExamAttemptAnswer::upsert(
+        ExamAttemptAnswer::query()->upsert(
             $data,
-            ['exam_attempt_id', 'question_id'], // unique composite key
-            ['answer_option_id', 'is_selected_correct', 'score'] // các cột cần update khi bị trùng khóa
+            ['exam_attempt_id', 'question_id'],
+            ['answer_option_id', 'is_selected_correct', 'score']
         );
     }
 }

@@ -2,30 +2,38 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\ExamPolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreExamRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(ExamPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        if (!$actor instanceof User || !$policy->create($actor)) {
+            return false;
+        }
+
+        return !$this->exists('course_group_ids')
+            || $policy->assignCourseGroups($actor);
     }
 
     public function rules()
     {
         return [
             'subject_id' => ['required', 'integer', 'exists:subjects,id'],
-            'creator_id' => ['required', 'integer', 'exists:users,id'],
             'exam_name' => ['required', 'string', 'max:255'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date', 'after:start_time'],
             'duration_minutes' => ['required', 'integer', 'min:1'],
-            'is_deleted' => ['sometimes', 'boolean'],
-            'course_group_ids' => ['required', 'array'],
-            'course_group_ids.*' => ['integer', 'exists:course_groups,id'],
-            'questions' => ['required', 'array'],
-            'questions.*.id' => ['required', 'integer', 'exists:questions,id'],
-            'questions.*.order' => ['required', 'integer'],
+            'course_group_ids' => ['required', 'array', 'min:1'],
+            'course_group_ids.*' => ['integer', 'distinct', 'exists:course_groups,id'],
+            'questions' => ['required', 'array', 'min:1', 'max:1000'],
+            'questions.*.id' => ['required', 'integer', 'distinct', 'exists:questions,id'],
+            'questions.*.order' => ['required', 'integer', 'min:1', 'distinct'],
             'questions.*.score' => ['required', 'numeric', 'min:0', 'max:10'],
             'configuration' => ['required', 'array'],
             'configuration.has_monitoring' => ['sometimes', 'boolean'],
@@ -39,9 +47,32 @@ class StoreExamRequest extends FormRequest
             'configuration.is_limit_switch_tab' => ['sometimes', 'boolean'],
             'configuration.tab_switch_limit' => ['sometimes', 'integer', 'min:0'],
             'configuration.message_on_warning' => ['sometimes', 'nullable', 'string'],
-            'configuration.limit_questions_per_page' => ['sometimes', 'integer'],
+            'configuration.limit_questions_per_page' => ['sometimes', 'integer', 'min:-1', 'not_in:0'],
             'configuration.allow_back_last_question' => ['sometimes', 'boolean'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
+
+            $questions = $this->input('questions', []);
+            if (!is_array($questions) || empty($questions)) {
+                return;
+            }
+
+            $totalScore = array_sum(array_map(
+                fn ($question) => (float) ($question['score'] ?? 0),
+                $questions
+            ));
+
+            if (abs($totalScore - 10) > 0.001) {
+                $validator->errors()->add('questions', 'Tổng điểm các câu hỏi phải bằng 10.');
+            }
+        });
     }
 
     public function messages()
@@ -50,10 +81,6 @@ class StoreExamRequest extends FormRequest
             'subject_id.required' => ':attribute không được để trống',
             'subject_id.integer' => ':attribute phải là số nguyên',
             'subject_id.exists' => ':attribute không tồn tại trong hệ thống',
-
-            'creator_id.required' => ':attribute không được để trống',
-            'creator_id.integer' => ':attribute phải là số nguyên',
-            'creator_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'exam_name.required' => ':attribute không được để trống',
             'exam_name.string' => ':attribute phải là chuỗi ký tự',
@@ -70,8 +97,6 @@ class StoreExamRequest extends FormRequest
             'duration_minutes.integer' => ':attribute phải là số nguyên',
             'duration_minutes.min' => ':attribute phải lớn hơn hoặc bằng 1',
 
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
-
             'course_group_ids.required' => ':attribute không được để trống',
             'course_group_ids.array' => ':attribute phải là mảng',
             'course_group_ids.*.integer' => ':attribute phải là số nguyên',
@@ -79,6 +104,7 @@ class StoreExamRequest extends FormRequest
 
             'questions.required' => ':attribute không được để trống',
             'questions.array' => ':attribute phải là mảng',
+            'questions.max' => ':attribute không được vượt quá 1000 câu',
             'questions.*.id.required' => ':attribute không được để trống',
             'questions.*.id.integer' => ':attribute phải là số nguyên',
             'questions.*.id.exists' => ':attribute không tồn tại trong hệ thống',
@@ -112,12 +138,10 @@ class StoreExamRequest extends FormRequest
     {
         return [
             'subject_id' => 'Mã môn thi',
-            'creator_id' => 'Mã người tạo',
             'exam_name' => 'Tên đề',
             'start_time' => 'Thời gian bắt đầu',
             'end_time' => 'Thời gian kết thúc',
             'duration_minutes' => 'Thời gian làm bài',
-            'is_deleted' => 'Trạng thái xóa',
             'course_group_ids' => 'Danh sách nhóm học phần',
             'course_group_ids.*' => 'Mã nhóm học phần',
             'questions' => 'Danh sách câu hỏi',

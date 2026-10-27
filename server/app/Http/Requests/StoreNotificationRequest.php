@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Notification;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreNotificationRequest extends FormRequest
@@ -11,9 +12,15 @@ class StoreNotificationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        $actor = $this->user();
+        if (!$actor?->can('create', Notification::class)) {
+            return false;
+        }
+
+        return !filter_var($this->input('status', true), FILTER_VALIDATE_BOOLEAN)
+            || $actor->can('publish', Notification::class);
     }
 
     /**
@@ -21,26 +28,24 @@ class StoreNotificationRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:200'],
             'content' => ['required', 'string'],
 
-            'sender_id' => ['required', 'integer', 'exists:users,id'],
-
             'sent_at' => ['sometimes', 'nullable', 'date'],
 
             'priority' => ['sometimes', 'nullable', 'integer'],
 
-            'status' => ['sometimes', 'nullable', 'boolean'],
+            'status' => ['sometimes', 'boolean'],
 
             'course_group_ids' => ['required', 'array', 'min:1'],
-            'course_group_ids.*' => ['integer', 'exists:course_groups,id'],
+            'course_group_ids.*' => ['integer', 'distinct', 'exists:course_groups,id'],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'title.required' => ':attribute không được để trống',
@@ -49,10 +54,6 @@ class StoreNotificationRequest extends FormRequest
 
             'content.required' => ':attribute không được để trống',
             'content.string' => ':attribute phải là chuỗi ký tự',
-
-            'sender_id.required' => ':attribute không được để trống',
-            'sender_id.integer' => ':attribute phải là số nguyên',
-            'sender_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'sent_at.date' => ':attribute không đúng định dạng ngày giờ',
 
@@ -73,7 +74,6 @@ class StoreNotificationRequest extends FormRequest
         return [
             'title' => 'Tiêu đề',
             'content' => 'Nội dung',
-            'sender_id' => 'Mã người gửi',
             'sent_at' => 'Thời gian gửi',
             'priority' => 'Mức độ ưu tiên',
             'status' => 'Trạng thái',

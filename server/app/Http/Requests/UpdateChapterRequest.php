@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Subject;
+use App\Models\User;
+use App\Policies\ChapterPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateChapterRequest extends FormRequest
@@ -11,9 +14,14 @@ class UpdateChapterRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ChapterPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $subject = $this->route('subject');
+
+        return $actor instanceof User
+            && $subject instanceof Subject
+            && $policy->manageSubject($actor, $subject, 'update');
     }
 
     /**
@@ -24,15 +32,16 @@ class UpdateChapterRequest extends FormRequest
     public function rules()
     {
         return [
-            'chapters' => ['required', 'array'],
+            'chapters' => ['present', 'array'],
             'chapters.*.chapter_name' => ['required', 'string', 'max:100'],
+            'chapters.*.id' => ['sometimes', 'integer', 'distinct', 'exists:chapters,id'],
         ];
     }
 
     public function messages()
     {
         return [
-            'chapters.required' => 'Danh sách chương không được để trống.',
+            'chapters.present' => 'Danh sách chương là bắt buộc.',
             'chapters.array' => 'Danh sách chương phải là một mảng hợp lệ.',
 
             'chapters.*.chapter_name.required' => 'Tên chương không được để trống.',

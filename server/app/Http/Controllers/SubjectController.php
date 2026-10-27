@@ -8,6 +8,7 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Services\SubjectService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -25,7 +26,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $data = $this->subjectService->getAll();
+        $data = $this->subjectService->getAll(Auth::user());
         return $this->success($data);
     }
 
@@ -34,8 +35,8 @@ class SubjectController extends Controller
      */
     public function store(StoreSubjectRequest $request)
     {
-        $data = $this->subjectService->add($request->validated());
-        return $this->success($data, 201);
+        $data = $this->subjectService->add($request->validated(), $request->user());
+        return $this->created($data);
     }
 
     /**
@@ -43,7 +44,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        $data = $this->subjectService->getOne($subject);
+        $data = $this->subjectService->getOne($subject, Auth::user());
         return $this->success($data);
     }
 
@@ -52,7 +53,7 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        $data = $this->subjectService->update($request->validated(), $subject);
+        $data = $this->subjectService->update($request->validated(), $subject, $request->user());
         return $this->success($data);
     }
 
@@ -61,22 +62,31 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        $data = $this->subjectService->delete($subject);
+        $data = $this->subjectService->delete($subject, Auth::user());
         return $this->success($data);
     }
 
-    public function getWithCourseGroups(){
-        $data = $this->subjectService->getWithCourseGroups();
+    public function getWithCourseGroups()
+    {
+        $data = $this->subjectService->getWithCourseGroups(Auth::user());
         return $this->success($data);
     }
 
-    public function getWithChapters(){
-        $data = $this->subjectService->getWithChapters();
+    public function getCourseGroupsForExam(Subject $subject)
+    {
+        $data = $this->subjectService->getCourseGroupsForExam($subject, Auth::user());
         return $this->success($data);
     }
 
-    public function getOfTeacher(User $user){
-        $data = $this->subjectService->getOfTeacher($user);
+    public function getWithChapters()
+    {
+        $data = $this->subjectService->getWithChapters(Auth::user());
+        return $this->success($data);
+    }
+
+    public function getOfTeacher(User $user)
+    {
+        $data = $this->subjectService->getOfTeacher($user, Auth::user());
         return $this->success($data);
     }
 }

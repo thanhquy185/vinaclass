@@ -2,26 +2,34 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\ExamPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GenerateExamByFilterRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(ExamPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        if (!$actor instanceof User || !$policy->create($actor)) {
+            return false;
+        }
+
+        return !$this->exists('course_group_ids')
+            || $policy->assignCourseGroups($actor);
     }
 
     public function rules()
     {
         return [
             'subject_id' => ['required', 'integer', 'exists:subjects,id'],
-            'creator_id' => ['required', 'integer', 'exists:users,id'],
             'exam_name' => ['required', 'string', 'max:255'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date', 'after:start_time'],
             'duration_minutes' => ['required', 'integer', 'min:1'],
-            'course_group_ids' => ['sometimes', 'array'],
-            'course_group_ids.*' => ['integer', 'exists:course_groups,id'],
+            'course_group_ids' => ['required', 'array', 'min:1'],
+            'course_group_ids.*' => ['integer', 'distinct', 'exists:course_groups,id'],
 
             'chapter_ids' => ['nullable', 'array'],
             'chapter_ids.*' => ['integer', 'exists:chapters,id'],
@@ -29,6 +37,7 @@ class GenerateExamByFilterRequest extends FormRequest
             'difficulty_filters' => ['required', 'array', 'min:1'],
             'difficulty_filters.*.difficulty_id' => ['required', 'integer', 'exists:difficulties,id'],
             'difficulty_filters.*.question_count' => ['required', 'integer', 'min:0'],
+            'configuration.limit_questions_per_page' => ['sometimes', 'integer', 'min:-1', 'not_in:0'],
 
             'configuration' => ['required', 'array'],
             'configuration.has_monitoring' => ['sometimes', 'boolean'],
@@ -51,10 +60,6 @@ class GenerateExamByFilterRequest extends FormRequest
             'subject_id.required' => ':attribute không được để trống',
             'subject_id.integer' => ':attribute phải là số nguyên',
             'subject_id.exists' => ':attribute không tồn tại trong hệ thống',
-
-            'creator_id.required' => ':attribute không được để trống',
-            'creator_id.integer' => ':attribute phải là số nguyên',
-            'creator_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'exam_name.required' => ':attribute không được để trống',
             'exam_name.string' => ':attribute phải là chuỗi ký tự',
@@ -110,7 +115,6 @@ class GenerateExamByFilterRequest extends FormRequest
     {
         return [
             'subject_id' => 'Mã môn thi',
-            'creator_id' => 'Mã người tạo',
             'exam_name' => 'Tên đề',
             'start_time' => 'Thời gian bắt đầu',
             'end_time' => 'Thời gian kết thúc',

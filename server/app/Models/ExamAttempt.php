@@ -13,6 +13,7 @@ class ExamAttempt extends Model
         "student_id",
         "exam_id",
         "start_time",
+        "deadline_at",
         "submission_time",
         "total_score",
         "correct_answer_count",
@@ -23,6 +24,7 @@ class ExamAttempt extends Model
 
     protected $casts = [
         "start_time" => "datetime",
+        "deadline_at" => "datetime",
         "submission_time" => "datetime",
         "total_score" => "decimal:2",
     ];
@@ -40,6 +42,11 @@ class ExamAttempt extends Model
     public function examAttemptLogs()
     {
         return $this->hasMany(ExamAttemptLog::class, 'exam_attempt_id');
+    }
+
+    public function examAttemptLog()
+    {
+        return $this->hasOne(ExamAttemptLog::class, 'exam_attempt_id');
     }
 
     public function user()

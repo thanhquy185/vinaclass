@@ -16,7 +16,10 @@ class DifficultyResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "difficulty_name" => $this->difficulty_name
+            "difficulty_name" => $this->difficulty_name,
+            "questions_count" => (int) ($this->questions_count ?? 0),
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
         ];
     }
 }

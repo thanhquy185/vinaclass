@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\ExamAttemptPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StartTestRequest extends FormRequest
@@ -11,9 +13,11 @@ class StartTestRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamAttemptPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->startOwnAttempt($actor, $actor);
     }
 
     /**
@@ -24,12 +28,6 @@ class StartTestRequest extends FormRequest
     public function rules()
     {
         return [
-            "student_id" => [
-                "required",
-                "integer",
-                "exists:users,id",
-            ],
-
             "exam_id" => [
                 "required",
                 "integer",
@@ -41,9 +39,6 @@ class StartTestRequest extends FormRequest
     public function messages()
     {
         return [
-            'student_id.required' => 'Vui lòng chọn sinh viên.',
-            'student_id.integer' => 'Mã sinh viên không hợp lệ.',
-            'student_id.exists' => 'Sinh viên không tồn tại.',
             'exam_id.required' => 'Vui lòng chọn đề thi.',
             'exam_id.integer' => 'Mã đề thi không hợp lệ.',
             'exam_id.exists' => 'Đề thi không tồn tại.',

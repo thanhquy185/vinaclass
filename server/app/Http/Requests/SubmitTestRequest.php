@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ExamAttempt;
+use App\Models\User;
+use App\Policies\ExamAttemptPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubmitTestRequest extends FormRequest
@@ -11,9 +14,14 @@ class SubmitTestRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamAttemptPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $examAttempt = $this->route('examAttempt');
+
+        return $actor instanceof User
+            && $examAttempt instanceof ExamAttempt
+            && $policy->updateOwnAttempt($actor, $examAttempt);
     }
 
     /**
@@ -24,16 +32,18 @@ class SubmitTestRequest extends FormRequest
     public function rules()
     {
         return [
-            'answers' => ['required', 'array'],
+            'answers' => ['present', 'array'],
 
             'answers.*.question_id' => [
                 'required',
                 'integer',
+                'distinct',
                 'exists:questions,id',
             ],
 
             'answers.*.answer_id' => [
-                'required',
+                'sometimes',
+                'nullable',
                 'integer',
                 'exists:answer_options,id',
             ],
@@ -47,6 +57,7 @@ class SubmitTestRequest extends FormRequest
             'answers.array' => 'Danh sách câu trả lời phải là một mảng.',
             'answers.*.question_id.required' => 'Mã câu hỏi không được để trống.',
             'answers.*.question_id.integer' => 'Mã câu hỏi phải là số nguyên.',
+            'answers.*.question_id.distinct' => 'Mỗi câu hỏi chỉ được gửi một câu trả lời.',
             'answers.*.question_id.exists' => 'Câu hỏi không tồn tại.',
             'answers.*.answer_id.required' => 'Mã đáp án không được để trống.',
             'answers.*.answer_id.integer' => 'Mã đáp án phải là số nguyên.',

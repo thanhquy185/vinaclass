@@ -2,270 +2,222 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
 use App\Models\FunctionModel;
 use App\Models\Role;
 use App\Models\RoleDetail;
+use App\Models\User;
+use App\Policies\RolePolicy;
+use App\Services\Authorization\RolePermissionCompatibilityService;
+use App\Services\IdentityV2\IdentityV2Definitions;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RoleService
 {
+    private const LEGACY_ACTIONS = [
+        'can_view' => 'VIEW',
+        'can_create' => 'ADD',
+        'can_update' => 'UPDATE',
+        'can_delete' => 'DELETE',
+    ];
 
-    public function getAll()
-    {
-        $roles = Role::withCount([
-            'users as total_users'
-        ])->get();
-
-        return $roles;
+    public function __construct(
+        private RolePolicy $rolePolicy,
+        private RolePermissionCompatibilityService $permissionCompatibility,
+        private RoleQueryService $roleQueryService
+    ) {
     }
 
-    public function getRoleDetail(Role $role)
+    public function getAll(User $actor, ?string $nameSortDirection = null)
     {
-        $role = Role::with('roleDetails.function')->findOrFail($role->id);
-        $roleDetails = $role->roleDetails;
-
-        $permission = $roleDetails
-            ->groupBy('function_id')
-            ->map(function ($items) {
-                return [
-                    'function_name' => $items->first()->function->function_name,
-                    'can_view'       => $items->contains('action', 'VIEW'),
-                    'can_create'     => $items->contains('action', 'ADD'),
-                    'can_update'     => $items->contains('action', 'UPDATE'),
-                    'can_delete'     => $items->contains('action', 'DELETE')
-                ];
-            })->values();
-
-        $response = [
-            "id"           => $role->id,
-            "role_name"    => $role->role_name,
-            "roleDetails" => $permission
-        ];
-
-        return $response;
+        return $this->roleQueryService->getAll($actor, $nameSortDirection);
     }
 
-    public function getRoleDetailById(int $id)
+    public function getRoleDetail(Role $role, User $actor): array
     {
-        $role = Role::with('roleDetails.function')->find($id);
-        if (!$role) return null;
-
-        $roleDetails = $role->roleDetails;
-
-        $permission = $roleDetails
-            ->groupBy('function_id')
-            ->map(function ($items) {
-                return [
-                    'function_name' => $items->first()->function->function_name,
-                    'can_view'       => $items->contains('action', 'VIEW'),
-                    'can_create'     => $items->contains('action', 'ADD'),
-                    'can_update'     => $items->contains('action', 'UPDATE'),
-                    'can_delete'     => $items->contains('action', 'DELETE')
-                ];
-            })->values();
-
-        $response = [
-            "id"           => $role->id,
-            "role_name"    => $role->role_name,
-            "roleDetails" => $permission
-        ];
-
-        return $response;
+        return $this->roleQueryService->getRoleDetail($role, $actor);
     }
 
-    // *** format gửi tạo 1 phân quyền
-    // {
-    //   "tenNhomQuyen": "Nhân viên bán hàng",
-    //   "roleDetails": [
-    //     {
-    //       "tenChucNang": "QL_NHOMHP",
-    //       "can_view": true,
-    //       "can_create": false,
-    //       "can_update": false,
-    //       "can_delete": false
-    //     },
-    //     {
-    //       "tenChucNang": "QL_CAUHOI",
-    //       "can_view": true,
-    //       "can_create": true,
-    //       "can_update": false,
-    //       "can_delete": false
-    //     }
-    //   ]
-    // }
-    public function createRoleWithPermissions(array $data)
+    public function getRoleDetailById(int $id): ?array
     {
-        // Transaction to ensure complete rollback in case of error
-        return DB::transaction(function () use ($data) {
-            // 1. Create role
-            $role = Role::create([
-                'role_name' => $data['role_name'],
+        return $this->roleQueryService->getRoleDetailById($id);
+    }
+
+    public function createRoleWithPermissions(array $data, User $actor): Role
+    {
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($data, $actorId): Role {
+            $actor = $this->lockActor($actorId);
+            abort_unless($this->rolePolicy->create($actor), 403);
+
+            $role = Role::query()->create([
+                'role_name' => trim($data['role_name']),
             ]);
 
-            // 2. Prepare roleDetails data
-            $roleDetailsData = [];
-            foreach ($data['roleDetails'] as $roleDetail) {
-                // Find function for each permission set
-                $function = FunctionModel::where('function_name', $roleDetail['function_name'])->firstOrFail();
-
-                if ($roleDetail['can_view']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $function->id,
-                        'action'      => 'VIEW',
-                    ];
-                }
-
-                if ($roleDetail['can_create']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $function->id,
-                        'action'      => 'ADD',
-                    ];
-                }
-
-                if ($roleDetail['can_update']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $function->id,
-                        'action'      => 'UPDATE',
-                    ];
-                }
-
-                if ($roleDetail['can_delete']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $function->id,
-                        'action'      => 'DELETE',
-                    ];
-                }
+            $roleDetails = $this->buildRoleDetailRows($role->id, $data['role_details'] ?? []);
+            if ($roleDetails !== []) {
+                RoleDetail::query()->insert($roleDetails);
             }
 
-            // 3. Batch insert
-            RoleDetail::insert($roleDetailsData);
-
-            return $role->load('roleDetails.function');
-        });
-    }
-
-    public function updateRoleWithPermissions(array $data, int $id)
-    {
-        return DB::transaction(function () use ($data, $id) {
-
-            // 1. Get role to update
-            $role = Role::findOrFail($id);
-
-            // 2. Update role info
-            $role->update([
-                'role_name' => $data['role_name'],
-            ]);
-
-            // 3. Delete all old permissions
-            RoleDetail::where('role_id', $role->id)->delete();
-
-            // 4. Prepare new permission data
-            $roleDetailsData = [];
-
-            foreach ($data['roleDetails'] as $roleDetail) {
-
-                // Find corresponding function
-                $functionCategory = FunctionModel::where('function_name', $roleDetail['function_name'])->firstOrFail(); // NOTE: Action/tenChucNang -> FunctionModel/function_name
-
-                if ($roleDetail['can_view']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $functionCategory->id,
-                        'action'      => 'VIEW',
-                    ];
-                }
-
-                if ($roleDetail['can_create']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $functionCategory->id,
-                        'action'      => 'ADD',
-                    ];
-                }
-
-                if ($roleDetail['can_update']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $functionCategory->id,
-                        'action'      => 'UPDATE',
-                    ];
-                }
-
-                if ($roleDetail['can_delete']) {
-                    $roleDetailsData[] = [
-                        'role_id'     => $role->id,
-                        'function_id' => $functionCategory->id,
-                        'action'      => 'DELETE',
-                    ];
-                }
-            }
-
-            // 5. Batch insert new permissions
-            if (!empty($roleDetailsData)) {
-                RoleDetail::insert($roleDetailsData);
+            if (array_key_exists('role_details', $data)) {
+                $this->permissionCompatibility->syncV2PermissionsFromLegacy($role);
             }
 
             return $role->load('roleDetails.function');
         });
     }
 
-    public function deleteRoleWithPermissions(int $id)
+    public function updateRoleWithPermissions(array $data, int $id, User $actor): Role
     {
-        return DB::transaction(function () use ($id) {
+        $actorId = (int) $actor->id;
+        $roleId = (int) $id;
 
-            // 1. Get role to delete
-            $role = Role::findOrFail($id);
+        return DB::transaction(function () use ($data, $actorId, $roleId): Role {
+            $actor = $this->lockActor($actorId);
+            $lockedRole = Role::query()->lockForUpdate()->findOrFail($roleId);
+            abort_unless($this->rolePolicy->update($actor, $lockedRole), 403);
+            abort_if($lockedRole->is_deleted, 404);
+            if (array_key_exists('role_name', $data)) {
+                $this->assertSystemRoleCanBeUpdated($lockedRole, trim($data['role_name']));
+                $lockedRole->update(['role_name' => trim($data['role_name'])]);
+            }
 
-            // 2. Delete all permissions of the role
-            RoleDetail::where('role_id', $role->id)->delete();
+            if (array_key_exists('role_details', $data)) {
+                $roleDetails = $this->buildRoleDetailRows($lockedRole->id, $data['role_details']);
+                RoleDetail::query()->where('role_id', $lockedRole->id)->delete();
 
-            // 3. Delete role
-            $role->delete();
+                if ($roleDetails !== []) {
+                    RoleDetail::query()->insert($roleDetails);
+                }
+
+                $this->permissionCompatibility->syncV2PermissionsFromLegacy($lockedRole);
+            }
+
+            return $lockedRole->load('roleDetails.function');
+        });
+    }
+
+    public function deleteRoleWithPermissions(int $id, User $actor): bool
+    {
+        $actorId = (int) $actor->id;
+        $roleId = (int) $id;
+
+        return DB::transaction(function () use ($actorId, $roleId): bool {
+            $actor = $this->lockActor($actorId);
+            $lockedRole = Role::query()->lockForUpdate()->findOrFail($roleId);
+            abort_unless($this->rolePolicy->delete($actor, $lockedRole), 403);
+            abort_if($lockedRole->is_deleted, 404);
+            $this->assertRoleCanBeDeleted($lockedRole);
+
+            if ($lockedRole->users()->where('is_deleted', false)->exists()) {
+                throw new BusinessException('Không thể xóa nhóm quyền đang được tài khoản sử dụng.', 409);
+            }
+
+            $lockedRole->is_deleted = true;
+            $lockedRole->save();
 
             return true;
         });
     }
 
     public function hasRole(int $id, string $permission): bool
-    { // For middleware check
-        $role = Role::findOrFail($id);
-        if (!$role || !isset($role['roleDetails'])) {
-            return false; // Return false if no permissions found
+    {
+        return $this->roleQueryService->hasRole($id, $permission);
+    }
+
+    private function buildRoleDetailRows(int $roleId, array $roleDetails): array
+    {
+        $functionNames = array_map(
+            fn (array $detail) => $detail['function_name'],
+            $roleDetails
+        );
+
+        if (count($functionNames) !== count(array_unique($functionNames))) {
+            throw new BusinessException('Mỗi chức năng chỉ được khai báo một lần trong nhóm quyền.', 422);
         }
 
-        $parts = explode('_', $permission, 2);
+        $functions = FunctionModel::query()
+            ->where('is_deleted', false)
+            ->whereIn('function_name', $functionNames)
+            ->get()
+            ->keyBy('function_name');
 
-        [$action, $function] = $parts;
+        if ($functions->count() !== count($functionNames)) {
+            throw new BusinessException('Danh sách có chức năng không tồn tại hoặc đã ngừng hoạt động.', 422);
+        }
 
-        $actionMap = [
-            'view'   => 'can_view',
-            'create' => 'can_create',
-            'update' => 'can_update',
-            'delete' => 'can_delete',
-        ];
+        $rows = [];
+        $timestamp = now();
+        foreach ($roleDetails as $detail) {
+            $function = $functions->get($detail['function_name']);
+            foreach (self::LEGACY_ACTIONS as $field => $action) {
+                if (filter_var($detail[$field] ?? false, FILTER_VALIDATE_BOOLEAN)) {
+                    $actionCode = $action === 'ADD' ? 'CREATE' : $action;
+                    $supportedActions = IdentityV2Definitions::FUNCTION_ACTIONS[$detail['function_name']] ?? [];
+                    if (!in_array($actionCode, $supportedActions, true)) {
+                        throw new BusinessException(
+                            sprintf(
+                                'Chức năng "%s" không hỗ trợ thao tác "%s".',
+                                $detail['function_name'],
+                                IdentityV2Definitions::ACTION_LABELS[$actionCode][0] ?? $actionCode
+                            ),
+                            422
+                        );
+                    }
 
-        $field = $actionMap[$action];
-
-        $roleDetailData = $this->getRoleDetail($role);
-
-        foreach ($roleDetailData["roleDetails"] as $detail) {
-            if ($detail['function_name'] === $function) {
-                return $detail[$field]; // Returns true/false
+                    $rows[] = [
+                        'role_id' => $roleId,
+                        'function_id' => $function->id,
+                        'action' => $action,
+                        'created_at' => $timestamp,
+                        'updated_at' => $timestamp,
+                    ];
+                }
             }
         }
 
-        // Log required and existing permissions
-        Log::info("Permission Check", [
-            'role_id'              => $id,
-            'permission_checked'   => $permission,
-            'user_has_permission'  => $this->getRoleDetail($role),
-        ]);
+        return $rows;
+    }
 
-        return false;
+    private function assertSystemRoleCanBeUpdated(Role $role, string $newName): void
+    {
+        $roleCode = $this->systemRoleCode($role);
+        if ($roleCode === 'ADMIN') {
+            throw new BusinessException('Không thể chỉnh sửa vai trò quản trị hệ thống.', 409);
+        }
+
+        $isNamedSystemRole = in_array($roleCode, ['TEACHER', 'STUDENT'], true);
+        if ($isNamedSystemRole && $this->normalizeRoleName($newName) !== $this->normalizeRoleName($role->role_name)) {
+            throw new BusinessException('Không thể đổi tên vai trò hệ thống.', 409);
+        }
+    }
+
+    private function assertRoleCanBeDeleted(Role $role): void
+    {
+        if (in_array($this->systemRoleCode($role), ['ADMIN', 'TEACHER', 'STUDENT'], true)) {
+            throw new BusinessException('Không thể xóa vai trò hệ thống.', 409);
+        }
+    }
+
+    private function systemRoleCode(Role $role): ?string
+    {
+        $code = $role->canonicalCode();
+
+        return in_array($code, ['ADMIN', 'TEACHER', 'STUDENT'], true) ? $code : null;
+    }
+
+    private function normalizeRoleName(string $name): string
+    {
+        return Str::slug(Str::ascii(trim($name)), '_');
+    }
+
+    private function lockActor(int $actorId): User
+    {
+        return User::query()
+            ->with('role')
+            ->lockForUpdate()
+            ->findOrFail($actorId);
     }
 }

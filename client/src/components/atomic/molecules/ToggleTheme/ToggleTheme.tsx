@@ -1,4 +1,4 @@
-import { useThemeStore } from "@/stores/theme.store";
+import { useThemeStore } from "@/shared/stores/useThemeStore";
 import { Button } from "../../atoms";
 
 export default function ThemeToggle() {

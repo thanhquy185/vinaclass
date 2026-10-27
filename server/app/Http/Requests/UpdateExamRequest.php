@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Exam;
+use App\Models\User;
+use App\Policies\ExamPolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateExamRequest extends FormRequest
 {
@@ -11,9 +15,46 @@ class UpdateExamRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $exam = $this->route('exam');
+
+        if (
+            !$actor instanceof User
+            || !$exam instanceof Exam
+            || !$policy->manage($actor, $exam, 'update')
+        ) {
+            return false;
+        }
+
+        return !$this->hasCourseGroupAssignmentChanges($exam)
+            || $policy->assignCourseGroups($actor);
+    }
+
+    private function hasCourseGroupAssignmentChanges(Exam $exam): bool
+    {
+        if (!$this->exists('course_group_ids') || !is_array($this->input('course_group_ids'))) {
+            return false;
+        }
+
+        $currentIds = $exam->courseGroups()
+            ->pluck('course_groups.id')
+            ->map(fn ($id): int => (int) $id)
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
+        $requestedIds = collect($this->input('course_group_ids'))
+            ->map(fn ($id) => filter_var($id, FILTER_VALIDATE_INT))
+            ->filter(fn ($id): bool => $id !== false)
+            ->map(fn ($id): int => (int) $id)
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
+
+        return $currentIds !== $requestedIds;
     }
 
     /**
@@ -25,20 +66,19 @@ class UpdateExamRequest extends FormRequest
     {
         return [
             'subject_id' => ['sometimes', 'integer', 'exists:subjects,id'],
-            'exam_name' => ['sometimes', 'string', 'max:255'],
+            'exam_name' => ['sometimes', 'required', 'string', 'max:255'],
 
             'start_time' => ['sometimes', 'date'],
-            'end_time' => ['sometimes', 'date', 'after:start_time'],
+            'end_time' => ['sometimes', 'date'],
 
             'duration_minutes' => ['sometimes', 'integer', 'min:1'],
-            'is_deleted' => ['sometimes', 'boolean'],
 
             'course_group_ids' => ['sometimes', 'array'],
-            'course_group_ids.*' => ['integer', 'exists:course_groups,id'],
+            'course_group_ids.*' => ['integer', 'distinct', 'exists:course_groups,id'],
 
-            'questions' => ['sometimes', 'array'],
-            'questions.*.id' => ['required_with:questions', 'integer', 'exists:questions,id'],
-            'questions.*.order' => ['required_with:questions', 'integer'],
+            'questions' => ['sometimes', 'array', 'min:1', 'max:1000'],
+            'questions.*.id' => ['required_with:questions', 'integer', 'distinct', 'exists:questions,id'],
+            'questions.*.order' => ['required_with:questions', 'integer', 'min:1', 'distinct'],
             'questions.*.score' => ['required_with:questions', 'numeric', 'min:0', 'max:10'],
 
             'configuration' => ['sometimes', 'array'],
@@ -53,9 +93,41 @@ class UpdateExamRequest extends FormRequest
             'configuration.is_limit_switch_tab' => ['sometimes', 'boolean'],
             'configuration.tab_switch_limit' => ['sometimes', 'integer', 'min:0'],
             'configuration.message_on_warning' => ['sometimes', 'nullable', 'string'],
-            'configuration.limit_questions_per_page' => ['sometimes', 'integer'],
+            'configuration.limit_questions_per_page' => ['sometimes', 'integer', 'min:-1', 'not_in:0'],
             'configuration.allow_back_last_question' => ['sometimes', 'boolean'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if (!$validator->errors()->has('start_time') && !$validator->errors()->has('end_time')) {
+                $exam = $this->route('exam');
+                $startTime = $this->input('start_time', $exam?->start_time);
+                $endTime = $this->input('end_time', $exam?->end_time);
+                if ($startTime && $endTime && strtotime((string) $endTime) <= strtotime((string) $startTime)) {
+                    $validator->errors()->add('end_time', 'Thời gian kết thúc phải sau thời gian bắt đầu.');
+                }
+            }
+
+            if ($validator->errors()->isNotEmpty() || !$this->exists('questions')) {
+                return;
+            }
+
+            $questions = $this->input('questions', []);
+            if (!is_array($questions) || empty($questions)) {
+                return;
+            }
+
+            $totalScore = array_sum(array_map(
+                fn ($question) => (float) ($question['score'] ?? 0),
+                $questions
+            ));
+
+            if (abs($totalScore - 10) > 0.001) {
+                $validator->errors()->add('questions', 'Tổng điểm các câu hỏi phải bằng 10.');
+            }
+        });
     }
 
     public function messages()
@@ -73,13 +145,13 @@ class UpdateExamRequest extends FormRequest
 
             'duration_minutes.integer' => ':attribute phải là số nguyên',
             'duration_minutes.min' => ':attribute phải lớn hơn hoặc bằng 1',
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
 
             'course_group_ids.array' => ':attribute phải là mảng',
             'course_group_ids.*.integer' => ':attribute phải là số nguyên',
             'course_group_ids.*.exists' => ':attribute không tồn tại trong hệ thống',
 
             'questions.array' => ':attribute phải là mảng',
+            'questions.max' => ':attribute không được vượt quá 1000 câu',
 
             'questions.*.id.required_with' => ':attribute không được để trống',
             'questions.*.id.integer' => ':attribute phải là số nguyên',
@@ -121,7 +193,6 @@ class UpdateExamRequest extends FormRequest
             'start_time' => 'Thời gian bắt đầu',
             'end_time' => 'Thời gian kết thúc',
             'duration_minutes' => 'Thời gian làm bài',
-            'is_deleted' => 'Trạng thái xóa',
             'course_group_ids' => 'Danh sách nhóm học phần',
             'course_group_ids.*' => 'Mã nhóm học phần',
             'questions' => 'Danh sách câu hỏi',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\SubjectPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSubjectRequest extends FormRequest
@@ -11,9 +13,11 @@ class StoreSubjectRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(SubjectPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->manage($actor, 'create');
     }
 
     /**
@@ -25,11 +29,12 @@ class StoreSubjectRequest extends FormRequest
     {
         return [
             'subject_name' => ['required', 'string', 'max:150'],
-            'subject_code' => ['required', 'string', 'unique:subjects,subject_code'],
+            'subject_code' => ['required', 'string', 'max:50', 'unique:subjects,subject_code'],
             'credit_count' => ['required', 'integer', 'min:1'],
-            'theory_hours' => ['nullable', 'integer', 'min:0'],
-            'practice_hours' => ['nullable', 'integer', 'min:0'],
-            'is_deleted' => ['sometimes', 'boolean'],
+            'theory_hours' => ['required', 'integer', 'min:0'],
+            'practice_hours' => ['required', 'integer', 'min:0'],
+            'chapters' => ['sometimes', 'array'],
+            'chapters.*.chapter_name' => ['required', 'string', 'max:100'],
         ];
     }
 
@@ -42,18 +47,24 @@ class StoreSubjectRequest extends FormRequest
 
             'subject_code.required' => ':attribute không được để trống',
             'subject_code.string' => ':attribute phải là chuỗi ký tự',
+            'subject_code.max' => ':attribute không được vượt quá 50 ký tự',
             'subject_code.unique' => ':attribute đã tồn tại',
 
             'credit_count.required' => ':attribute không được để trống',
             'credit_count.integer' => ':attribute phải là số nguyên',
             'credit_count.min' => ':attribute phải lớn hơn hoặc bằng 1',
 
+            'theory_hours.required' => ':attribute không được để trống',
             'theory_hours.integer' => ':attribute phải là số nguyên',
             'theory_hours.min' => ':attribute không hợp lệ',
+            'practice_hours.required' => ':attribute không được để trống',
             'practice_hours.integer' => ':attribute phải là số nguyên',
             'practice_hours.min' => ':attribute không hợp lệ',
+            'chapters.array' => 'Danh sách chương phải là một mảng hợp lệ.',
+            'chapters.*.chapter_name.required' => 'Tên chương không được để trống.',
+            'chapters.*.chapter_name.string' => 'Tên chương phải là chuỗi ký tự.',
+            'chapters.*.chapter_name.max' => 'Tên chương không được vượt quá 100 ký tự.',
 
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
         ];
     }
 
@@ -65,7 +76,8 @@ class StoreSubjectRequest extends FormRequest
             'credit_count' => 'Số tín chỉ',
             'theory_hours' => 'Số tiết lý thuyết',
             'practice_hours' => 'Số tiết thực hành',
-            'is_deleted' => 'Trạng thái xóa',
+            'chapters' => 'Danh sách chương',
+            'chapters.*.chapter_name' => 'Tên chương',
         ];
     }
 }

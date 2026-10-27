@@ -32,7 +32,7 @@ class CourseGroupNotificationController extends Controller
     public function store(StoreCourseGroupNotificationRequest $request)
     {
         $data = $this->courseGroupNotificationService->add($request->validated());
-        return $this->success($data, 201);
+        return $this->created($data);
     }
 
     public function show(CourseGroupNotification $courseGroupNotification)

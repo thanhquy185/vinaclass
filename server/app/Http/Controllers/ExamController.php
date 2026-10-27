@@ -8,79 +8,99 @@ use App\Http\Requests\UpdateExamRequest;
 use App\Models\CourseGroup;
 use App\Models\Exam;
 use App\Models\User;
+use App\Services\ExamQueryService;
 use App\Services\ExamService;
+use App\Services\ExamUpdateService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
     use ApiResponseTrait;
 
     private ExamService $examService;
+    private ExamQueryService $examQueryService;
+    private ExamUpdateService $examUpdateService;
 
-    public function __construct(ExamService $examService)
-    {
+    public function __construct(
+        ExamService $examService,
+        ExamQueryService $examQueryService,
+        ExamUpdateService $examUpdateService
+    ) {
         $this->examService = $examService;
+        $this->examQueryService = $examQueryService;
+        $this->examUpdateService = $examUpdateService;
     }
 
     public function index()
     {
-        $data = $this->examService->getAll();
+        $data = $this->examQueryService->getAll(Auth::user());
 
         return $this->success($data);
     }
 
     public function store(StoreExamRequest $request)
     {
-        $data = $this->examService->add($request->validated());
+        $payload = $request->validated();
+        $data = $this->examService->add($payload, $request->user());
 
-        return $this->success($data, 201);
+        return $this->created($data);
     }
 
     public function generateExamsByFilter(GenerateExamByFilterRequest $request)
     {
-        $data = $this->examService->generateByFilter($request->validated());
+        $payload = $request->validated();
+        $data = $this->examService->generateByFilter($payload, $request->user());
 
-        return $this->success($data, 201);
+        return $this->created($data);
     }
 
     public function show(Exam $exam)
     {
-        $data = $this->examService->getOne($exam);
+        $data = $this->examQueryService->getExamDetails($exam, Auth::user());
 
         return $this->success($data);
     }
 
     public function update(UpdateExamRequest $request, Exam $exam)
     {
-        $data = $this->examService->update($request->validated(), $exam);
+        $actor = $request->user();
+        $this->examUpdateService->assertCanManage($exam, $actor, 'update');
+        $data = $this->examUpdateService->update($request->validated(), $exam, $actor);
 
         return $this->success($data);
     }
 
     public function destroy(Exam $exam)
     {
-        $data = $this->examService->delete($exam->id);
+        $actor = request()->user();
+        $this->examService->assertCanManage($exam, $actor, 'delete');
+        $data = $this->examService->delete($exam, $actor);
 
         return $this->success($data);
     }
 
     public function getExamsByStudent(User $user)
     {
-        $data = $this->examService->getOfStudent($user);
+        $this->examQueryService->assertCanViewStudentExams(Auth::user(), $user);
+        $data = $this->examQueryService->getOfStudent($user);
 
         return $this->success($data);
     }
 
     public function getExamDetails(Exam $exam)
     {
-        $data = $this->examService->getExamDetails($exam);
+        $data = $this->examQueryService->getExamDetails($exam, request()->user());
 
         return $this->success($data);
     }
 
     public function getByCourseGroupAndStudent(CourseGroup $courseGroup, User $user)
     {
-        $data = $this->examService->getByCourseGroupAndStudent($courseGroup, $user);
+        $viewer = Auth::user();
+        $this->examQueryService->assertCanViewStudentProgress($viewer, $courseGroup, $user);
+        $data = $this->examQueryService->getByCourseGroupAndStudent($courseGroup, $user, $viewer);
+        if ($viewer->hasRoleCode('STUDENT')) $data->makeHidden('join_code');
 
         return $this->success($data);
     }

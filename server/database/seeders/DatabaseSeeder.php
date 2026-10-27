@@ -14,11 +14,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        if (app()->environment('production')) {
+            // Production receives reference data only; all account and course fixtures are demo data.
+            $this->call([
+                RoleSeeder::class,
+                FunctionSeeder::class,
+                RoleDetailSeeder::class,
+                IdentityV2CatalogSeeder::class,
+                DifficultySeeder::class,
+            ]);
+            return;
+        }
+
         // \App\Models\User::factory(10)->create();
         $this->call([
             RoleSeeder::class,
             FunctionSeeder::class,
             RoleDetailSeeder::class,
+            IdentityV2CatalogSeeder::class,
             UserSeeder::class,
             SubjectSeeder::class,
             ChapterSeeder::class,

@@ -24,7 +24,7 @@ class ExamConfigurationController extends Controller
      */
     public function index()
     {
-        $data = $this->examConfigurationService->getAll();
+        $data = $this->examConfigurationService->getAll(request()->user());
 
         return $this->success(
             ExamConfigurationResource::collection($data)
@@ -33,8 +33,10 @@ class ExamConfigurationController extends Controller
 
     public function store(StoreExamConfigurationRequest $request)
     {
+        $payload = $request->validated();
         $data = $this->examConfigurationService->create(
-            $request->validated()
+            $payload,
+            $request->user()
         );
 
         return $this->created(
@@ -45,7 +47,8 @@ class ExamConfigurationController extends Controller
     public function show(ExamConfiguration $examConfiguration)
     {
         $data = $this->examConfigurationService->getOne(
-            $examConfiguration
+            $examConfiguration,
+            request()->user()
         );
 
         return $this->success(
@@ -57,9 +60,11 @@ class ExamConfigurationController extends Controller
         UpdateExamConfigurationRequest $request,
         ExamConfiguration $examConfiguration
     ) {
+        $payload = $request->validated();
         $data = $this->examConfigurationService->update(
             $examConfiguration,
-            $request->validated()
+            $payload,
+            $request->user()
         );
 
         return $this->updated(
@@ -69,8 +74,9 @@ class ExamConfigurationController extends Controller
 
     public function destroy(ExamConfiguration $examConfiguration)
     {
-        $this->examConfigurationService->delete($examConfiguration);
+        $this->examConfigurationService->delete($examConfiguration, request()->user());
 
         return $this->deleted();
     }
+
 }

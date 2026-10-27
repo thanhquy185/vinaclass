@@ -26,5 +26,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/types/tiptap.d.ts"]
+  "include": ["src", "src/types/tiptap.d.ts"],
+  "exclude": ["src/styles/script/**/*.ts"]
 }

@@ -19,7 +19,7 @@ class Handler extends ExceptionHandler
     use ApiResponseTrait;
 
     /**
-     * Chặn log các exception thông dụng
+     * Prevent common exceptions from being reported.
      * @var array
      */
     protected $dontReport = [
@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Chặn cơ chế auto lưu các field quan trọng của laravel để bảo mật
+     * Prevent Laravel from flashing sensitive fields back to the session.
      * @var array<int, string>
      */
     protected $dontFlash = [
@@ -44,9 +44,9 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Hàm điều hướng exception
-     * $this->reportable(): điều hướng các log hệ thống
-     * $this->renderable(): hiển thị cho client
+     * Configure exception reporting and rendering.
+     * $this->reportable(): configure system log reporting.
+     * $this->renderable(): configure the client response.
      * @return void
      */
     public function register(): void
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Method tiện ích cho register
+     * Utility method for registration.
      * @param Throwable $e
      * @return \Illuminate\Http\JsonResponse
      */

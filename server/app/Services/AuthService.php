@@ -2,32 +2,36 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Exception\ClientException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\GoogleProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthService
 {
     protected RoleService $roleService;
-    public function __construct(RoleService $roleService)
-    {
+
+    public function __construct(
+        RoleService $roleService,
+        private UserProfileService $userProfileService,
+        private GoogleOAuthService $googleOAuthService,
+        private StudentRegistrationService $studentRegistrationService
+    ) {
         $this->roleService = $roleService;
     }
+
     public function login(array $data)
     {
         $login = $data['login'];
         $password = $data['password'];
 
+        $loginField = 'username';
         $user = User::where('username', $login)->first();
 
         if (!$user) {
+            $loginField = 'email';
             $user = User::where('email', $login)->first();
         }
 
@@ -35,8 +39,12 @@ class AuthService
             throw new HttpException(401, 'Invalid credentials');
         }
 
+        if ($user->is_locked || $user->is_deleted) {
+            throw new HttpException(403, 'Tài khoản đã bị khóa hoặc ngừng hoạt động');
+        }
+
         $credentials = [
-            $user->email === $login ? 'email' : 'username' => $login,
+            $loginField => $login,
             'password' => $password
         ];
 
@@ -46,98 +54,63 @@ class AuthService
             ]);
         }
 
+        $this->userProfileService->loadPersonalProfiles($user);
         $role = $user->role_id ? $this->roleService->getRoleDetailById($user->role_id) : null;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type'   => 'bearer',
-            'me' => Auth::guard('api')->user(),
-            'role' => $role
-        ]);
-    }
-
-    public function redirectToGoogle(Request $request, string $frontendUrl): RedirectResponse
-    {
-        return $this->googleProvider()->with(['state' => 'frontend_url=' . $frontendUrl])->redirect();
-    }
-
-    public function handleGoogleCallback(): array
-    {
-        $oauthError = request()->query('error');
-        if ($oauthError) {
-            // throw new HttpException(400, 'Đăng nhập Google bị hủy hoặc thất bại từ phía Google');
-            return ['error' => 'google_auth_error'];
-        }
-
-        if (!request()->filled('code')) {
-            // throw new HttpException(400, 'Thiếu mã xác thực Google. Hãy bắt đầu từ endpoint /auth/google/redirect');
-            return ['error' => 'google_auth_error'];
-        }
-
-        try {
-            $googleUser = $this->googleProvider()->stateless()->user();
-        } catch (ClientException $e) {
-            // throw new HttpException(400, 'Mã xác thực Google không hợp lệ hoặc đã hết hạn');
-            return ['error' => 'google_auth_error'];
-        }
-
-        $email = $googleUser->getEmail();
-
-        if (!$email) {
-            return ['error' => 'unauthorized_domain'];
-        }
-
-        $user = User::where('email', $email)->first();
-
-        if (!$user) {
-            return ['error' => 'unauthorized_domain'];
-        }
-
-        $googleId = $googleUser->getId();
-        if (!$user->google_id && $googleId) { // NOTE: $user->ggid -> $user->google_id
-            $user->google_id = $googleId;      // NOTE: ggid -> google_id
-            $user->save();
-            $user->refresh();
-        }
-
-        $token = Auth::guard('api')->login($user);
-
-        if (!$token) {
-            return (["error" => "login_failed"]);
-        }
-
-        $role = $user->role_id ? $this->roleService->getRoleDetailById($user->role_id) : null;
-
         return [
             'access_token' => $token,
             'token_type'   => 'bearer',
             'me' => $user,
-            'role' => $role,
+            'role' => $role
         ];
     }
 
-    private function googleProvider(): GoogleProvider
+    public function registerStudent(array $data): array
     {
-        /** @var GoogleProvider $provider */
-        $provider = Socialite::driver('google');
+        $user = $this->studentRegistrationService->createFromCredentials($data);
 
-        return $provider;
+        $token = Auth::guard('api')->login($user);
+        if (!$token) {
+            throw new HttpException(500, 'Không thể tạo phiên đăng nhập.');
+        }
+
+        return [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'me' => $user,
+            'role' => $this->roleService->getRoleDetailById((int) $user->role_id),
+        ];
+    }
+
+    public function redirectToGoogle(Request $request, string $frontendUrl): RedirectResponse
+    {
+        return $this->googleOAuthService->redirectToGoogle($request, $frontendUrl);
+    }
+
+    public function resolveGoogleFrontendRedirectUrl(Request $request, string $frontendUrl): string
+    {
+        return $this->googleOAuthService->resolveFrontendRedirectUrl($request, $frontendUrl);
+    }
+
+    public function handleGoogleCallback(): array
+    {
+        return $this->googleOAuthService->handleGoogleCallback();
     }
 
     public function me()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
+        $this->userProfileService->loadPersonalProfiles($user);
         $role = $user->role_id ? $this->roleService->getRoleDetailById($user->role_id) : null;
-        return response()->json([
+        return [
             'token_type'   => 'bearer',
-            'me' => Auth::guard('api')->user(),
+            'me' => $user,
             'role' => $role
-        ]);
+        ];
     }
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('api')->logout();
 
         return response()->json([
             'message' => 'Đăng xuất thành công'
@@ -146,11 +119,9 @@ class AuthService
 
     public function setAuthCookie(Request $request)
     {
-        $token = $request->input('access_token');
+        $token = (string) Auth::guard('api')->getToken();
 
-        Log::info($token);
-
-        if (empty($token) || !is_string($token)) {
+        if (empty($token)) {
             return response()->json(['error' => 'Token không hợp lệ'], 400);
         }
 

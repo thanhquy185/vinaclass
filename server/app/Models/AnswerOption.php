@@ -21,5 +21,10 @@ class AnswerOption extends Model
         "is_correct_answer" => "boolean",
     ];
 
+    public function question()
+    {
+        return $this->belongsTo(Question::class, 'question_id');
+    }
+
     public $timestamps = false;
 }

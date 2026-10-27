@@ -32,7 +32,7 @@ class CourseGroupStudentController extends Controller
     public function store(StoreCourseGroupStudentRequest $request)
     {
         $data = $this->courseGroupStudentService->add($request->validated());
-        return $this->success($data, 201);
+        return $this->created($data);
     }
 
     public function show(CourseGroupStudent $courseGroupStudent)

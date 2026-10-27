@@ -4,7 +4,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   classNameParent?: string;
-  hasBorder?: boolean; // Nếu nguyên tử Input của bạn có prop này
+  hasBorder?: boolean; // Retained for compatibility with the shared Input API.
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(

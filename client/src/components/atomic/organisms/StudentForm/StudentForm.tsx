@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Icon } from "@/components/atomic/atoms";
 import { TextField } from "@/components/atomic/molecules/TextField/TextField";
-import type { StudentRecord } from "@/types";
+import type { StudentRecord } from "@/shared/types";
 import { Overlay } from "../../molecules/Overlay/Overlay";
 import Tabs from "../../molecules/Tabs/Tabs";
 import { RadioGroup } from "../../molecules/RadioGroup/RadioGroup";
@@ -83,8 +83,8 @@ export function StudentForm({
                 <RadioGroup
                   name="gender"
                   options={[
-                    { label: "Nam", value: true }, // true đại diện cho "Nam"
-                    { label: "Nữ", value: false }, // false đại diện cho "Nữ"
+                    { label: "Nam", value: true }, // true represents male.
+                    { label: "Nữ", value: false }, // false represents female.
                   ]}
                   value={formData.gender === "Nam"}
                   onChange={(val: boolean) =>

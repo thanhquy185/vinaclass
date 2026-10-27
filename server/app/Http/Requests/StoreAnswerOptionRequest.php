@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\QuestionPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAnswerOptionRequest extends FormRequest
@@ -11,9 +13,11 @@ class StoreAnswerOptionRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(QuestionPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->manageBank($actor, 'create');
     }
 
     /**

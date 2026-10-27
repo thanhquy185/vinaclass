@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CourseGroup;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class JoinGroupRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class JoinGroupRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return $this->user()?->can('join', CourseGroup::class) ?? false;
     }
 
     /**
@@ -21,29 +23,21 @@ class JoinGroupRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            "student_id" => [
-                "required",
-                "integer",
-                "exists:users,id",
-            ],
             "join_code" => [
                 "required",
                 "string",
                 "max:20",
-                "exists:course_groups,join_code",
+                Rule::exists('course_groups', 'join_code')->where('is_deleted', false),
             ],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
-            'student_id.required' => 'Vui lòng chọn sinh viên.',
-            'student_id.integer' => 'Mã sinh viên không hợp lệ.',
-            'student_id.exists' => 'Sinh viên không tồn tại.',
             'join_code.required' => 'Vui lòng nhập mã mời.',
             'join_code.string' => 'Mã mời không hợp lệ.',
             'join_code.max' => 'Mã mời không được vượt quá 20 ký tự.',
@@ -51,10 +45,9 @@ class JoinGroupRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
-            'student_id' => 'Sinh viên',
             'join_code' => 'Mã mời',
         ];
     }

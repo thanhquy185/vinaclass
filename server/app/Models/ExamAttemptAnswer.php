@@ -12,7 +12,9 @@ class ExamAttemptAnswer extends Model
     protected $fillable = [
         "exam_attempt_id",
         "question_id",
-        "answer_option_id"
+        "answer_option_id",
+        "is_selected_correct",
+        "score"
     ];
 
     protected $hidden = [];

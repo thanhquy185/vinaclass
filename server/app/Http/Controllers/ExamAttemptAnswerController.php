@@ -12,55 +12,37 @@ class ExamAttemptAnswerController extends Controller
 {
     use ApiResponseTrait;
 
-    protected ExamAttemptAnswerService $examAttemptAnswerService;
-
-    public function __construct(
-        ExamAttemptAnswerService $examAttemptAnswerService
-    ) {
-        $this->examAttemptAnswerService = $examAttemptAnswerService;
+    public function __construct(private ExamAttemptAnswerService $examAttemptAnswerService)
+    {
     }
-
-    /**
-     * Display a listing of the resource.
-     */
 
     public function index()
     {
-        $data = $this->examAttemptAnswerService->getAll();
-
-        return $this->success($data);
+        return $this->success($this->examAttemptAnswerService->getAll());
     }
 
     public function store(StoreExamAttemptAnswerRequest $request)
     {
-        $data = $this->examAttemptAnswerService->add($request->validated());
-
-        return $this->success($data, 201);
+        return $this->success($this->examAttemptAnswerService->add($request->validated()), 201);
     }
 
     public function show(ExamAttemptAnswer $examAttemptAnswer)
     {
-        $data = $this->examAttemptAnswerService->getOne($examAttemptAnswer);
-
-        return $this->success($data);
+        return $this->success($this->examAttemptAnswerService->getOne($examAttemptAnswer));
     }
 
     public function update(
         UpdateExamAttemptAnswerRequest $request,
         ExamAttemptAnswer $examAttemptAnswer
     ) {
-        $data = $this->examAttemptAnswerService->update(
+        return $this->success($this->examAttemptAnswerService->update(
             $request->validated(),
             $examAttemptAnswer
-        );
-
-        return $this->success($data);
+        ));
     }
 
     public function destroy(ExamAttemptAnswer $examAttemptAnswer)
     {
-        $data = $this->examAttemptAnswerService->delete($examAttemptAnswer);
-
-        return $this->success($data);
+        return $this->success($this->examAttemptAnswerService->delete($examAttemptAnswer));
     }
 }

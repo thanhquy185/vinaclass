@@ -11,8 +11,8 @@ class BusinessException extends Exception
     protected $code = 400;
 
     /**
-     * @param string $message Thông báo lỗi
-     * @param int $code HTTP status code (mặc định 400)
+     * @param string $message Error message.
+     * @param int $code HTTP status code (defaults to 400).
      */
     public function __construct(string $message = 'Business logic error', int $code = 400)
     {
@@ -20,8 +20,8 @@ class BusinessException extends Exception
     }
 
     /**
-     * Render exception thành JSON response
-     * Method này sẽ được gọi tự động bởi Laravel
+     * Render the exception as a JSON response.
+     * Laravel calls this method automatically.
      */
     public function render()
     {

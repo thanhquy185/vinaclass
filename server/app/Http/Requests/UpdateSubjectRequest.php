@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Subject;
+use App\Models\User;
+use App\Policies\SubjectPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSubjectRequest extends FormRequest
@@ -11,9 +14,15 @@ class UpdateSubjectRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(SubjectPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $subject = $this->route('subject');
+
+        return $actor instanceof User
+            && $subject instanceof Subject
+            && !$subject->is_deleted
+            && $policy->manage($actor, 'update');
     }
 
     /**
@@ -24,14 +33,33 @@ class UpdateSubjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject_name' => 'sometimes|string|max:150',
+            'subject_name' => 'sometimes|required|string|max:150',
 
             'credit_count' => 'sometimes|integer|min:1',
 
-            'theory_hours' => 'sometimes|integer|min:0',
-            'practice_hours' => 'sometimes|integer|min:0',
+            'theory_hours' => 'required|integer|min:0',
+            'practice_hours' => 'required|integer|min:0',
 
-            'is_deleted' => 'sometimes|boolean',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'theory_hours.required' => ':attribute không được để trống',
+            'theory_hours.integer' => ':attribute phải là số nguyên',
+            'theory_hours.min' => ':attribute không hợp lệ',
+            'practice_hours.required' => ':attribute không được để trống',
+            'practice_hours.integer' => ':attribute phải là số nguyên',
+            'practice_hours.min' => ':attribute không hợp lệ',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'theory_hours' => 'Số tiết lý thuyết',
+            'practice_hours' => 'Số tiết thực hành',
         ];
     }
 }

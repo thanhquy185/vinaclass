@@ -8,75 +8,64 @@ use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use App\Services\RoleService;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
     use ApiResponseTrait;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
 
-    //cần roleservice, actionservice, roledetail
-    protected RoleService $roleService;
-    public function __construct(RoleService $roleService)
+    public function __construct(private RoleService $roleService)
     {
-        $this->roleService = $roleService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->roleService->getAll();
-        return $this->success(RoleResource::collection($data));
+        $sortDirection = $request->query('sort_by') === 'name'
+            ? $request->query('sort_direction')
+            : null;
+        $sortDirection = in_array($sortDirection, ['asc', 'desc'], true)
+            ? $sortDirection
+            : null;
+        $roles = $this->roleService->getAll($request->user(), $sortDirection);
+
+        return $this->success(RoleResource::collection($roles));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRoleRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreRoleRequest $request)
     {
-        $role = $this->roleService->createRoleWithPermissions($request->validated());
+        $role = $this->roleService->createRoleWithPermissions(
+            $request->validated(),
+            $request->user()
+        );
+
         return response()->json($role, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function show(Role $role)
     {
-        $data = $this->roleService->getRoleDetail($role);
-        return $this->success($data);
+        $roleDetails = $this->roleService->getRoleDetail($role, request()->user());
+
+        return $this->success($roleDetails);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRoleRequest  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $role = $this->roleService->updateRoleWithPermissions($request->validated(), $role->id);
-        return response()->json($role, 200);
+        $updatedRole = $this->roleService->updateRoleWithPermissions(
+            $request->validated(),
+            $role->id,
+            $request->user()
+        );
+
+        return response()->json($updatedRole);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Role $role)
     {
-        $result = $this->roleService->deleteRoleWithPermissions($role->id);
-        return response()->json($result, 200);
+        $deleted = $this->roleService->deleteRoleWithPermissions(
+            $role->id,
+            request()->user()
+        );
+
+        return response()->json($deleted);
     }
 }

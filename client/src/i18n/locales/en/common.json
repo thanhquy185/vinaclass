@@ -1,35 +1,105 @@
 {
   "hello": "Hello",
+  "accessibility": {
+    "close": "Close"
+  },
+  "auth": {
+    "badge": "LEARNING PLATFORM",
+    "eyebrow": "LEARN, CONNECT, MAKE PROGRESS",
+    "heroTitle": "Take one more",
+    "heroHighlight": "step every day.",
+    "description": "A focused learning space to keep track of your classes, materials, and assessments.",
+    "visualLabel": "YOUR LEARNING SPACE",
+    "visualTitle": "Classes and assignments",
+    "visualDescription": "Everything you need for learning, within reach.",
+    "progressLabel": "Learning progress",
+    "progressValue": "In progress",
+    "floatingTitle": "Learn your way",
+    "floatingSubtitle": "At your own pace",
+    "storyFooter": "MAHICHAN · LEARN EVERY DAY",
+    "copyrightCaption": "Here with you on your learning journey"
+  },
   "login": {
     "welcome": "Welcome back!",
-    "subtitle": "Please login to start your session.",
+    "subtitle": "Sign in to continue your learning journey.",
     "email": "Email",
     "emailPlaceholder": "Enter your email",
+    "identifier": "Student ID or email",
+    "identifierPlaceholder": "Enter your student ID or email",
+    "validation": {
+      "identifierRequired": "Enter your student ID or email.",
+      "passwordRequired": "Enter your password."
+    },
     "password": "Password",
     "passwordPlaceholder": "********",
     "rememberMe": "Keep me logged in",
     "forgotPassword": "Forgot password",
+    "passwordHelp": "Self-service password reset is not enabled yet. Contact your administrator for help.",
     "submit": "LOGIN",
+    "submitting": "SIGNING IN...",
+    "error": "Sign in failed. Check your details and try again.",
     "noAccount": "Don't have an account?",
     "registerNow": "Register now.",
+    "accountHelpTitle": "Teachers and administrators:",
+    "accountHelp": "Contact your administrator to receive an account.",
     "or": "or",
     "googleLogin": "Login with Google"
   },
   "register": {
-    "welcome": "Start managing effectively.",
-    "subtitle": "Makes exam management simpler and more optimal!",
-    "username": "Username",
-    "usernamePlaceholder": "Enter your username",
+    "title": "Create a student account",
+    "subtitle": "Enter your details to get started with Vinaclass.",
+    "studentAccountNote": "New registrations receive student access. Teachers and administrators need an account issued by their institution.",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Alex Nguyen",
+    "studentCode": "Student ID",
+    "studentCodePlaceholder": "Enter your student ID",
     "email": "Email",
     "emailPlaceholder": "Enter your email",
     "password": "Password",
     "passwordPlaceholder": "********",
-    "agreeTerms": "Agree to the Terms & Conditions.",
+    "passwordConfirmation": "Confirm password",
+    "passwordConfirmationPlaceholder": "Re-enter your password",
+    "validation": {
+      "fullNameRequired": "Enter your full name.",
+      "fullNameMax": "Your name cannot exceed 255 characters.",
+      "studentCodeRequired": "Enter your student ID.",
+      "studentCodeLength": "Your student ID must have 4 to 50 characters.",
+      "studentCodeFormat": "Use letters, numbers, periods, underscores, or hyphens only.",
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter a valid email address.",
+      "emailMax": "Your email cannot exceed 255 characters.",
+      "passwordRequired": "Enter a password.",
+      "passwordLength": "Use at least 8 characters.",
+      "passwordComplexity": "Include an uppercase letter, a lowercase letter, and a number.",
+      "passwordConfirmationRequired": "Confirm your password.",
+      "passwordsDoNotMatch": "The passwords do not match."
+    },
     "submit": "REGISTER",
+    "submitting": "CREATING ACCOUNT...",
+    "error": "Unable to create your account. Check your details and try again.",
     "hasAccount": "Already have an account?",
     "loginNow": "Login now.",
     "or": "or",
+    "googleSignup": "Sign up with Google",
     "googleLogin": "Login with Google"
+  },
+  "googleAuth": {
+    "callback": {
+      "errorTitle": "Unable to verify your account",
+      "loadingTitle": "Verifying your account",
+      "loadingDescription": "Please wait a moment.",
+      "backToLogin": "Back to login"
+    },
+    "errors": {
+      "unauthorizedDomain": "This Google account is not allowed to access the system.",
+      "accountInactive": "This account is locked or inactive.",
+      "emailNotFound": "No email address was provided by Google.",
+      "loginFailed": "Login failed. Please try again.",
+      "connectionFailed": "Unable to connect to the authentication service.",
+      "currentUserFailed": "Unable to load your user information.",
+      "missingCallback": "Google login information was not found.",
+      "unknown": "An error occurred while verifying your account."
+    }
   },
   "navigation": {
     "home": "Home",
@@ -37,17 +107,45 @@
     "errorPage": "error page",
     "lang": "Language (Click to change)"
   },
+  "errorScreen": {
+    "genericStatus": "Error",
+    "unknownError": "An unknown error occurred.",
+    "routeTitle": "Unable to load this page",
+    "routeDescription": "An error occurred while opening this content.",
+    "boundaryTitle": "The application encountered a problem",
+    "boundaryDescription": "An unexpected error interrupted the application.",
+    "statusLabel": "Error code:",
+    "messageLabel": "Error message",
+    "technicalDetails": "Technical details",
+    "stackTrace": "Stack trace",
+    "componentStack": "Component stack",
+    "goBack": "Go back",
+    "goHome": "Go to home page",
+    "retry": "Try again",
+    "routeHelp": "If the error continues, reload the page or contact an administrator.",
+    "boundaryHelp": "If the error continues, contact support."
+  },
   "sidebar": {
     "overview": "Overview",
+    "navigationLabel": "Main navigation",
+    "actions": {
+      "expand": "Expand sidebar",
+      "collapse": "Collapse sidebar"
+    },
     "sections": {
       "student": "STUDENT",
+      "training": "TEACHING",
+      "learning": "LEARNING & ASSESSMENT",
+      "access": "ACCOUNTS & ACCESS",
+      "communication": "COMMUNICATION",
+      "analytics": "REPORTS & ANALYTICS",
       "management": "MANAGEMENT",
       "admin": "ADMIN"
     },
     "items": {
       "courses": "Courses",
       "exams": "Exams",
-      "courseGroup": "Course Groups",
+      "courseGroup": "Classes",
       "questions": "Questions",
       "users": "Users",
       "subjects": "Subjects",
@@ -55,7 +153,9 @@
       "tests": "Tests",
       "notifications": "Notifications",
       "permissionGroups": "Permission Groups",
-      "difficultyLevel": "Difficulty Level"
+      "permissionMatrix": "Permission Matrix",
+      "difficultyLevel": "Difficulty Level",
+      "statistics": "Statistics"
     }
   },
   "header": {
@@ -63,13 +163,21 @@
     "user": "User",
     "actions": {
       "toggleLanguage": "Switch language",
-      "toggleTheme": "Light/Dark mode"
+      "toggleTheme": "Light/Dark mode",
+      "notifications": "Notifications"
     },
     "menu": {
-      "title": "Exam options",
+      "title": "Account",
+      "account": "Open account menu",
       "profile": "View profile",
       "logout": "Log out"
     }
+  },
+  "assessmentPreview": {
+    "bannerLabel": "Assessment preview status bar",
+    "badge": "PREVIEW",
+    "description": "Some actions will not be saved.",
+    "exit": "Exit preview"
   },
   "message": {
     "success": {
@@ -93,28 +201,98 @@
     }
   },
   "courseGroup": {
+    "noAccess": "You do not have permission to access this feature.",
+    "noViewPermission": "You do not have permission to view classes.",
+    "loadError": "Unable to load the class list.",
+    "retry": "Retry",
+    "subjectUnavailable": "Subject information unavailable",
+    "sectionTitle": "{{subjectCode}} · {{subjectName}} · Academic year {{academicYear}} · Semester {{semester}}",
+    "confirmDeleteTitle": "Confirm class deletion",
     "status": {
       "active": "Teaching",
       "hidden": "Hidden",
       "label": "Status"
     },
     "search": "Search...",
-    "addGroup": "Add Group",
-    "noGroupsFound": "No matching groups found.",
-    "confirmDeleteGroup": "Are you sure you want to delete this group?",
-    "loadingGroups": "Loading groups list...",
-    "studentList": "Student list",
+    "addGroup": "Create class",
+    "noGroupsFound": "No matching classes found.",
+    "confirmDeleteGroup": "Are you sure you want to delete class {{groupName}}?",
+    "loadingGroups": "Loading classes...",
+    "teacherLabel": "Assigned teacher",
+    "teacherUnavailable": "No teacher assigned",
+    "teacherUnassigned": "Unassigned",
+    "viewDetails": "Class details",
+    "manageMembers": "Manage members",
+    "confirmHideTitle": "Hide class",
+    "confirmHideMessage": "{{groupName}} will be hidden from learners' class list. Do you want to continue?",
+    "confirmShowTitle": "Show class again",
+    "confirmShowMessage": "{{groupName}} will appear in the active class list again. Do you want to continue?",
+    "details": {
+      "title": "Class details",
+      "description": "{{groupName}} · {{subjectName}}",
+      "classInfo": "Class information",
+      "subject": "Subject",
+      "students": "Students",
+      "studentCountUnavailable": "Enrollment data unavailable",
+      "status": "Status",
+      "teacher": "Assigned teacher",
+      "close": "Close"
+    },
     "editInfo": "Edit information",
+    "groupActions": "Actions for {{groupName}}",
     "showGroup": "Show again",
-    "hideGroup": "Hide group",
-    "deleteGroup": "Delete group",
+    "hideGroup": "Hide class",
+    "deleteGroup": "Delete class",
     "classSizeLabel": "Class size:",
+    "adminWorkspace": {
+      "title": "Class management",
+      "description": "Review classes by subject, semester, and academic year.",
+      "filterTitle": "Search and filter classes",
+      "filterDescription": "Search by class name, lecturer, or subject, and filter by status.",
+      "searchLabel": "Search classes",
+      "searchCriteria": {
+        "groupName": "Class name",
+        "teacher": "Lecturer",
+        "subject": "Subject"
+      },
+      "searchPlaceholder": {
+        "groupName": "Enter a class name",
+        "teacher": "Enter a lecturer name, code, email, or account",
+        "subject": "Enter a subject name or code"
+      },
+      "resetFilters": "Reset",
+      "listTitle": "Classes",
+      "listDescription": "Subject, semester, and enrollment details for each class.",
+      "classCount": "Class count: {{count}}",
+      "stats": {
+        "total": "Total classes",
+        "active": "Active classes",
+        "students": "Total class enrollments"
+      }
+    },
+    "teacherWorkspace": {
+      "eyebrow": "Teaching workspace",
+      "title": "My classes",
+      "description": "Create classes for assigned subjects and follow each class's activity.",
+      "filterDescription": "Search by class name or subject, and filter by status.",
+      "classCount": "{{count}} classes",
+      "stats": {
+        "classes": "Classes I teach",
+        "subjects": "Assigned subjects",
+        "students": "Students across classes"
+      },
+      "empty": "You do not have any classes yet. Create one for an assigned subject."
+    },
     "form": {
-      "updateTitle": "Update group information",
-      "addTitle": "Add group",
+      "updateTitle": "Update class information",
+      "addTitle": "Create class",
+      "dialogDescription": "Set the class subject, teacher, and academic term.",
+      "updateDescription": "{{groupName}} · {{subjectName}}",
       "close": "Close",
-      "groupName": "Group name",
-      "groupNamePlaceholder": "Enter group name",
+      "classSection": "Class information",
+      "courseTermSection": "Subject and academic term",
+      "groupName": "Class name",
+      "groupNamePlaceholder": "Enter class name",
       "note": "Note",
       "notePlaceholder": "Enter note",
       "inviteCode": "Invite code",
@@ -124,7 +302,12 @@
       "subject": "Subject",
       "subjectPlaceholder": "Select subject",
       "lecturer": "Lecturer",
+      "assignedTeacher": "Responsible teacher",
       "lecturerPlaceholder": "Select lecturer",
+      "teacherLoadError": "Unable to load the teacher list.",
+      "subjectLoadError": "Unable to load the teacher's assigned subjects.",
+      "noTeachers": "No teachers found.",
+      "noAssignedSubjects": "This teacher has no assigned subjects.",
       "academicYear": "Academic year",
       "academicYearPlaceholder": "Enter academic year",
       "semester": "Semester",
@@ -132,24 +315,68 @@
       "save": "Save",
       "update": "Update",
       "validation": {
-        "groupNameRequired": "Group name cannot be empty",
-        "groupNameMaxLength": "Group name cannot exceed 255 characters",
+        "groupNameRequired": "Class name cannot be empty",
+        "groupNameMaxLength": "Class name cannot exceed 100 characters",
         "inviteCodeMaxLength": "Invite code cannot exceed 50 characters",
         "classSizePositive": "Class size must be a positive number",
         "subjectRequired": "Please select a subject",
-        "academicYearPositive": "Academic year must be a positive number",
+        "subjectNotAssigned": "This subject is not assigned to the selected teacher.",
+        "academicYearMinimum": "Academic year must be 2000 or later",
         "semesterInvalid": "Semester must be 1 or 2",
         "lecturerRequired": "Please select a lecturer"
       }
     }
   },
   "courseGroupStudent": {
+    "title": "Student Roster",
+    "pageTitle": "Student management",
+    "backToClasses": "Back to class list",
+    "classContext": "{{classTitle}} · {{subjectName}}",
+    "subjectUnavailable": "Subject information unavailable",
+    "academicInfo": "Academic year {{year}} · Semester {{semester}}",
+    "loading": "Loading class roster...",
+    "invalidClass": "The class URL is invalid.",
+    "loadError": "Unable to load the class or its student roster.",
+    "noViewPermission": "You do not have permission to view this class roster.",
+    "peopleTitle": "Class members",
+    "resultsCount": "{{count}} students",
+    "summary": {
+      "students": "Total students",
+      "teacher": "Assigned lecturer",
+      "academicTerm": "Academic term"
+    },
+    "filter": {
+      "title": "Find students",
+      "description": "Search by name, student code, or email.",
+      "reset": "Reset",
+      "searchLabel": "Student information",
+      "byName": "Full name",
+      "byStudentCode": "Student code",
+      "byEmail": "Email",
+      "namePlaceholder": "Enter a student name",
+      "studentCodePlaceholder": "Enter a student code",
+      "emailPlaceholder": "Enter a student email"
+    },
+    "tableTitle": "Student list",
+    "tableDescription": "Identity and contact details for students in this class.",
+    "noStudents": "This class has no students yet.",
+    "noMatchingStudents": "No matching students found.",
+    "exportError": "Unable to export the student roster.",
+    "confirmRemoveTitle": "Confirm student removal",
+    "manageInvite": "Manage class code",
+    "inviteDialog": {
+      "title": "Manage class code",
+      "codeLabel": "Class join code",
+      "codeDescription": "Share this code with students so they can join the class.",
+      "regenerateNote": "Generating a new code will invalidate the current code."
+    },
+    "retry": "Retry",
     "searchStudents": "Search students",
     "exportList": "Export list",
     "exportGrades": "Export grades",
     "addStudent": "Add student",
     "classSize": "Class size",
-    "confirmRemoveStudent": "Are you sure you want to remove this student from the group?",
+    "confirmRemoveStudent": "Are you sure you want to remove {{studentName}} from the group?",
     "delete": "Delete",
     "table": {
       "stt": "No.",
@@ -163,11 +390,25 @@
       "female": "Female"
     },
     "form": {
+      "title": "Manage class members",
+      "addDialogTitle": "Add students to class",
+      "close": "Close",
       "manualAdd": "Manual add",
       "joinByInvite": "Join by invite code",
       "importExcel": "Import Excel file",
       "studentCode": "Student code",
       "studentCodePlaceholder": "Enter student code",
+      "studentCodeRequired": "Enter a student code.",
+      "studentNotFound": "Student account {{studentCode}} was not found.",
+      "importFileRequired": "Select a file to import.",
+      "importError": "Unable to import the student list.",
+      "importSuccess": "Added {{count}} students to the class.",
+      "importPartialSuccess": "Added {{added}} students; skipped {{missing}} accounts that were not found (for example: {{studentCodes}}).",
+      "importNoAccountsFound": "No students were added. Could not find {{count}} accounts in the file (for example: {{studentCodes}}).",
+      "importNoChanges": "There are no new students to add.",
+      "copySuccess": "Class code copied.",
+      "copyError": "Unable to copy the class code.",
+      "inviteCodeUnavailable": "This class does not have a join code.",
       "addStudent": "Add student",
       "copy": "Copy",
       "generateNewCode": "Generate new code",
@@ -180,9 +421,57 @@
     }
   },
   "coursePage": {
+    "noAccess": "This page is available to teachers and students.",
+    "title": "Classes",
+    "home": "Home",
+    "toDo": "To-do",
+    "collapseClassList": "Collapse class list",
+    "expandClassList": "Expand class list",
+    "workspaceLabel": "Learning space",
+    "teacherSubtitle": "Keep track of your assigned classes and teaching activity.",
+    "studentSubtitle": "Keep track of your classes, materials, and assigned tests.",
+    "teaching": "Teaching",
+    "enrolled": "Enrolled",
+    "classCount": "{{count}} classes",
+    "filterAll": "All",
+    "filterSubject": "Filter by subject",
+    "filterSubjectLabel": "Subject",
+    "filterAllSubjects": "All subjects",
+    "filterAcademicYear": "Filter by academic year",
+    "filterAcademicYearLabel": "Academic year",
+    "filterAllAcademicYears": "All academic years",
+    "filterSemester": "Filter by semester",
+    "filterSemesterLabel": "Semester",
+    "filterAllSemesters": "All semesters",
+    "resetFilters": "Reset",
+    "academicYearOption": "Academic year {{year}}",
+    "semesterOption": "Semester {{semester}}",
+    "semesterShort": "Sem. {{semester}}",
+    "manageClasses": "Manage classes",
+    "createClass": "Create class",
+    "upcomingTitle": "Upcoming",
+    "upcomingExamLabel": "Assigned test",
+    "viewTasks": "View to-do list",
+    "noUpcoming": "There are no upcoming tests.",
+    "archivedClasses": "Archived classes",
+    "noFilteredClasses": "No classes match these filters.",
+    "noTeachingClasses": "You do not have any assigned classes yet.",
+    "searchLabel": "Search classes",
     "searchPlaceholder": "Search",
     "joinNewClass": "Join new class",
-    "showHiddenClasses": "Show hidden classes"
+    "showHiddenClasses": "Show hidden classes",
+    "hideHiddenClasses": "Hide hidden classes",
+    "noHiddenClasses": "There are no hidden classes",
+    "noActiveSearchResults": "No active classes match your search.",
+    "noHiddenSearchResults": "No hidden classes match your search.",
+    "sortAscending": "Sort A–Z",
+    "sortDescending": "Sort Z–A",
+    "noClasses": "You have not joined any classes yet",
+    "loading": "Loading classes",
+    "loadError": "Could not load your classes. Please try again.",
+    "retry": "Retry",
+    "joinSuccess": "You joined the class successfully",
+    "joinError": "Could not join the class. Check the class code and try again."
   },
   "joinClassForm": {
     "title": "Join course group",
@@ -201,12 +490,22 @@
   },
   "courseItem": {
     "teacherAlt": "Teacher",
-    "academicInfo": "Academic year {{year}} - Semester {{semester}}",
-    "hide": "Hide",
-    "unsubscribe": "Unenroll"
+    "classSize": "{{count}} students",
+    "classSizeUnavailable": "Class size unavailable",
+    "academicInfo": "Academic year {{year}} · Semester {{semester}}",
+    "semesterShort": "Sem. {{semester}}"
   },
   "examPage": {
+    "title": "My exams",
+    "description": "Track your exam schedule and resume assigned exams.",
     "searchPlaceholder": "Search ...",
+    "permissionLoading": "Checking access...",
+    "permissionLoadError": "Unable to load exam access permissions.",
+    "noViewPermission": "You do not have permission to view assigned exams.",
+    "loadError": "Unable to load the exam list.",
+    "loadExamError": "Unable to load exam details.",
+    "retry": "Retry",
+    "empty": "There are no exams to take.",
     "table": {
       "stt": "No.",
       "className": "Class name",
@@ -222,25 +521,149 @@
       "startNow": "Start now"
     }
   },
+  "studentTasks": {
+    "title": "To-do",
+    "allCourses": "All classes",
+    "filterByCourse": "Filter to-do list by class",
+    "tabs": {
+      "assigned": "Assigned",
+      "missing": "Missing",
+      "done": "Done"
+    },
+    "sections": {
+      "noDueDate": "No due date",
+      "overdue": "Overdue",
+      "thisWeek": "This week",
+      "nextWeek": "Next week",
+      "later": "Later"
+    },
+    "empty": {
+      "assigned": "There are no assigned tests.",
+      "missing": "You have no missing tests.",
+      "done": "You have not completed any tests yet."
+    },
+    "dueToday": "{{time}} Today",
+    "noDueDate": "No due date",
+    "score": "points",
+    "status": {
+      "start": "Start test",
+      "resume": "Resume test",
+      "submitted": "Submitted",
+      "waitingForScore": "Awaiting score",
+      "inProgress": "In progress",
+      "notStarted": "Not started",
+      "notOpen": "Not open yet",
+      "closed": "Closed"
+    }
+  },
+  "examTaking": {
+    "timeLeft": "Time remaining:",
+    "questionCount": "{{count}} questions",
+    "questionIndex": "Question {{current}} / {{total}}",
+    "examInformation": "Exam information",
+    "untitledExam": "Exam",
+    "subject": "Subject",
+    "schedule": "Schedule",
+    "duration": "Time limit",
+    "questionNavigation": "Questions",
+    "answeredCount": "{{answered}} / {{total}} answered",
+    "goToQuestion": "Go to question {{number}}",
+    "answered": "Answered",
+    "notAnswered": "Not answered",
+    "fullscreenToggle": "Toggle fullscreen",
+    "fullscreenError": "Fullscreen mode could not be changed on this device.",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "page": "Page {{current}} of {{total}}",
+    "submitError": "Unable to submit the exam. Please try again.",
+    "incomplete": {
+      "title": "Questions are incomplete",
+      "continueMessage": "Some questions are unanswered. If you continue, you will not be able to return and change them. Continue to the next page?",
+      "submitMessage": "Some questions are unanswered. Are you sure you want to submit now?",
+      "stay": "Keep working",
+      "continue": "Continue"
+    },
+    "submission": {
+      "title": "Confirm submission",
+      "completeTitle": "Finish exam",
+      "incompleteMessage": "Some questions are still unanswered. Are you sure you want to submit now?",
+      "completeMessage": "Are you sure you want to submit and finish the exam?",
+      "submitNow": "Submit now",
+      "confirm": "Confirm submission",
+      "review": "Review answers"
+    },
+    "violation": {
+      "warningTitle": "Exam rule warning",
+      "kickedTitle": "Exam suspended",
+      "warningMessage": "You left the exam screen. Violations: {{count}}/{{maxCount}}",
+      "limitMessage": "You reached the {{maxCount}}-violation limit. Select “View results” to submit your exam.",
+      "understood": "I understand",
+      "viewResult": "View results"
+    }
+  },
   "subjectPage": {
-    "table": {
-      "code": "Code",
-      "name": "Subject Name",
-      "credits": "Credits",
-      "theoryPeriods": "Theory",
-      "practicePeriods": "Practice"
-    },
+    "title": "Subject Management",
+    "description": "Review subjects, chapters, and the course groups that use them.",
+    "tableTitle": "Subject list",
+    "tableDescription": "Subject details, chapter counts, and course group usage.",
+    "searchPlaceholder": "Search by the selected criterion",
     "filter": {
-      "placeholder": "Select criteria",
-      "byName": "By name",
-      "byCode": "By code"
+      "panelTitle": "Search subjects",
+      "panelDescription": "Search by subject name or code.",
+      "searchLabel": "Search"
     },
-    "addNew": "Create new subject",
-    "confirmDeleteTitle": "Confirm delete subject",
-    "confirmDelete": "Are you sure you want to delete subject: {{subjectName}}?",
+    "searchBy": {
+      "name": "Subject name",
+      "namePlaceholder": "Enter a subject name",
+      "code": "Subject code",
+      "codePlaceholder": "Enter a subject code"
+    },
+    "resetFilters": "Reset",
+    "addNew": "Create subject",
+    "saveAction": "Save subject",
+    "updateAction": "Save changes",
+    "deleteAction": "Delete subject",
+    "stats": {
+      "total": "Total subjects",
+      "chapters": "Total chapters",
+      "courseGroups": "Total course groups"
+    },
+    "table": {
+      "id": "ID",
+      "code": "Subject code",
+      "name": "Subject name",
+      "chapters": "Chapters",
+      "courseGroups": "Course groups",
+      "credits": "Credits",
+      "theoryPeriods": "Theory periods",
+      "practicePeriods": "Practice periods"
+    },
+    "empty": {
+      "list": "There are no subjects yet.",
+      "filtered": "No matching subjects found."
+    },
+    "noViewPermission": "You do not have permission to view subjects.",
+    "permissionLoading": "Checking access permissions...",
+    "permissionLoadFailed": "Unable to check access permissions.",
+    "loadFailed": "Unable to load subjects.",
+    "retry": "Retry",
+    "sections": {
+      "details": "Subject details",
+      "chapters": "Chapters"
+    },
+    "dialog": {
+      "createTitle": "Add a subject",
+      "createDescription": "Enter the basic details to create a subject.",
+      "viewTitle": "Subject details",
+      "viewDescription": "Subject details, chapters, and related course groups.",
+      "updateTitle": "Update subject",
+      "updateDescription": "Update subject details and its chapter list.",
+      "deleteTitle": "Delete subject",
+      "deleteDescription": "Confirm removal of this subject from the catalog.",
+      "deleteConfirm": "Are you sure you want to delete {{name}}? It will no longer appear in the subject catalog."
+    },
     "form": {
-      "addTitle": "Add New Subject",
-      "updateTitle": "Update Subject",
       "nameLabel": "Subject Name",
       "namePlaceholder": "Example: Data Structures",
       "codeLabel": "Subject Code",
@@ -251,24 +674,42 @@
       "theoryPeriodsPlaceholder": "45",
       "practicePeriodsLabel": "Practice Periods",
       "practicePeriodsPlaceholder": "30",
-      "backButton": "Back",
-      "saveButton": "Save Subject",
-      "updateButton": "Update",
       "validation": {
         "nameRequired": "Subject name is required",
-        "codeRequired": "Subject code is required"
+        "nameMaxLength": "Subject name must not exceed 150 characters",
+        "codeRequired": "Subject code is required",
+        "codeMaxLength": "Subject code must not exceed 50 characters",
+        "codeExists": "This subject code already exists.",
+        "creditsRequired": "Please enter the number of credits",
+        "creditsMinimum": "Credits must be at least 1",
+        "periodsRequired": "Please enter the number of periods",
+        "periodsMinimum": "Periods must be at least 0"
       }
     },
-    "editChapter": {
-      "title": "Chapter List",
-      "empty": "No chapters yet. Add one below.",
-      "edit": "Edit",
-      "delete": "Delete",
+    "chapters": {
+      "empty": "This subject does not have any chapters yet.",
+      "addAfterSubject": "You can add chapters after creating the subject.",
+      "editHint": "Add, rename, or remove chapters, then save the updated list.",
+      "nameLabel": "Chapter name",
+      "namePlaceholder": "Enter a chapter name",
+      "addNew": "Add a chapter",
+      "add": "Add to list",
       "editing": "Editing chapter",
-      "addNew": "Add new chapter",
+      "edit": "Edit",
       "cancelEdit": "Cancel edit",
-      "saveNew": "Save chapter",
-      "update": "Update chapter"
+      "update": "Update chapter",
+      "remove": "Remove",
+      "removeTitle": "Remove chapter from list",
+      "removeConfirm": "Remove {{name}}? This change is saved when you save the chapter list.",
+      "saveChanges": "Save chapters",
+      "saved": "Chapter list updated.",
+      "saveFailed": "Unable to update the chapter list.",
+      "noUpdatePermission": "You do not have permission to update this subject's chapters.",
+      "pendingDraft": "Add or cancel the chapter draft before saving the subject.",
+      "validation": {
+        "nameRequired": "Chapter name is required",
+        "nameMaxLength": "Chapter name must not exceed 100 characters"
+      }
     }
   },
   "tableActions": {
@@ -277,27 +718,50 @@
     "edit": "Edit",
     "remove": "Remove",
     "loading": "Loading...",
-    "noData": "No data"
+    "noData": "No data",
+    "loadError": "Unable to load data.",
+    "retry": "Retry"
   },
   "common": {
+    "searchByCriteria": "Search by",
     "back": "Back",
     "save": "Save",
     "update": "Update",
+    "edit": "Edit",
+    "delete": "Delete",
     "cancel": "Cancel",
     "result": "Result",
-    "saveAccount": "Save Account",
+    "saveUser": "Save User",
     "saveAssignment": "Save Assignment",
     "noData": "No data"
   },
+  "pagination": {
+    "pageLabel": "Page",
+    "pageOf": "of",
+    "showTotal": "Showing {{start}}–{{end}} of {{total}} items",
+    "previous": "Previous page",
+    "next": "Next page",
+    "goToPage": "Go to page {{page}}"
+  },
   "permissionForm": {
+    "title": {
+      "create": "Add Permission Group",
+      "update": "Update Permission Group",
+      "view": "Permission Group Details"
+    },
     "view": "View",
     "create": "Create",
     "update": "Update",
     "delete": "Delete",
+    "notSupported": "Not supported",
     "addPermissionGroup": "Add Permission Group",
     "groupName": "Group Name",
     "groupNamePlaceholder": "E.g., Lecturer",
-    "permissionName": "Permission Name"
+    "permissionName": "Permission Name",
+    "validation": {
+      "nameRequired": "Permission group name is required",
+      "nameMaxLength": "Permission group name must not exceed 255 characters"
+    }
   },
   "permissionNames": {
     "nguoi_dung": "Users",
@@ -308,19 +772,41 @@
     "phan_cong": "Assignment",
     "de_thi": "Exam",
     "nhom_quyen": "Permission Group",
-    "thong_bao": "Notification"
+    "ma_tran_quyen": "Permission matrix",
+    "thong_bao": "Notification",
+    "chuong": "Chapters",
+    "tai_lieu": "Class materials",
+    "thong_ke_ket_qua": "Learning outcome statistics",
+    "thong_ke_de_thi": "Exam activity statistics",
+    "thong_ke_lop_hoc": "Class and enrollment statistics",
+    "thong_ke_cau_hoi": "Question bank statistics"
   },
   "addAssignmentForm": {
+    "title": "Assign subjects to teacher",
+    "description": "Choose the teacher responsible and the subjects to assign.",
+    "teacherSection": "Assigned teacher",
+    "teacherDescription": "Choose one teacher for this assignment.",
+    "subjectSection": "Assigned subjects",
+    "subjectDescription": "Search and select the subjects for this teacher.",
+    "selectedSubjects": "Selected",
     "subjectCode": "Subject Code",
     "subjectName": "Subject Name",
     "credits": "Credits",
     "theoryPeriods": "Theory Periods",
     "practicePeriods": "Practice Periods",
-    "selectTeacherPrompt": "Please select a teacher before saving!",
-    "addManually": "Add Manually",
     "teacher": "Teacher",
     "selectTeacherPlaceholder": "Select teacher to assign",
-    "searchSubjectPlaceholder": "Search for subject..."
+    "searchSubjectPlaceholder": "Search for subject...",
+    "selectVisibleSubjects": "Select all visible subjects",
+    "teacherLoadError": "Unable to load the teacher list.",
+    "subjectLoadError": "Unable to load the subject list.",
+    "noTeachers": "No teachers found.",
+    "noSubjects": "No subjects found.",
+    "selectTeacherFirst": "Select a teacher before choosing subjects.",
+    "validation": {
+      "teacherRequired": "Select a teacher",
+      "subjectRequired": "Select at least one subject"
+    }
   },
   "userForm": {
     "edit": "Edit",
@@ -333,28 +819,61 @@
     "emailPlaceholder": "Enter email address",
     "fullName": "Full Name",
     "fullNamePlaceholder": "Enter full name",
+    "phone": "Phone number",
+    "phonePlaceholder": "Enter phone number",
     "gender": "Gender",
     "male": "Male",
     "female": "Female",
     "dateOfBirth": "Date of Birth",
-    "permissionGroup": "Permission Group",
-    "permissionGroupPlaceholder": "Select permission group",
-    "newPasswordPrompt": "New Password (leave blank if no change)",
+    "role": "Role",
+    "rolePlaceholder": "Select a role",
+    "currentRoleUnavailable": "Current assigned role (list access unavailable)",
     "password": "Password",
     "passwordPlaceholder": "Enter password",
-    "lockAccount": "Lock Account",
-    "isStudent": "Is Student?",
-    "quickResetPassword": "Quick Reset Password",
+    "passwordChangeHint": "Change the password from its separate action",
     "dragDropPrompt": "Drag and drop file here or click to select file",
-    "selectExcelFile": "Select Excel File"
+    "selectExcelFile": "Select Excel File",
+    "teacherProfile": {
+      "title": "Teacher profile",
+      "teacherCode": "Teacher code",
+      "departmentName": "Department",
+      "academicTitle": "Academic title"
+    },
+    "studentProfile": {
+      "title": "Student profile",
+      "studentCode": "Student code",
+      "programName": "Study program",
+      "cohort": "Cohort"
+    }
   },
   "userPage": {
+    "pageTitle": "User management",
+    "pageDescription": "Create users and review their roles and status.",
+    "tableTitle": "Users",
+    "tableDescription": "User details, permission groups, and current status.",
+    "resetFilters": "Reset",
+    "sortAscending": "Sort names ascending",
+    "sortDescending": "Sort names descending",
+    "sortNameAscending": "Name A–Z",
+    "sortNameDescending": "Name Z–A",
+    "stats": {
+      "total": "Total users",
+      "teachers": "Teachers",
+      "students": "Students",
+      "locked": "Locked"
+    },
+    "empty": {
+      "loadFailed": "Unable to load the user list.",
+      "filtered": "No matching users found.",
+      "adjustFilters": "Try another keyword or clear the filters.",
+      "users": "There are no users yet."
+    },
     "table": {
+      "user": "User",
       "username": "Username",
-      "fullName": "Full Name",
       "gender": "Gender",
       "dateOfBirth": "Date of Birth",
-      "role": "Role",
+      "role": "Permission group",
       "joinDate": "Join Date",
       "status": "Status"
     },
@@ -363,26 +882,100 @@
       "active": "Active",
       "locked": "Locked"
     },
+    "lockAction": "Lock user",
+    "unlockAction": "Unlock user",
+    "cannotLockSelf": "You cannot lock your own user profile",
+    "confirmLockTitle": "Confirm user lock",
+    "confirmLockUser": "Are you sure you want to lock {{username}}?",
+    "confirmUnlockTitle": "Confirm user unlock",
+    "confirmUnlockUser": "Are you sure you want to unlock {{username}}?",
+    "lockSuccess": "User locked.",
+    "unlockSuccess": "User unlocked.",
     "roles": {
       "admin": "Admin",
       "teacher": "Teacher",
-      "student": "Student"
+      "student": "Student",
+      "assigned": "Assigned role"
     },
     "filter": {
+      "panelTitle": "Search and filter users",
+      "panelDescription": "Search by name, username, or email, or filter by permission group.",
+      "searchLabel": "Search",
+      "roleLabel": "Permission group",
+      "sortLabel": "Sort by",
       "rolePlaceholder": "Filter by role",
       "all": "All"
     },
-    "searchPlaceholder": "Search Student ID...",
-    "addNew": "Create new account",
+    "searchPlaceholder": "Search by the selected criterion",
+    "searchBy": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Enter a full name",
+      "username": "Username",
+      "usernamePlaceholder": "Enter a username",
+      "email": "Email",
+      "emailPlaceholder": "Enter an email address"
+    },
+    "permissionLoading": "Checking access...",
+    "permissionLoadFailed": "Unable to check access permissions.",
+    "roleCatalogLoadFailed": "Unable to load roles. User creation and editing are temporarily unavailable.",
+    "roleCatalogEmpty": "There are no active roles. Activate a role before creating or editing users.",
+    "roleCatalogUnavailable": "The form cannot open until the role list is available.",
+    "noViewPermission": "You do not have permission to view the user list.",
+    "retry": "Retry",
+    "addNew": "Create new user",
+    "dialog": {
+      "createTitle": "Create new user",
+      "updateTitle": "Update user",
+      "createDescription": "Enter the details to create a new user in the system.",
+      "updateDescription": "Update this user's profile information and access.",
+      "deleteDialogDescription": "You are about to remove this user from the management list.",
+      "lockDescription": "This user will not be able to sign in or use the system until they are unlocked.",
+      "unlockDescription": "This user will be able to sign in and use their permitted features again."
+    },
+    "formSections": {
+      "credentials": "Sign-in information",
+      "profile": "Personal information"
+    },
+    "formPreview": {
+      "newUser": "New user",
+      "contactPlaceholder": "Email or username"
+    },
+    "details": {
+      "title": "User details",
+      "description": "Profile, permission group, and recent user activity.",
+      "personalInformation": "Personal information",
+      "userActivity": "User activity",
+      "lastLogin": "Last sign-in"
+    },
     "confirmDeleteTitle": "Confirm deletion",
-    "confirmDelete": "Are you sure you want to delete?",
-    "confirmResetPassword": "Are you sure you want to reset the password?",
+    "confirmDelete": "Confirm deletion of user {{username}}?",
+    "passwordDialog": {
+      "action": "Change password",
+      "title": "Change user password",
+      "description": "Set a new password for this user.",
+      "formTitle": "New password",
+      "passwordPolicy": "Use at least 6 characters, including uppercase and lowercase letters and a number.",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "Enter a new password",
+      "confirmation": "Confirm new password",
+      "confirmationPlaceholder": "Enter the new password again",
+      "confirmationRequired": "Confirm the new password",
+      "passwordMismatch": "The passwords do not match",
+      "submit": "Save new password",
+      "success": "User password changed.",
+      "error": "Unable to change the password. Please try again."
+    },
     "validation": {
       "usernameRequired": "Username is required",
+      "usernameMaxLength": "Username cannot exceed 255 characters",
       "emailRequired": "Email is required",
       "emailInvalid": "Invalid email format",
+      "emailMaxLength": "Email cannot exceed 255 characters",
       "fullNameRequired": "Full name is required",
       "fullNameMaxLength": "Full name cannot exceed 255 characters",
+      "phoneMaxLength": "Phone number cannot exceed 20 characters",
+      "profileFieldRequired": "This field is required",
+      "profileFieldMaxLength": "This value cannot exceed 255 characters",
       "dobRequired": "Date of birth is required",
       "dobInvalid": "Date of birth must be before today",
       "passwordRequired": "Password is required",
@@ -390,24 +983,147 @@
       "passwordLetterRequired": "Password must contain letters",
       "passwordNumberRequired": "Password must contain numbers",
       "passwordCaseRequired": "Password must contain uppercase and lowercase letters",
-      "roleRequired": "Please select a permission group"
+      "roleRequired": "Please select a role"
     }
   },
+  "authorization": {
+    "permissionLoading": "Checking access permissions...",
+    "permissionLoadError": "Unable to load access permissions. Please try again.",
+    "routeDenied": "You do not have permission to access this feature.",
+    "retry": "Retry"
+  },
   "permissionGroupPage": {
+    "pageTitle": "Permission group management",
+    "pageDescription": "Manage permission groups, function-level access, and assigned accounts. Permission Matrix supports centralized configuration and account-specific overrides.",
+    "tableTitle": "Permission groups",
+    "tableDescription": "Review group details and manage the groups assigned to accounts.",
+    "searchPlaceholder": "Search by the selected criterion",
+    "searchBy": {
+      "name": "Group name",
+      "namePlaceholder": "Enter a group name",
+      "code": "Group code",
+      "codePlaceholder": "Enter a group code"
+    },
+    "filter": {
+      "panelTitle": "Search and filter permission groups",
+      "panelDescription": "Search by group name, code, or group type.",
+      "searchLabel": "Search",
+      "kindLabel": "Group type",
+      "sortLabel": "Sort by",
+      "kindPlaceholder": "Group type",
+      "all": "All permission groups",
+      "system": "System",
+      "custom": "Custom"
+    },
+    "resetFilters": "Reset",
+    "sortAscending": "Sort names ascending",
+    "sortDescending": "Sort names descending",
+    "sortNameAscending": "Name A–Z",
+    "sortNameDescending": "Name Z–A",
+    "stats": {
+      "total": "Total groups",
+      "system": "System roles",
+      "custom": "Custom groups",
+      "assignedUsers": "Assigned accounts"
+    },
+    "kind": {
+      "system": "System",
+      "custom": "Custom"
+    },
+    "memberCount": "{{count}} accounts",
+    "cannotDeleteSystem": "System permission groups cannot be deleted.",
+    "cannotDeleteInUse": "This group cannot be deleted while accounts are assigned to it.",
+    "deleteDescription": "This permission group will be removed from the management list.",
+    "dialog": {
+      "createDescription": "Create a permission group and select its function-level access.",
+      "updateDescription": "Update the group information and its default access permissions.",
+      "viewDescription": "Permission group details, function-level access, and assigned accounts."
+    },
+    "formSections": {
+      "details": "Management details",
+      "permissions": "Function permissions"
+    },
+    "permissionLoading": "Checking access...",
+    "permissionLoadFailed": "Unable to check access permissions.",
+    "permissionDataLoadFailed": "Unable to load permission details. Please try again.",
+    "noViewPermission": "You do not have permission to view permission groups.",
+    "noManagePermission": "Only administrators can manage the permission matrix.",
+    "loadFailed": "Unable to load permission groups.",
+    "empty": "There are no permission groups yet.",
+    "retry": "Retry",
+    "matrix": {
+      "tabs": {
+        "roles": "Permissions by role",
+        "users": "Account exceptions"
+      },
+      "title": "Permission matrix",
+      "descriptions": {
+        "roles": "Set the default actions allowed for a role, organized by function.",
+        "users": "Set exceptions for one account relative to the permissions of its role."
+      },
+      "help": {
+        "roles": {
+          "title": "How to read role permissions",
+          "description": "This is a grid view of the role's default permissions, the same settings available in the Permission Group form. Each row is a function and each column is an action. Check a cell to allow that action for every account in the selected role; uncheck it to revoke it. Changes take effect after saving. Disabled cells are actions this role cannot receive."
+        },
+        "users": {
+          "title": "Account exceptions override role permissions",
+          "description": "Use role permissions: keep the role default. Grant specifically: allow this action for this account. Deny specifically: block it even if the role allows it. The Allowed/Denied label shows the final result; exceptions still follow the role's action limits."
+        }
+      },
+      "labels": {
+        "role": "Role",
+        "user": "Account",
+        "function": "Function",
+        "userOverrides": "Account overrides",
+        "inherit": "Use role default",
+        "grant": "Grant specifically",
+        "deny": "Deny specifically",
+        "configuredActions": "No actions configured",
+        "unavailableForRole": "This action is not available for the selected role.",
+        "allowed": "Allowed",
+        "denied": "Denied"
+      },
+      "actions": {
+        "VIEW": "View",
+        "CREATE": "Create",
+        "UPDATE": "Update",
+        "DELETE": "Delete",
+        "LOCK": "Lock",
+        "PUBLISH": "Publish",
+        "ASSIGN": "Assign",
+        "GRADE": "Grade"
+      },
+      "saveChanges": "Save changes",
+      "selectAllPermissions": "Select all permissions for {{name}}",
+      "overrideFor": "Override {{name}}",
+      "adminNotice": "ADMIN has full system access and cannot be changed in this matrix.",
+      "rolesLoadError": "Unable to load the role list.",
+      "loadError": "Unable to load permissions. Check the migration and v2 authorization configuration.",
+      "userLoadError": "Unable to load the account list.",
+      "noEligibleUsers": "There are no eligible accounts to configure overrides for.",
+      "retry": "Retry",
+      "loading": "Loading permissions...",
+      "noFunctions": "No functions are configured.",
+      "toast": {
+        "roleSaveSuccess": "Permission matrix updated.",
+        "roleSaveError": "Unable to update the permission matrix.",
+        "overrideSaveSuccess": "Account overrides updated.",
+        "overrideSaveError": "Unable to update account overrides."
+      }
+    },
     "table": {
+      "group": "Permission group",
       "groupCode": "Group Code",
       "groupName": "Group Name",
-      "userCount": "User Count"
+      "kind": "Group type",
+      "userCount": "Assigned accounts",
+      "createdAt": "Created"
     },
     "memberUnit": "members",
     "confirmDelete": "Are you sure you want to delete this role?",
     "confirmDeleteTitle": "Confirm deletion",
-    "confirmDeleteMessage": "Are you sure you want to delete this user group? This action cannot be undone.",
-    "filter": {
-      "placeholder": "Select criteria",
-      "byName": "By Name",
-      "byID": "By ID"
-    },
+    "confirmDeleteMessage": "Are you sure you want to delete the {{name}} permission group? This action cannot be undone.",
     "addNew": "Create New Permission Group"
   },
   "confirm": {
@@ -417,70 +1133,225 @@
     "loading": "Processing..."
   },
   "assignmentPage": {
+    "title": "Subject Assignments",
+    "adminDescription": "Manage the subjects assigned to teachers.",
+    "teacherDescription": "View the subjects assigned to you.",
+    "permissionLoading": "Checking access...",
+    "permissionLoadFailed": "Unable to load assignment permissions.",
+    "noViewPermission": "You do not have permission to view assignments.",
+    "retry": "Retry",
+    "loadFailed": "Unable to load assignments. Please try again.",
+    "resetFilters": "Reset",
+    "subjectCount": "{{count}} subjects",
+    "moreSubjects": "+{{count}} more",
+    "tableTitle": "Assignment list",
+    "tableDescription": "Each row groups a teacher with their assigned subjects.",
+    "empty": {
+      "list": "There are no assignments yet.",
+      "filtered": "No matching assignments were found."
+    },
+    "stats": {
+      "assignments": "Total assignments",
+      "teachers": "Teachers with assignments",
+      "subjects": "Subjects currently assigned"
+    },
     "table": {
-      "subjectCode": "Subject Code",
-      "subjectName": "Subject Name",
-      "teacherCode": "Teacher Code",
-      "teacherName": "Teacher Name"
+      "teacher": "Teacher",
+      "subjectCount": "Subjects",
+      "subjects": "Assigned subjects"
     },
     "filter": {
-      "placeholder": "Select criteria",
+      "panelTitle": "Search assignments",
+      "panelDescription": "Filter the assignment list by the selected criterion.",
+      "searchLabel": "Search",
       "bySubject": "By Subject",
       "byTeacher": "By Teacher"
     },
+    "searchBy": {
+      "teacherPlaceholder": "Enter teacher name, code, or email",
+      "subjectPlaceholder": "Enter subject name or code"
+    },
+    "teacherWorkspace": {
+      "eyebrow": "Teaching workspace",
+      "title": "Assigned subjects",
+      "description": "The subjects you are currently assigned to teach.",
+      "listTitle": "My subjects",
+      "subjectCount": "{{count}} subjects"
+    },
     "addNew": "Create new assignment",
     "confirmDeleteTitle": "Confirm deletion",
-    "confirmDelete": "Are you sure you want to delete the assignment for teacher: {{teacherName}}?"
+    "confirmDelete": "Are you sure you want to remove {{subjectName}} from {{teacherName}}'s assignments?"
   },
   "testPage": {
+    "title": "Exam management",
+    "description": "Track exam schedules, status, and the classes assigned to each exam.",
+    "tableTitle": "Exam list",
+    "tableDescription": "Each exam shows its schedule, subject, question count, and assigned classes.",
+    "resultCount": "{{count}} exams",
+    "sortNewestFirst": "Newest first",
+    "sortOldestFirst": "Oldest first",
+    "clearFilters": "Clear filters",
+    "loadError": "Unable to load exams. Please try again.",
+    "loading": "Loading exams...",
+    "permissionLoading": "Checking access...",
+    "permissionLoadError": "Unable to load exam access permissions.",
+    "retry": "Retry",
+    "empty": "No matching exams were found.",
+    "noViewPermission": "You do not have permission to view the exam list.",
     "filter": {
+      "panelTitle": "Exam filters",
+      "panelDescription": "Search by a selected criterion, subject, and exam status.",
+      "searchLabel": "Search",
+      "dateTimeLabel": "Exam schedule",
+      "dateTimeStart": "Start",
+      "dateTimeEnd": "End",
+      "statusLabel": "Status",
       "all": "All",
-      "opening": "Opening",
-      "closed": "Closed",
-      "notOpened": "Not Opened"
+      "allSubjects": "All subjects",
+      "opening": "In progress",
+      "closed": "Completed",
+      "notOpened": "Upcoming"
+    },
+    "searchBy": {
+      "name": "Exam name",
+      "namePlaceholder": "Enter an exam name",
+      "subject": "Subject",
+      "subjectPlaceholder": "Enter a subject name or code"
+    },
+    "sort": {
+      "label": "Sort by creation date",
+      "newest": "Newest first",
+      "oldest": "Oldest first"
+    },
+    "stats": {
+      "total": "Total exams",
+      "opening": "In progress",
+      "upcoming": "Upcoming",
+      "closed": "Completed"
     },
     "searchPlaceholder": "Search",
     "subject": "Subject",
     "selectSubjectPlaceholder": "Select subject",
-    "addNew": "Create test"
+    "addNew": "Create exam"
+  },
+  "teacherExamWorkspace": {
+    "eyebrow": "Teaching workspace",
+    "title": "My exams",
+    "description": "Create exams and assign them to one or more classes you teach.",
+    "scopeHint": "Manage exams and track the classes you assigned them to.",
+    "create": "Create exam",
+    "createFirst": "Create your first exam",
+    "classes": "Classes assigned",
+    "listTitle": "Exam list",
+    "resultCount": "{{count}} exams",
+    "search": "Search exam name",
+    "reset": "Reset",
+    "assignedClasses": "Assigned classes",
+    "empty": "You have not created any exams yet."
   },
   "notificationPage": {
+    "title": "Notifications",
+    "description": "Manage your notifications and those shared with your classes.",
+    "resultCount": "{{count}} notifications",
+    "listTitle": "Notification list",
+    "listDescription": "Each row shows the message, status, recipient classes, and send time.",
+    "stats": {
+      "total": "Total notifications",
+      "sent": "Sent",
+      "drafts": "Drafts",
+      "classes": "Classes reached"
+    },
+    "sortNewestFirst": "Newest first",
+    "sortOldestFirst": "Oldest first",
+    "clearFilters": "Clear filters",
+    "loadError": "Unable to load notifications. Please try again.",
+    "retry": "Retry",
+    "permissionLoading": "Checking notification access...",
+    "permissionLoadFailed": "Unable to check notification access.",
+    "emptyAdjustFilters": "Adjust or clear your filters to see more results.",
+    "loading": "Loading notifications...",
+    "empty": "There are no notifications yet.",
+    "emptyFiltered": "No matching notifications were found.",
+    "noViewPermission": "You do not have permission to view notifications.",
     "confirmDelete": "Are you sure you want to delete this notification?",
     "confirmDeleteTitle": "Confirm deletion",
     "confirmDeleteMessage": "Are you sure you want to delete this notification? This action cannot be undone.",
+    "confirmDeleteSpecificMessage": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
     "validation": {
       "titleRequired": "Title is required",
       "contentRequired": "Content is required",
       "courseGroupRequired": "Please select at least one course group"
     },
     "filter": {
+      "panelTitle": "Notification filters",
+      "panelDescription": "Search by content and status, then sort by time.",
+      "sortLabel": "Sort",
       "placeholder": "Select status",
+      "label": "Status",
       "all": "All",
       "sent": "Sent",
       "draft": "Draft"
+    },
+    "search": {
+      "label": "Find notifications",
+      "criteria": {
+        "all": "All content",
+        "title": "Title",
+        "content": "Content",
+        "class": "Class",
+        "sender": "Sender"
+      },
+      "placeholders": {
+        "all": "Search title, content, class, or sender...",
+        "title": "Search by title...",
+        "content": "Search message content...",
+        "class": "Search by class or subject...",
+        "sender": "Search by sender name..."
+      }
+    },
+    "table": {
+      "title": "Title",
+      "content": "Content",
+      "status": "Status",
+      "classes": "Recipient classes",
+      "sender": "Sender",
+      "createdAt": "Sent at"
     },
     "searchPlaceholder": "Search",
     "addNew": "Create new notification"
   },
   "notificationItem": {
     "status": {
-      "open": "Open",
-      "closed": "Closed"
+      "sent": "Sent",
+      "draft": "Draft"
     },
     "actions": {
       "view": "View details",
       "edit": "Edit",
       "delete": "Delete"
     },
-    "assignedTo": "Assigned to subject:",
+    "assignedTo": "Assigned to classes:",
     "createdAt": "Created at: {{date}}",
-    "sender": "Sender: {{name}}"
+    "sender": "Sender: {{name}}",
+    "unknownCourseGroup": "No class assigned",
+    "unknownSender": "Unknown sender"
   },
   "notificationForm": {
     "title": {
       "create": "Create new notification",
       "update": "Edit notification",
       "view": "Notification details"
+    },
+    "description": {
+      "create": "Write a message and choose which classes should receive it.",
+      "update": "Update the message and the classes receiving it.",
+      "view": "View the message and the classes that received it.",
+      "messageFields": "Enter the title and message to send to the selected classes.",
+      "recipients": "Choose one or more course groups to receive this notification."
+    },
+    "sections": {
+      "message": "Notification content",
+      "recipients": "Recipients"
     },
     "fields": {
       "title": {
@@ -493,10 +1364,22 @@
       }
     },
     "assign": {
-      "label": "Assign to",
+      "label": "Apply to classes",
       "placeholder": "Select subject"
     },
     "selectAll": "Select all",
+    "noGroups": "No classes are available",
+    "metadata": {
+      "sender": "Sent by",
+      "sentAt": "Sent at"
+    },
+    "subjectsLoadError": "Could not load subjects and classes. Please try again.",
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMaxLength": "Title must be 200 characters or fewer",
+      "contentRequired": "Content is required",
+      "courseGroupRequired": "Select at least one class"
+    },
     "actions": {
       "back": "Back",
       "send": "Send notification",
@@ -505,96 +1388,231 @@
   },
   "testDetailPage": {
     "loading": "Loading data...",
+    "loadError": "Unable to load test details.",
+    "loadErrorWithData": "Unable to load the latest details. The displayed data may be outdated.",
+    "notFound": "This test was not found or you do not have permission to view it.",
     "overview": {
       "title": "Overview",
       "assignTo": "Assigned to subject",
+      "schedule": "Schedule",
+      "durationLabel": "Time limit",
+      "questionCount": "Questions",
       "duration": "From {{start}} to {{end}}"
     },
     "actions": {
-      "preview": "Preview",
+      "preview": "Practice exam",
       "menu": "Actions",
       "menuTitle": "Test options",
       "viewDetail": "View details",
       "delete": "Delete test",
-      "edit": "Edit test"
+      "edit": "Edit test",
+      "retry": "Retry",
+      "backToList": "Back to list"
     },
+    "deleteConfirmTitle": "Confirm test deletion",
     "deleteConfirm": "Are you sure you want to delete this test? This action cannot be undone.",
     "assignedToSection": "Assigned to"
   },
   "difficultyLevelPage": {
-    "table": {
-      "code": "Difficulty Code",
-      "name": "Difficulty Name"
+    "title": "Difficulty Management",
+    "description": "Manage the levels used to classify questions and exams.",
+    "teacher": {
+      "eyebrow": "Learning & assessment",
+      "title": "Question difficulty levels",
+      "description": "Review the levels used in the question bank and tests.",
+      "scopeHint": "Create and manage the levels available while preparing questions.",
+      "listTitle": "Difficulty catalog",
+      "searchByCriteria": "Search criteria",
+      "resultCount": "{{count}} levels",
+      "questionCount": "{{count}} questions"
     },
+    "tableTitle": "Difficulty levels",
+    "tableDescription": "Review how many questions use each difficulty level.",
+    "searchPlaceholder": "Search by the selected criterion",
     "filter": {
-      "placeholder": "Select criteria",
-      "byName": "By name",
-      "byID": "By ID"
+      "panelTitle": "Search and filter difficulty levels",
+      "panelDescription": "Search by difficulty name or code.",
+      "searchLabel": "Search"
     },
-    "addNew": "Create new difficulty level",
-    "confirmDeleteTitle": "Confirm deletion",
-    "confirmDelete": "Are you sure you want to delete this difficulty level?",
+    "searchBy": {
+      "name": "Difficulty name",
+      "namePlaceholder": "Enter a difficulty name",
+      "id": "Difficulty code",
+      "idPlaceholder": "Enter a difficulty code or ID"
+    },
+    "resetFilters": "Reset",
+    "addNew": "Create difficulty level",
+    "saveAction": "Save difficulty",
+    "deleteAction": "Delete difficulty",
+    "stats": {
+      "total": "Total levels",
+      "inUse": "Levels in use",
+      "questions": "Classified questions"
+    },
+    "table": {
+      "id": "Difficulty ID",
+      "name": "Difficulty name",
+      "questionCount": "Questions",
+      "createdAt": "Created",
+      "updatedAt": "Last updated"
+    },
+    "empty": {
+      "list": "There are no difficulty levels yet.",
+      "filtered": "No matching difficulty levels found."
+    },
+    "noViewPermission": "You do not have permission to view difficulty levels.",
+    "permissionLoading": "Checking access permissions...",
+    "permissionLoadFailed": "Unable to check access permissions.",
+    "loadFailed": "Unable to load difficulty levels.",
+    "retry": "Retry",
+    "cannotDeleteInUse": "This difficulty level cannot be deleted while questions use it.",
+    "formSections": {
+      "details": "Difficulty details"
+    },
+    "dialog": {
+      "createTitle": "Add a difficulty level",
+      "createDescription": "Create a level to use when preparing questions.",
+      "viewTitle": "Difficulty details",
+      "viewDescription": "Review this level and how it is being used.",
+      "updateTitle": "Update difficulty level",
+      "updateDescription": "Edit the level name used in the question bank.",
+      "deleteTitle": "Delete difficulty level",
+      "deleteDescription": "Confirm removal of this level from the catalog.",
+      "deleteConfirm": "Are you sure you want to delete {{name}}?"
+    },
     "form": {
-      "addTitle": "Add New Difficulty Level",
-      "updateTitle": "Update Difficulty Level",
       "nameLabel": "Difficulty Name",
-      "namePlaceholder": "Example: Comprehension, Application...",
-      "note": "* Difficulty level will be displayed when creating exam questions.",
-      "backButton": "Back",
-      "saveButton": "Save Difficulty",
-      "updateButton": "Update",
+      "namePlaceholder": "Example: Comprehension, Application",
       "validation": {
-        "nameRequired": "Difficulty name is required",
-        "nameExists": "Difficulty name already exists"
+        "nameRequired": "Enter a difficulty name.",
+        "nameMaxLength": "Difficulty name cannot exceed 100 characters.",
+        "nameExists": "This difficulty name already exists."
       }
     }
   },
   "dashboard": {
     "title": "System Overview",
-    "subtitle": "Welcome back, here is the latest data for today.",
-    "semester": {
-      "placeholder": "Select semester",
-      "options": {
-        "sem1": "Semester 1 - 2025",
-        "sem2": "Semester 2 - 2025"
-      }
-    },
+    "subtitle": "Review the latest accounts, classes, exams, and question bank data.",
     "stats": {
       "totalStudents": "Total students",
+      "activeClasses": "Active classes",
       "activeExams": "Active exams",
-      "completedAttempts": "Completed attempts",
       "questionBank": "Question bank"
     },
-    "traffic": {
-      "title": "System traffic",
-      "last7Days": "Last 7 days",
-      "tooltip": "{{count}} visits"
+    "classrooms": {
+      "title": "Recently created classes",
+      "empty": "There are no classes yet.",
+      "subjectUnavailable": "Subject information unavailable",
+      "studentCount": "{{count}} students"
     },
-    "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "upcomingExams": {
       "title": "Upcoming exams",
-      "items": {
-        "dataStructures": "Data Structures",
-        "oop": "Object-Oriented Programming",
-        "databases": "Databases",
-        "networks": "Computer Networks"
+      "empty": "There are no upcoming exams."
+    },
+    "viewAll": "View all",
+    "loadError": "Some data could not be loaded. Please reload the page."
+  },
+  "statistics": {
+    "items": {
+      "learningOutcomes": "Learning outcomes",
+      "examActivity": "Exam activity",
+      "classEnrollment": "Classes & enrollment",
+      "questionBank": "Question bank"
+    },
+    "empty": "There is no data for this period yet.",
+    "loadError": "Unable to load statistics. Please try again.",
+    "period": {
+      "granularity": "Time period",
+      "month": "Month",
+      "quarter": "Quarter",
+      "year": "Year",
+      "custom": "Custom range",
+      "specificPeriod": "Select period",
+      "fromDate": "From date",
+      "toDate": "To date",
+      "invalidRange": "Choose a valid date range of no more than 10 years.",
+      "print": "Print statistics",
+      "printedPeriod": "Statistics period: {{period}}",
+      "printedAt": "Printed at: {{date}}",
+      "basis": {
+        "learningOutcomes": "Attempts are filtered by start date; scores and statuses reflect their current state.",
+        "examActivity": "Exams are counted by creation date, class schedules by overlap, and attempts by start date.",
+        "classEnrollment": "Shows current enrollment for classes using the schedules currently saved for this period; enrollment and schedule change history are not stored.",
+        "questionBank": "Questions are counted by creation date and current status; usage uses the link date, falling back to the exam creation date for older records without one."
       }
     },
-    "status": {
-      "pending": "Pending",
-      "ready": "Ready"
+    "subjectUnavailable": "Subject information unavailable",
+    "unassignedDifficulty": "Unclassified",
+    "studentCount": "{{count}} students",
+    "questionNumber": "Question #{{id}}",
+    "usageCount": "Included in {{count}} exams",
+    "metrics": {
+      "studentsWithSubmissions": "Students with submissions",
+      "totalExams": "Exams created in period",
+      "ongoingExams": "Exams scheduled in period",
+      "upcomingExams": "Upcoming exams in period",
+      "inProgressAttempts": "Unsubmitted attempts started in period",
+      "activeClasses": "Classes with exams in period",
+      "totalEnrollments": "Students in current class rosters",
+      "averageClassSize": "Current average class size",
+      "subjects": "Subjects with exams in period",
+      "totalQuestions": "Questions created in period",
+      "publishedQuestions": "Published among new questions",
+      "privateQuestions": "Private among new questions",
+      "archivedQuestions": "Archived among new questions",
+      "questionUsage": "Questions added to exams in period",
+      "submittedAttempts": "Submitted attempts",
+      "completionRate": "Exam completion rate",
+      "averageScore": "Average score"
+    },
+    "charts": {
+      "attemptTrend": "Attempts started in period",
+      "attempts": "Attempts",
+      "scoreDistribution": "Score distribution for attempts in period",
+      "averageBySubject": "Average score by subject in period",
+      "averageScore": "Average score",
+      "mostAttemptedExams": "Exams with the most starts in period",
+      "submittedOfAttempts": "Submitted {{submitted}} / {{attempts}} attempts",
+      "studentsBySubject": "Current students by subject with exams in period",
+      "largestClasses": "Classes with the largest current rosters",
+      "questionsByDifficulty": "Questions created in period by difficulty",
+      "questionsBySubject": "Questions created in period by subject",
+      "mostUsedQuestions": "Questions added to the most exams in period",
+      "students": "Students",
+      "questions": "Questions"
+    },
+    "reports": {
+      "learningOutcomes": {
+        "title": "Learning outcomes",
+        "description": "Track scores and exam completion across subjects."
+      },
+      "examActivity": {
+        "title": "Exam activity",
+        "description": "Track exam schedules, attempts, and student participation."
+      },
+      "classEnrollment": {
+        "title": "Classes & enrollment",
+        "description": "Track class sizes and student enrollment by subject."
+      },
+      "questionBank": {
+        "title": "Question bank",
+        "description": "Track question composition, publication status, and usage."
+      }
     }
   },
   "profile": {
     "avatarAlt": "Avatar",
+    "edit": "Edit profile",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "updateSuccess": "Profile updated successfully.",
+    "updateError": "Unable to update profile. Please try again.",
     "tabs": {
       "info": "Account information",
       "password": "Change password"
     },
     "about": {
-      "title": "About",
-      "location": "Ho Chi Minh City",
-      "socialLink": "facebook.com/manh"
+      "title": "Contact information"
     },
     "details": {
       "title": "Account details",
@@ -620,14 +1638,17 @@
       "confirm": "Confirm new password",
       "confirmPlaceholder": "Re-enter the new password",
       "update": "Update password",
+      "updating": "Updating...",
+      "updateSuccess": "Password changed successfully.",
       "cancel": "Cancel"
     },
     "validation": {
-      "passwordRequired": "Password is required",
-      "passwordMinLength": "Password must be at least 6 characters",
-      "passwordLetterRequired": "Password must contain letters",
-      "passwordNumberRequired": "Password must contain numbers",
-      "passwordCaseRequired": "Password must contain uppercase and lowercase letters",
+      "fullNameRequired": "Enter your full name.",
+      "fullNameMaxLength": "Full name cannot exceed 255 characters.",
+      "genderRequired": "Please select a gender.",
+      "phoneMaxLength": "Phone number cannot exceed 20 characters.",
+      "birthDateInvalid": "Date of birth must be before today.",
+      "currentPasswordRequired": "Enter your current password.",
       "passwordConfirmMismatch": "Password confirmation does not match",
       "passwordDifferent": "New password must be different from the current password",
       "currentPasswordMismatch": "Current password is incorrect"
@@ -636,7 +1657,72 @@
       "userNotSet": "User is not set"
     }
   },
+  "richTextEditor": {
+    "placeholder": "Write content...",
+    "insertImageTitle": "Insert image",
+    "insertImage": "Insert image",
+    "cancel": "Cancel",
+    "imageUrlLabel": "Image URL",
+    "imageUrlPlaceholder": "https://example.com/image.jpg",
+    "imageUrlRequired": "Enter an image URL.",
+    "imageUrlInvalid": "Enter a valid URL that starts with http:// or https://.",
+    "toolbar": {
+      "label": "Formatting toolbar",
+      "bold": "Bold",
+      "italic": "Italic",
+      "bulletList": "Bulleted list",
+      "orderedList": "Numbered list",
+      "quote": "Quote",
+      "image": "Insert image",
+      "undo": "Undo",
+      "redo": "Redo"
+    }
+  },
   "questionPage": {
+    "title": "Question bank",
+    "description": "Search, organize, and manage questions according to your permissions.",
+    "permissionLoading": "Checking access permissions...",
+    "permissionLoadError": "Unable to load question bank permissions.",
+    "retry": "Retry",
+    "tableTitle": "Question list",
+    "tableDescription": "Review the content, classification, and status of each question.",
+    "stats": {
+      "total": "Total questions",
+      "public": "Public questions",
+      "private": "Private questions",
+      "archive": "Archived questions"
+    },
+    "filter": {
+      "panelTitle": "Search and filter questions",
+      "panelDescription": "Search question or answer content, then filter by subject, chapter, and difficulty.",
+      "searchLabel": "Search"
+    },
+    "searchBy": {
+      "content": "Question content",
+      "contentPlaceholder": "Enter question content",
+      "answer": "Answer content",
+      "answerPlaceholder": "Enter answer content"
+    },
+    "teacher": {
+      "eyebrow": "Teaching workspace",
+      "title": "Teacher question bank",
+      "description": "Prepare and manage questions for the course groups assigned to you.",
+      "scopeHint": "Subjects and content are limited to your teaching permissions.",
+      "stats": {
+        "questions": "Questions in this view",
+        "subjects": "{{count}} assigned subjects"
+      },
+      "moreSubjects": "+{{count}} subjects",
+      "noSubjects": "No subjects have been assigned yet."
+    },
+    "resultCount": "{{count}} questions",
+    "clearFilters": "Clear filters",
+    "loading": "Loading questions...",
+    "loadError": "Unable to load the question list. Please try again.",
+    "filterLoadError": "Unable to load subject or difficulty filters.",
+    "noViewPermission": "You do not have permission to view the question bank.",
+    "emptyFiltered": "No questions match the current criteria.",
+    "emptyByTab": "There are no questions in {{tab}} yet.",
     "tabs": {
       "public": "Public",
       "private": "Private",
@@ -648,11 +1734,13 @@
     "filters": {
       "subject": {
         "label": "Subject",
-        "placeholder": "Select subject"
+        "placeholder": "Select subject",
+        "all": "All subjects"
       },
       "chapter": {
         "label": "Chapter",
         "placeholder": "Select chapter",
+        "all": "All chapters",
         "options": {
           "recognize": "Recognition",
           "understand": "Understanding",
@@ -662,11 +1750,19 @@
       },
       "difficulty": {
         "label": "Difficulty",
-        "placeholder": "Select difficulty"
+        "placeholder": "Select difficulty",
+        "all": "All difficulties"
       }
     },
     "search": {
-      "placeholder": "Search in {{count}} questions..."
+      "placeholder": "Search in {{count}} questions...",
+      "label": "Search questions"
+    },
+    "sort": {
+      "label": "Sort by usage",
+      "default": "Default order",
+      "usageAsc": "Least used first",
+      "usageDesc": "Most used first"
     },
     "empty": "No matching questions found",
     "deleteConfirm": {
@@ -686,11 +1782,32 @@
     }
   },
   "addQuestionForm": {
-    "tabs": {
-      "handmade": "Add manually",
-      "fromFile": "Add from file",
-      "edit": "Edit"
+    "errors": {
+      "catalogLoadError": "Could not load subjects, chapters, or difficulty levels. Please try again."
     },
+    "title": {
+      "create": "Create question",
+      "update": "Update question",
+      "view": "Question details"
+    },
+    "dialogDescription": "Write the question, add answers, and set its classification.",
+    "updateDescription": "Update the question classification, content, and answers.",
+    "viewDescription": "Review the question classification, content, and answers.",
+    "summary": {
+      "newQuestion": "New question",
+      "existingQuestion": "Question #{{id}}",
+      "classificationPlaceholder": "Subject, chapter, and difficulty are not selected"
+    },
+    "classificationRequiredHint": "Select a subject, chapter, and difficulty before continuing.",
+    "sections": {
+      "classification": "Question classification",
+      "classificationDescription": "Choose a subject, chapter, and difficulty level in order to unlock the question editor.",
+      "contentTitle": "Write the question",
+      "contentDescription": "Enter the question. You can format text in the editor below.",
+      "answersDescription": "Add at least two answers and mark the correct one.",
+      "visibility": "Availability"
+    },
+    "visibilityDescription": "Public questions can be used in the shared question bank.",
     "fields": {
       "subject": {
         "label": "Subject",
@@ -702,7 +1819,8 @@
       },
       "difficulty": {
         "label": "Difficulty",
-        "placeholder": "Select difficulty"
+        "placeholder": "Select difficulty",
+        "all": "All difficulties"
       }
     },
     "content": {
@@ -710,6 +1828,7 @@
     },
     "answers": {
       "title": "Answer list",
+      "count": "{{count}} answers",
       "empty": "No answers yet. Add one below.",
       "correct": "CORRECT",
       "chooseCorrect": "Mark as correct",
@@ -725,7 +1844,18 @@
     "footer": {
       "public": "Make this question public",
       "back": "Back",
-      "saveAll": "Save question"
+      "saveAll": "Save question",
+      "create": "Create question",
+      "update": "Update question"
+    },
+    "validation": {
+      "subjectRequired": "Please select a subject.",
+      "questionRequired": "Please enter the question content.",
+      "minimumAnswers": "A question must have at least two answers.",
+      "answerRequired": "Answer content cannot be empty.",
+      "correctAnswerRequired": "Select at least one correct answer.",
+      "singleCorrectAnswerRequired": "Each question must have exactly one correct answer.",
+      "saveAnswerDraft": "Save or cancel the answer in progress before saving the question."
     }
   },
   "questionItem": {
@@ -736,21 +1866,39 @@
     "delete": "Delete",
     "addToBank": "Add to bank",
     "makePublic": "Make public",
+    "moveToPrivate": "Move to personal",
     "restoreToBank": "Restore to bank",
-    "usage": "Usage: {{count}} times"
+    "usage": "Usage: {{count}} times",
+    "unknownSubject": "Subject information unavailable",
+    "unknownDifficulty": "Difficulty unavailable",
+    "unknownDate": "Creation date unavailable"
   },
   "testItem": {
     "confirmDeleteTitle": "Confirm deletion",
     "confirmDelete": "Are you sure you want to delete this test? This action cannot be undone.",
     "actions": {
       "viewDetail": "View details",
+      "preview": "Practice exam",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "viewResults": "View results"
     },
+    "examCode": "Exam #{{id}}",
     "assignTo": "Assigned to subject",
-    "duration": "From {{start}} to {{end}}"
+    "duration": "From {{start}} to {{end}}",
+    "schedule": "{{start}} – {{end}}",
+    "durationMinutes": "{{count}} min",
+    "classCount": "{{count}} classes",
+    "questionCount": "{{count}} questions",
+    "unknownSubject": "Subject information unavailable",
+    "noClasses": "This exam has not been assigned to any class."
   },
   "testFormPage": {
+    "description": {
+      "edit": "Update the exam schedule, assigned classes, and configuration.",
+      "view": "Review the schedule, assigned classes, and exam configuration.",
+      "create": "Set up the exam details, schedule, and delivery options."
+    },
     "title": {
       "edit": "Edit test",
       "view": "Test details",
@@ -767,7 +1915,19 @@
         "label": "Duration",
         "unit": "Minutes",
         "placeholder": "00"
+      },
+      "subject": {
+        "label": "Subject"
+      },
+      "courseGroups": {
+        "label": "Classes"
       }
+    },
+    "sections": {
+      "details": "Exam details and schedule",
+      "detailsDescription": "Name the exam and set when it runs and how long it lasts.",
+      "assignment": "Subject and participating classes",
+      "assignmentDescription": "Choose the subject and classes allowed to take this exam."
     },
     "assignTo": {
       "label": "Assign to",
@@ -776,11 +1936,37 @@
     "actions": {
       "back": "Back",
       "viewQuestions": "View questions",
-      "continueQuestions": "Continue adding questions"
+      "continueQuestions": "Continue adding questions",
+      "continueEditQuestions": "Continue updating questions",
+      "retry": "Retry",
+      "backToList": "Back to list"
+    },
+    "selectSubjectForGroups": "Select a subject to load its class list.",
+    "loadingCourseGroups": "Loading classes...",
+    "courseGroupsLoadError": "Could not load classes for this subject. Please try again.",
+    "noCourseGroups": "This subject has no classes yet.",
+    "assignmentPermissionRequired": "You do not have permission to assign exams to classes.",
+    "loadError": "Could not load test details. Please try again.",
+    "notFound": "This test was not found or you do not have permission to view it.",
+    "subjectsLoadError": "Could not load assigned subjects. Please try again.",
+    "allSubjectsLoadError": "Could not load the subject list. Please try again.",
+    "validation": {
+      "nameRequired": "Enter a test name.",
+      "nameMaxLength": "Test name cannot exceed 255 characters.",
+      "startTimeRequired": "Select a start time.",
+      "startTimeInvalid": "Start time is invalid.",
+      "endTimeRequired": "Select an end time.",
+      "endTimeInvalid": "End time is invalid.",
+      "endTimeAfterStart": "End time must be after start time.",
+      "durationMinimum": "Duration must be a positive whole number.",
+      "subjectRequired": "Select a subject.",
+      "courseGroupRequired": "Select at least one class.",
+      "creatorRequired": "The current account could not be identified. Please sign in again."
     }
   },
   "testConfigSidebar": {
     "title": "Test configuration",
+    "description": "Set how the exam is delivered and how results are shown.",
     "sections": {
       "shuffle": "Shuffle",
       "antiCheat": "Anti-cheat",
@@ -790,17 +1976,25 @@
       "shuffleQuestions": "Shuffle questions",
       "shuffleAnswers": "Shuffle answers",
       "monitoring": "Exam monitoring (full screen)",
-      "blockCopy": "Block Copy/Paste/Print",
+      "blockCopy": "Block copying content",
+      "blockPrint": "Block printing the test",
       "limitSwitchTab": "Limit tab switching (auto submit)",
+      "limitQuestionsPerPage": "Limit questions per page",
+      "allowBack": "Allow returning to the previous question",
       "showScore": "Show score",
       "showDetail": "Show detailed results",
       "enableResume": "Allow retake"
     },
     "labels": {
-      "maxSwitches": "Max switches"
+      "maxSwitches": "Maximum switches",
+      "questionsPerPage": "Questions per page",
+      "warningMessage": "Warning message"
     },
     "placeholders": {
       "maxSwitches": "Example: 3"
+    },
+    "hints": {
+      "questionLimit": "Pairing this with blocking backward navigation can improve exam security."
     }
   },
   "addQuestionTestPage": {
@@ -808,8 +2002,13 @@
       "create": "Creating new test...",
       "update": "Updating test..."
     },
+    "errors": {
+      "questionBank": "Could not load the question bank. Please try again.",
+      "difficulties": "Could not load difficulty levels. Please try again."
+    },
     "toast": {
-      "saveSuccess": "Saved successfully"
+      "saveSuccess": "Saved successfully",
+      "saveError": "Could not save the test. Check the details and try again."
     },
     "actions": {
       "back": "Back",
@@ -824,15 +2023,22 @@
       "create": "Add questions"
     },
     "filters": {
-      "search": "Search questions",
-      "chapter": "Select chapter",
+      "search": "Enter question text",
+      "chapter": {
+        "label": "Chapter",
+        "placeholder": "Select chapter",
+        "all": "All chapters"
+      },
       "difficulty": {
         "label": "Difficulty",
-        "placeholder": "Select difficulty"
-      }
+        "placeholder": "Select difficulty",
+        "all": "All difficulties"
+      },
+      "searchLabel": "Search"
     },
     "count": {
-      "label": "Count:"
+      "label": "Questions:",
+      "other": "Other"
     },
     "tooltips": {
       "moveUp": "Move up",
@@ -843,7 +2049,8 @@
       "basicInfo": {
         "title": "Basic information",
         "assignTo": "Assigned to subject",
-        "duration": "From {{start}} to {{end}}",
+        "startsAt": "Starts: {{time}}",
+        "endsAt": "Ends: {{time}}",
         "workTime": "Duration: {{minutes}} minutes"
       },
       "security": {
@@ -852,7 +2059,8 @@
         "switchLimit": "Tab switch limit:",
         "switchTimes": "{{count}} times",
         "copyBlocked": "Copying is disabled",
-        "printBlocked": "Printing is blocked"
+        "printBlocked": "Printing is blocked",
+        "noneActive": "No additional security options are enabled."
       },
       "rules": {
         "title": "Exam rules",
@@ -861,39 +2069,71 @@
         "showDetail": "Show detailed results",
         "showScore": "Show score"
       }
+    },
+    "validation": {
+      "examDataRequired": "Test details could not be found.",
+      "questionsRequired": "Add at least one question to the test.",
+      "payloadInvalid": "The test details are incomplete. Return and check the required fields.",
+      "totalScoreInvalid": "The total question score must equal 10.",
+      "examIdRequired": "The test to update could not be identified."
     }
   },
   "resultPage": {
     "avatarAlt": "Avatar",
+    "loadExamError": "Unable to load the exam details.",
+    "loadCourseGroupError": "Unable to load the class details.",
+    "loadStudentsError": "Unable to load the class student list.",
+    "loadResultError": "Unable to load the exam result. Please try again.",
+    "loadDifficultiesError": "Unable to load the difficulty catalog.",
     "classAverage": "Class average",
     "overview": {
-      "title": "Overview",
-      "preview": "Preview"
+      "title": "Exam results",
+      "preview": "Preview",
+      "questions": "{{count}} questions"
     },
     "tabs": {
       "classScore": "Scoreboard",
       "stat": "Statistics"
     },
     "filters": {
-      "rolePlaceholder": "Filter by role",
-      "roles": {
-        "all": "All",
-        "student": "Student",
-        "teacher": "Teacher",
-        "admin": "Admin"
+      "reset": "Reset",
+      "statusLabel": "Attempt status",
+      "statusPlaceholder": "Filter by status",
+      "statuses": {
+        "all": "All statuses",
+        "submitted": "Submitted",
+        "inProgress": "In progress",
+        "notJoined": "Not joined"
       }
     },
     "search": {
-      "placeholder": "Search student ID..."
+      "label": "Search",
+      "criteria": {
+        "studentId": "Student ID",
+        "fullName": "Full name"
+      },
+      "placeholders": {
+        "studentId": "Enter student ID...",
+        "fullName": "Enter student name..."
+      }
     },
     "actions": {
+      "backToExams": "Back to exam management",
       "exportScores": "Export score table",
+      "exportError": "Unable to export the score table.",
       "result": "Result"
     },
     "viewModes": {
+      "label": "Result view mode",
       "user": "By student",
       "question": "By question",
       "difficulty": "By difficulty"
+    },
+    "sort": {
+      "label": "Sort",
+      "default": "Default",
+      "ascending": "Ascending",
+      "descending": "Descending"
     },
     "status": {
       "inProgress": "In progress...",
@@ -913,16 +2153,72 @@
       "avgScore": "Average score"
     }
   },
+  "courseMaterials": {
+    "title": "Class materials",
+    "description": "Files and resources shared with this class.",
+    "add": "Add material",
+    "edit": "Edit material",
+    "empty": "There are no materials in this class yet.",
+    "loadError": "Unable to load class materials.",
+    "download": "Download",
+    "downloadError": "Unable to download this material.",
+    "unknownAuthor": "Teacher",
+    "deleteTitle": "Delete material",
+    "deleteConfirmation": "Are you sure you want to delete {{title}}?",
+    "fileTooLarge": "The file must be no larger than 25 MB.",
+    "fileTypeInvalid": "This file format is not supported.",
+    "fileRequired": "Please choose a material file.",
+    "titleRequired": "Please enter a material title.",
+    "titleTooLong": "The title must be 180 characters or fewer.",
+    "descriptionTooLong": "The description must be 5,000 characters or fewer.",
+    "fileHelp": "Choose a PDF, Office, CSV, TXT, ZIP, or image file up to 25 MB.",
+    "form": {
+      "title": "Title",
+      "description": "Description",
+      "file": "Attachment",
+      "currentFile": "Current file: {{fileName}}",
+      "chooseFile": "Choose file"
+    }
+  },
   "courseElement": {
+    "loadingClass": "Loading class...",
+    "loadClassError": "Unable to load this class or you do not have access.",
+    "invalidClassId": "The class address is invalid.",
+    "loadExamError": "Unable to load the exam. Please try again.",
+    "loadResultError": "Unable to load the exam result. Please try again.",
+    "retry": "Retry",
     "tabs": {
       "news": "News",
       "classwork": "Classwork",
-      "everybody": "People"
+      "materials": "Materials",
+      "everybody": "People",
+      "grades": "Grades"
+    },
+    "grades": {
+      "description": "Browse class tests and open their gradebooks.",
+      "viewResults": "View grades",
+      "empty": "There are no tests to grade in this class yet.",
+      "eyebrow": "Class overview",
+      "tests": "Assigned tests",
+      "students": "Students in class",
+      "closedTests": "Closed tests",
+      "noStudentsTitle": "No students in this class yet",
+      "noStudentsDescription": "Share the class code so students can join and take assigned tests.",
+      "assignedTests": "Tests and results",
+      "assignedTestsHint": "Open a test to review class scores and progress.",
+      "testCount": "{{count}} tests"
     },
     "common": {
       "minuteUnit": "minutes"
     },
     "classwork": {
+      "viewYourWork": "View your work",
+      "collapseAll": "Collapse all",
+      "expandAll": "Expand all",
+      "noTopic": "No topic",
+      "scoreLabel": "Score",
+      "viewResult": "View result",
+      "moreActions": "Test options",
       "columns": {
         "testName": "Test name",
         "percentage": "Percentage",
@@ -931,20 +2227,46 @@
       },
       "status": {
         "notOpen": "Not open",
+        "open": "Open",
         "start": "Start",
-        "expired": "Expired"
+        "expired": "Expired",
+        "resume": "Resume",
+        "notStarted": "Not started",
+        "inProgress": "In progress",
+        "submitted": "Submitted · awaiting score",
+        "cancelled": "Cancelled",
+        "closed": "Closed",
+        "graded": "Graded"
       },
-      "durationText": "Duration: {{minutes}} {{unit}}"
+      "durationText": "Duration: {{minutes}} {{unit}}",
+      "createExam": "Create an exam",
+      "teacherTitle": "Classwork",
+      "teacherDescription": "{{count}} tests assigned to this class.",
+      "createAssignment": "Create assignment",
+      "practice": "Preview test",
+      "empty": "No tests have been assigned to this class yet.",
+      "loadError": "Unable to load your exam progress. Please try again."
     },
     "news": {
+      "classCodeTitle": "Class code",
+      "classCodeHint": "Share this code so students can join the class.",
+      "copyClassCode": "Copy class code",
+      "codeCopied": "Class code copied.",
+      "codeCopyError": "Unable to copy the class code.",
       "upcomingTitle": "Due soon",
       "upcomingEmpty": "Great, there are no assignments due soon!",
+      "upcomingExam": "{{examName}} opens {{date}}",
+      "emptyFeed": "There are no posts in this class yet.",
       "viewAll": "View all",
       "createAnnouncement": "Announce something to your class"
     },
     "everybody": {
       "teacher": "Teacher",
       "classmates": "Classmates"
+    },
+    "people": {
+      "unknownTeacher": "Teacher",
+      "unknownStudent": "Student"
     },
     "announcement": {
       "defaultAuthor": "Teacher",
@@ -961,7 +2283,7 @@
   "examResultOverview": {
     "loading": "Loading result...",
     "notAvailable": "N/A",
-    "previewMode": "You are previewing results in Admin mode",
+    "previewMode": "You are previewing this result. Practice data will not be saved.",
     "scoreHidden": "Scores are hidden by exam configuration.",
     "labels": {
       "score": "Score:",
@@ -986,6 +2308,14 @@
   },
   "examInstruction": {
     "title": "Instructions",
+    "overviewTitle": "Assessment overview",
+    "rulesTitle": "Assessment rules",
+    "beforeStartTitle": "Before you begin",
+    "beforeStartDescription": "Prepare a stable device and environment so you can finish the assessment.",
+    "beforeStartNetwork": "Keep a stable internet connection for the entire assessment.",
+    "beforeStartTime": "Your attempt ends when the time limit is reached.",
+    "footerHint": "Start when you are ready.",
+    "noAdditionalRules": "There are no additional rules for this assessment.",
     "timeLimit": "Time limit",
     "attempts": "Attempts:",
     "questionCount": "Number of questions:",
@@ -994,7 +2324,11 @@
     "monitoring": "Exam monitoring: full screen, mouse restriction",
     "limitSwitchTab": "Tab switch limit: {{count}} times",
     "welcome": "Welcome to {{testName}}. Please ensure a stable connection before starting.",
-    "start": "Start"
+    "noQuestionsToPreview": "Add at least one question before previewing the assessment.",
+    "start": "Start",
+    "pagination": "Show:",
+    "questionsPerPage": "questions per page",
+    "noBackWarning": "NOTE: You cannot return to a previous question after moving to the next page!"
   },
   "statSection": {
     "summary": {

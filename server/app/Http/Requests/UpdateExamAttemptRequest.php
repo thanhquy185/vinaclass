@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Policies\ExamAttemptPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,9 +14,11 @@ class UpdateExamAttemptRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(ExamAttemptPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+
+        return $actor instanceof User && $policy->manage($actor);
     }
 
     /**

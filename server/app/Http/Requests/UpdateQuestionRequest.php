@@ -2,13 +2,24 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Question;
+use App\Models\User;
+use App\Policies\QuestionPolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateQuestionRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(QuestionPolicy $policy): bool
     {
-        return true;
+        $actor = $this->user();
+        $question = $this->route('question');
+
+        if (!$actor instanceof User || !$question instanceof Question) {
+            return false;
+        }
+
+        return $policy->manage($actor, $question, 'update');
     }
 
     public function rules()
@@ -17,18 +28,32 @@ class UpdateQuestionRequest extends FormRequest
             'subject_id' => ['sometimes', 'integer', 'exists:subjects,id'],
             'chapter_id' => ['sometimes', 'nullable', 'integer', 'exists:chapters,id'],
             'difficulty_id' => ['sometimes', 'nullable', 'integer', 'exists:difficulties,id'],
-            'creator_id' => ['sometimes', 'integer', 'exists:users,id'],
             'question_content' => ['sometimes', 'string'],
             'image_url' => ['sometimes', 'nullable', 'string'],
             'answer_explanation' => ['sometimes', 'nullable', 'string'],
             'default_score' => ['sometimes', 'numeric', 'min:0'],
-            'status' => ['sometimes', 'in:public,private,archive'],
-            'is_deleted' => ['sometimes', 'boolean'],
-            'answerOptions' => ['sometimes', 'array', 'min:2'],
-            'answerOptions.*.id' => ['sometimes', 'integer', 'exists:answer_options,id'],
-            'answerOptions.*.option_content' => ['required_with:answerOptions', 'string'],
-            'answerOptions.*.is_correct_answer' => ['required_with:answerOptions', 'boolean'],
+            'status' => ['prohibited'],
+            'answer_options' => ['sometimes', 'array', 'min:2'],
+            'answer_options.*.id' => ['sometimes', 'integer', 'distinct', 'exists:answer_options,id'],
+            'answer_options.*.option_content' => ['required_with:answer_options', 'string'],
+            'answer_options.*.is_correct_answer' => ['required_with:answer_options', 'boolean'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isNotEmpty() || !array_key_exists('answer_options', $this->all())) {
+                return;
+            }
+
+            $correctAnswerCount = collect($this->input('answer_options', []))
+                ->filter(fn ($option) => filter_var($option['is_correct_answer'] ?? false, FILTER_VALIDATE_BOOLEAN))
+                ->count();
+            if ($correctAnswerCount !== 1) {
+                $validator->errors()->add('answer_options', 'Câu hỏi phải có chính xác một đáp án đúng.');
+            }
+        });
     }
 
     public function messages()
@@ -43,8 +68,6 @@ class UpdateQuestionRequest extends FormRequest
             'difficulty_id.integer' => ':attribute phải là số nguyên',
             'difficulty_id.exists' => ':attribute không tồn tại trong hệ thống',
 
-            'creator_id.integer' => ':attribute phải là số nguyên',
-            'creator_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'question_content.string' => ':attribute phải là chuỗi ký tự',
             'image_url.string' => ':attribute phải là chuỗi ký tự',
@@ -53,20 +76,19 @@ class UpdateQuestionRequest extends FormRequest
             'default_score.numeric' => ':attribute phải là số',
             'default_score.min' => ':attribute phải lớn hơn hoặc bằng 0',
 
-            'status.in' => ':attribute chỉ nhận một trong các giá trị: public, private, archive',
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
+            'status.prohibited' => 'Hãy dùng thao tác trạng thái riêng để chuyển nơi chứa câu hỏi.',
+            'answer_options.array' => ':attribute phải là mảng',
+            'answer_options.min' => ':attribute phải có ít nhất 2 lựa chọn',
 
-            'answerOptions.array' => ':attribute phải là mảng',
-            'answerOptions.min' => ':attribute phải có ít nhất 2 lựa chọn',
+            'answer_options.*.id.integer' => ':attribute phải là số nguyên',
+            'answer_options.*.id.distinct' => 'Mỗi đáp án chỉ được chọn một lần.',
+            'answer_options.*.id.exists' => ':attribute không tồn tại trong hệ thống',
 
-            'answerOptions.*.id.integer' => ':attribute phải là số nguyên',
-            'answerOptions.*.id.exists' => ':attribute không tồn tại trong hệ thống',
+            'answer_options.*.option_content.required_with' => ':attribute không được để trống khi cập nhật danh sách câu trả lời',
+            'answer_options.*.option_content.string' => ':attribute phải là chuỗi ký tự',
 
-            'answerOptions.*.option_content.required_with' => ':attribute không được để trống khi cập nhật danh sách câu trả lời',
-            'answerOptions.*.option_content.string' => ':attribute phải là chuỗi ký tự',
-
-            'answerOptions.*.is_correct_answer.required_with' => ':attribute không được để trống khi cập nhật danh sách câu trả lời',
-            'answerOptions.*.is_correct_answer.boolean' => ':attribute phải là kiểu đúng/sai',
+            'answer_options.*.is_correct_answer.required_with' => ':attribute không được để trống khi cập nhật danh sách câu trả lời',
+            'answer_options.*.is_correct_answer.boolean' => ':attribute phải là kiểu đúng/sai',
         ];
     }
 
@@ -76,17 +98,15 @@ class UpdateQuestionRequest extends FormRequest
             'subject_id' => 'Mã môn học',
             'chapter_id' => 'Mã chương',
             'difficulty_id' => 'Mã độ khó',
-            'creator_id' => 'Mã người tạo',
             'question_content' => 'Nội dung câu hỏi',
             'image_url' => 'Đường dẫn ảnh',
             'answer_explanation' => 'Giải thích đáp án',
             'default_score' => 'Điểm mặc định',
             'status' => 'Trạng thái',
-            'is_deleted' => 'Trạng thái xóa',
-            'answerOptions' => 'Danh sách câu trả lời',
-            'answerOptions.*.id' => 'Mã câu trả lời',
-            'answerOptions.*.option_content' => 'Nội dung lựa chọn',
-            'answerOptions.*.is_correct_answer' => 'Trạng thái đáp án đúng',
+            'answer_options' => 'Danh sách câu trả lời',
+            'answer_options.*.id' => 'Mã câu trả lời',
+            'answer_options.*.option_content' => 'Nội dung lựa chọn',
+            'answer_options.*.is_correct_answer' => 'Trạng thái đáp án đúng',
         ];
     }
 }

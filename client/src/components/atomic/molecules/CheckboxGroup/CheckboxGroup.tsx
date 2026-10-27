@@ -1,10 +1,10 @@
 import { Checkbox } from "@/components/atomic/atoms/Checkbox/Checkbox";
-import type { Option } from "@/types";
+import type { Option } from "@/shared/types";
 import { useEffect, useState } from "react";
 
 interface CheckboxGroupProps {
   options: Option[];
-  value?: (string | number)[]; // Danh sách các ID đã chọn từ API
+  value?: (string | number)[]; // IDs selected from the API.
   onChange?: (selectedValues: (string | number)[]) => void;
   disabled?: boolean;
 }
@@ -17,7 +17,7 @@ export const CheckboxGroup = ({
 }: CheckboxGroupProps) => {
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>(value);
 
-  // Đồng bộ khi value từ props (API) thay đổi
+  // Synchronize when the value received from API props changes.
   useEffect(() => {
     setSelectedIds(value);
   }, [value]);
@@ -45,7 +45,7 @@ export const CheckboxGroup = ({
     <div
       className={`flex flex-col px-5 pb-2 text-text-secondary ${disabled ? "pointer-events-none opacity-75" : ""}`}
     >
-      {/* Nút Chọn tất cả */}
+      {/* Select-all button. */}
       <div className="p-4">
         <Checkbox
           label="Chọn tất cả"
@@ -55,7 +55,7 @@ export const CheckboxGroup = ({
         />
       </div>
 
-      {/* Danh sách các nhóm */}
+      {/* Group list. */}
       <div className="flex flex-wrap gap-0">
         {options.map((option) => (
           <div key={option.value} className="p-4">

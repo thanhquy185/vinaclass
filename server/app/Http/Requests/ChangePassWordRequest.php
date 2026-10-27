@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -12,9 +13,14 @@ class ChangePassWordRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        $actor = $this->user();
+        $target = $this->route('user');
+
+        return $actor instanceof User
+            && $target instanceof User
+            && $actor->can('changePassword', $target);
     }
 
     /**
@@ -22,7 +28,7 @@ class ChangePassWordRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'current_password' => ['required', 'string'],
@@ -39,7 +45,7 @@ class ChangePassWordRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
@@ -49,13 +55,13 @@ class ChangePassWordRequest extends FormRequest
             'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
             'new_password.letters' => 'Mật khẩu mới phải chứa ít nhất một chữ cái.',
             'new_password.numbers' => 'Mật khẩu mới phải chứa ít nhất một số.',
-            'new_password.mixedCase' => 'Mật khẩu mới phải có cả chữ hoa và chữ thường.',
+            'new_password.mixed' => 'Mật khẩu mới phải có cả chữ hoa và chữ thường.',
             'new_password.different' => 'Mật khẩu mới phải khác mật khẩu hiện tại.',
             'new_password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'current_password' => 'Mật khẩu hiện tại',

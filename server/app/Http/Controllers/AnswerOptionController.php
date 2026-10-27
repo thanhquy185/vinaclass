@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAnswerOptionRequest;
 use App\Http\Requests\UpdateAnswerOptionRequest;
 use App\Models\AnswerOption;
 use App\Services\AnswerOptionService;
+use App\Services\QuestionQueryService;
 use App\Traits\ApiResponseTrait;
 
 class AnswerOptionController extends Controller
@@ -13,10 +14,14 @@ class AnswerOptionController extends Controller
     use ApiResponseTrait;
 
     protected AnswerOptionService $answerOptionService;
+    protected QuestionQueryService $questionQueryService;
 
-    public function __construct(AnswerOptionService $answerOptionService)
-    {
+    public function __construct(
+        AnswerOptionService $answerOptionService,
+        QuestionQueryService $questionQueryService
+    ) {
         $this->answerOptionService = $answerOptionService;
+        $this->questionQueryService = $questionQueryService;
     }
 
     /**
@@ -24,7 +29,7 @@ class AnswerOptionController extends Controller
      */
     public function index()
     {
-        $data = $this->answerOptionService->getAll();
+        $data = $this->questionQueryService->getAllAnswerOptions(request()->user());
         return $this->success($data);
     }
 
@@ -33,8 +38,8 @@ class AnswerOptionController extends Controller
      */
     public function store(StoreAnswerOptionRequest $request)
     {
-        $data = $this->answerOptionService->add($request->validated());
-        return $this->success($data, 201);
+        $data = $this->answerOptionService->add($request->validated(), $request->user());
+        return $this->created($data);
     }
 
     /**
@@ -42,7 +47,7 @@ class AnswerOptionController extends Controller
      */
     public function show(AnswerOption $answerOption)
     {
-        $data = $this->answerOptionService->getOne($answerOption);
+        $data = $this->questionQueryService->getAnswerOption($answerOption, request()->user());
         return $this->success($data);
     }
 
@@ -51,7 +56,11 @@ class AnswerOptionController extends Controller
      */
     public function update(UpdateAnswerOptionRequest $request, AnswerOption $answerOption)
     {
-        $data = $this->answerOptionService->update($request->validated(), $answerOption);
+        $data = $this->answerOptionService->update(
+            $request->validated(),
+            $answerOption,
+            $request->user()
+        );
         return $this->success($data);
     }
 
@@ -60,7 +69,7 @@ class AnswerOptionController extends Controller
      */
     public function destroy(AnswerOption $answerOption)
     {
-        $result = $this->answerOptionService->delete($answerOption);
+        $result = $this->answerOptionService->delete($answerOption, request()->user());
         return $this->success($result);
     }
 }

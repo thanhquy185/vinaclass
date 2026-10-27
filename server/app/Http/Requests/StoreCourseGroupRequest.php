@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CourseGroup;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCourseGroupRequest extends FormRequest
 {
@@ -11,27 +13,32 @@ class StoreCourseGroupRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return $this->user()?->can('create', CourseGroup::class) ?? false;
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
-            'subject_id' => ['required', 'integer', 'exists:subjects,id'],
+            'subject_id' => [
+                'required',
+                'integer',
+                Rule::exists('subjects', 'id')->where('is_deleted', false),
+            ],
             'group_name' => ['required', 'string', 'max:100'],
             'notes' => ['nullable', 'string'],
             'semester' => ['required', 'integer', 'min:1', 'max:3'],
             'academic_year' => ['required', 'integer', 'min:2000'],
             'background_url' => ['sometimes', 'nullable', 'string'],
-            'teacher_id' => ['required', 'integer', 'exists:users,id'],
+            'teacher_id' => $this->user()?->hasRoleCode('TEACHER')
+                ? ['sometimes', 'nullable', 'integer', 'exists:users,id']
+                : ['required', 'integer', 'exists:users,id'],
             'is_hidden' => ['sometimes', 'boolean'],
-            'is_deleted' => ['sometimes', 'boolean'],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'subject_id.required' => ':attribute không được để trống',
@@ -60,11 +67,10 @@ class StoreCourseGroupRequest extends FormRequest
             'teacher_id.exists' => ':attribute không tồn tại trong hệ thống',
 
             'is_hidden.boolean' => ':attribute phải là kiểu đúng/sai',
-            'is_deleted.boolean' => ':attribute phải là kiểu đúng/sai',
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'subject_id' => 'Mã môn học',
@@ -76,7 +82,6 @@ class StoreCourseGroupRequest extends FormRequest
             'background_url' => 'URL ảnh nền',
             'teacher_id' => 'Mã giảng viên',
             'is_hidden' => 'Trạng thái ẩn',
-            'is_deleted' => 'Trạng thái xóa',
         ];
     }
 }

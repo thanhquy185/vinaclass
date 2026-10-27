@@ -3,47 +3,87 @@
 namespace App\Services;
 
 use App\Models\Difficulty;
+use App\Models\User;
+use App\Policies\DifficultyPolicy;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class DifficultyService
 {
-    public function getAll()
+    public function __construct(private DifficultyPolicy $difficultyPolicy)
     {
-        return Difficulty::all();
     }
 
-    public function getOne(Difficulty $difficulty): Difficulty
+    public function getAll(User $viewer)
     {
-        return $difficulty;
+        abort_unless($this->difficultyPolicy->viewCatalog($viewer), 403);
+
+        return Difficulty::query()
+            ->withCount('questions')
+            ->orderByDesc('id')
+            ->get();
     }
 
-    public function create(array $data): Difficulty
+    public function getOne(Difficulty $difficulty, User $viewer): Difficulty
     {
-        $this->validateBusiness($data);
-        return Difficulty::create($data);
+        abort_unless($this->difficultyPolicy->view($viewer, $difficulty), 404);
+
+        return $difficulty->loadCount('questions');
     }
 
-    public function update(Difficulty $difficulty, array $data): Difficulty
+    public function create(array $data, User $actor): Difficulty
     {
-        $this->validateBusiness($data);
-        $difficulty->update($data);
-        return $difficulty;
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($data, $actorId): Difficulty {
+            $actor = $this->lockActor($actorId);
+            abort_unless($this->difficultyPolicy->manage($actor, 'create'), 403);
+
+            return Difficulty::query()->create($data)->loadCount('questions');
+        });
     }
 
-    public function delete(Difficulty $difficulty): bool
+    public function update(Difficulty $difficulty, array $data, User $actor): Difficulty
     {
-        // Kiểm tra xem độ khó đã có câu hỏi liên quan chưa
-        if ($difficulty->questions()->exists()) {
-            throw ValidationException::withMessages([
-                'difficulty' => ['This difficulty is currently in use and cannot be deleted.'],
-            ]);
-        }
+        $difficultyId = (int) $difficulty->id;
+        $actorId = (int) $actor->id;
 
-        return (bool) $difficulty->delete();
+        return DB::transaction(function () use ($difficultyId, $data, $actorId): Difficulty {
+            $actor = $this->lockActor($actorId);
+            abort_unless($this->difficultyPolicy->manage($actor, 'update'), 403);
+            $difficulty = Difficulty::query()->lockForUpdate()->findOrFail($difficultyId);
+            $difficulty->update($data);
+
+            return $difficulty->refresh()->loadCount('questions');
+        });
     }
 
-    private function validateBusiness(array $data): void
+    public function delete(Difficulty $difficulty, User $actor): bool
     {
-        //
+        $difficultyId = (int) $difficulty->id;
+        $actorId = (int) $actor->id;
+
+        return DB::transaction(function () use ($difficultyId, $actorId): bool {
+            $actor = $this->lockActor($actorId);
+            abort_unless($this->difficultyPolicy->manage($actor, 'delete'), 403);
+            $difficulty = Difficulty::query()->lockForUpdate()->findOrFail($difficultyId);
+
+            // Preserve referenced difficulty levels so existing questions remain valid.
+            if ($difficulty->questions()->exists()) {
+                throw ValidationException::withMessages([
+                    'difficulty' => ['This difficulty is currently in use and cannot be deleted.'],
+                ]);
+            }
+
+            return (bool) $difficulty->delete();
+        });
+    }
+
+    private function lockActor(int $actorId): User
+    {
+        return User::query()
+            ->with('role')
+            ->lockForUpdate()
+            ->findOrFail($actorId);
     }
 }

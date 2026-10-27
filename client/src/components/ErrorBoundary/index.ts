@@ -1,2 +1,2 @@
-export { default as ErrorBoundary } from "./ErrorBoundary";
-export { default as ErrorFallback } from "./ErrorFallback";
+export { default as ErrorBoundary } from "@/app/providers/ErrorBoundary";
+export { default as ErrorFallback } from "@/app/providers/ErrorFallback";

@@ -62,6 +62,17 @@ Chạy một seeder cụ thể:
 php artisan db:seed --class=UserSeeder
 ```
 
+## Khởi tạo tài khoản quản trị production
+
+Trong môi trường production, `DatabaseSeeder` chỉ tạo dữ liệu vai trò, quyền và độ khó; tài khoản mẫu không được tạo. Sau khi cấu hình kết nối DB và chạy migration/seed, tạo tài khoản quản trị đầu tiên bằng lệnh tương tác:
+
+```bash
+php artisan migrate --seed
+php artisan app:bootstrap-admin
+```
+
+Lệnh yêu cầu tên, username, email và mật khẩu được nhập trực tiếp; chỉ chạy được khi chưa có admin đang hoạt động.
+
 ---
 
 # 5. Các lệnh Artisan cơ bản

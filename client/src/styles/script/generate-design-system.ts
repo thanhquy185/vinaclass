@@ -1,50 +1,69 @@
-/* eslint-disable */
-// @ts-nocheck
-
-import fs from "fs-extra";
-import path from "path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { paramCase } from "param-case";
+
+type JsonObject = Record<string, unknown>;
+
+interface TypographyTokenValue {
+  fontFamily: string;
+  fontSize: string;
+  fontWeight: string | number;
+  lineHeight: string;
+  letterSpacing: string;
+  textTransform: string;
+}
 
 const ROOT = process.cwd();
 
-const COLOR_FILE = path.join(
+const COLOR_FILE = join(
   ROOT,
   "src/styles/design-tokens/color.styles.tokens.json"
 );
 
-const TYPO_FILE = path.join(
+const TYPO_FILE = join(
   ROOT,
   "src/styles/design-tokens/text.styles.tokens.json"
 );
 
-const OUT_DIR = path.join(ROOT, "src/styles/generated");
-
-/* ------------------------------------------------ */
-/* UTIL */
-/* ------------------------------------------------ */
+const OUT_DIR = join(ROOT, "src/styles/generated");
 
 async function writeFresh(filePath: string, content: string) {
-  await fs.ensureFile(filePath);
-
-  // clear file content
-  await fs.truncate(filePath);
-
-  // write new content
-  await fs.writeFile(filePath, content);
+  await writeFile(filePath, content, "utf8");
 }
 
-/* ------------------------------------------------ */
-/* COLOR GENERATOR */
-/* ------------------------------------------------ */
+async function readJson(filePath: string): Promise<unknown> {
+  const content = await readFile(filePath, "utf8");
+  return JSON.parse(content) as unknown;
+}
 
-function flattenColors(obj: any, prefix = "", result: any = {}) {
-  for (const [key, value] of Object.entries(obj)) {
+function isJsonObject(value: unknown): value is JsonObject {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function requireObject(value: unknown, description: string): JsonObject {
+  if (!isJsonObject(value)) {
+    throw new Error(`Expected an object at ${description}.`);
+  }
+
+  return value;
+}
+
+function flattenColors(
+  value: unknown,
+  prefix = "",
+  result: Record<string, string> = {}
+): Record<string, string> {
+  if (!isJsonObject(value)) return result;
+
+  for (const [key, token] of Object.entries(value)) {
     const name = prefix ? `${prefix}-${paramCase(key)}` : paramCase(key);
 
-    if ((value as any).$type === "color") {
-      result[name] = (value as any).$value;
-    } else if (typeof value === "object") {
-      flattenColors(value, name, result);
+    if (!isJsonObject(token)) continue;
+
+    if (token.$type === "color" && typeof token.$value === "string") {
+      result[name] = token.$value;
+    } else {
+      flattenColors(token, name, result);
     }
   }
 
@@ -52,19 +71,20 @@ function flattenColors(obj: any, prefix = "", result: any = {}) {
 }
 
 async function generateColors() {
-  const json = await fs.readJson(COLOR_FILE);
-  const light = flattenColors(json.Light);
-  const dark = flattenColors(json.Dark);
+  const json = await readJson(COLOR_FILE);
+  const root = requireObject(json, COLOR_FILE);
+  const light = flattenColors(root.Light);
+  const dark = flattenColors(root.Dark);
 
-  // 1. Generate colors.ts với var() thay vì hardcode hex
+  // Generate colors.ts with CSS variable references.
   let ts = `export const colors = {\n`;
   Object.keys(light).forEach((key) => {
     ts += `  "${key}": "var(--color-${key})",\n`;
   });
   ts += `}\n`;
-  await writeFresh(path.join(OUT_DIR, "colors.ts"), ts);
+  await writeFresh(join(OUT_DIR, "colors.ts"), ts);
 
-  // 2. Generate colors.css với :root và .dark
+  // Generate color values for the light and dark themes.
   let css = `/* AUTO-GENERATED FILE - DO NOT EDIT */\n\n@layer base {\n\n:root {\n`;
   Object.entries(light).forEach(([key, value]) => {
     css += `  --color-${key}: ${value};\n`;
@@ -74,19 +94,45 @@ async function generateColors() {
     css += `  --color-${key}: ${value};\n`;
   });
   css += `}\n\n}\n`;
-  await writeFresh(path.join(OUT_DIR, "colors.css"), css);
+  await writeFresh(join(OUT_DIR, "colors.css"), css);
 }
 
-/* ------------------------------------------------ */
-/* TYPOGRAPHY GENERATOR */
-/* ------------------------------------------------ */
+function readTypographyValue(value: unknown): TypographyTokenValue | undefined {
+  if (!isJsonObject(value)) return undefined;
 
-function generateTypographyCSS(obj: any) {
+  const fontWeight = value.fontWeight;
+  if (
+    typeof value.fontFamily !== "string" ||
+    typeof value.fontSize !== "string" ||
+    (typeof fontWeight !== "string" && typeof fontWeight !== "number") ||
+    typeof value.lineHeight !== "string" ||
+    typeof value.letterSpacing !== "string" ||
+    typeof value.textTransform !== "string"
+  ) {
+    return undefined;
+  }
+
+  return {
+    fontFamily: value.fontFamily,
+    fontSize: value.fontSize,
+    fontWeight,
+    lineHeight: value.lineHeight,
+    letterSpacing: value.letterSpacing,
+    textTransform: value.textTransform,
+  };
+}
+
+function generateTypographyCSS(value: unknown) {
   let css = "";
   const classes: string[] = [];
 
-  for (const [name, data] of Object.entries(obj)) {
-    const v: any = (data as any).$value;
+  if (!isJsonObject(value)) return { css, classes };
+
+  for (const [name, data] of Object.entries(value)) {
+    if (!isJsonObject(data)) continue;
+
+    const token = readTypographyValue(data.$value);
+    if (!token) continue;
 
     const className = `text-${paramCase(name)}`;
 
@@ -94,12 +140,12 @@ function generateTypographyCSS(obj: any) {
 
     css += `
 .${className} {
-  font-family: ${v.fontFamily};
-  font-size: ${v.fontSize};
-  font-weight: ${v.fontWeight};
-  line-height: ${v.lineHeight};
-  letter-spacing: ${v.letterSpacing};
-  text-transform: ${v.textTransform};
+  font-family: ${token.fontFamily};
+  font-size: ${token.fontSize};
+  font-weight: ${token.fontWeight};
+  line-height: ${token.lineHeight};
+  letter-spacing: ${token.letterSpacing};
+  text-transform: ${token.textTransform};
 }
 `;
   }
@@ -108,10 +154,12 @@ function generateTypographyCSS(obj: any) {
 }
 
 async function generateTypography() {
-  const json = await fs.readJson(TYPO_FILE);
+  const json = await readJson(TYPO_FILE);
+  const root = requireObject(json, TYPO_FILE);
+  const light = requireObject(root.Light, `${TYPO_FILE}:Light`);
 
-  const typo = json.Light.Typography;
-  const components = json.Light.Components;
+  const typo = light.Typography;
+  const components = light.Components;
 
   const typoResult = generateTypographyCSS(typo);
   const compResult = generateTypographyCSS(components);
@@ -128,16 +176,12 @@ async function generateTypography() {
 
   ts += `}\n`;
 
-  await writeFresh(path.join(OUT_DIR, "typography.css"), css);
-  await writeFresh(path.join(OUT_DIR, "typography.ts"), ts);
+  await writeFresh(join(OUT_DIR, "typography.css"), css);
+  await writeFresh(join(OUT_DIR, "typography.ts"), ts);
 }
 
-/* ------------------------------------------------ */
-/* RUN */
-/* ------------------------------------------------ */
-
 async function run() {
-  await fs.ensureDir(OUT_DIR);
+  await mkdir(OUT_DIR, { recursive: true });
 
   await generateColors();
   await generateTypography();
