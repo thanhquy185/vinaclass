@@ -10,7 +10,10 @@ export function useRegister() {
   const setAuth = useAuthStore((state) => state.setAuth);
 
   const mutation = useEntityMutation({
-    mutationFn: (input: RegisterStudentInput) =>
+    mutationFn: (input: RegisterStudentInput & {
+      otpPublicId: string;
+      otpVerificationToken: string;
+    }) =>
       authService.registerStudent(input),
     notifications: {
       success: "Tài khoản sinh viên đã được tạo thành công.",

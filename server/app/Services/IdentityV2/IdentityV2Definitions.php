@@ -78,13 +78,13 @@ class IdentityV2Definitions
             'hoc_phan' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE'],
             'phan_cong' => ['VIEW'],
             'de_thi' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE', 'ASSIGN'],
-            'cau_hoi' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE'],
-            'thong_bao' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE'],
+            'cau_hoi' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE', 'PUBLISH'],
+            'thong_bao' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE', 'PUBLISH'],
             'tai_lieu' => ['VIEW', 'CREATE', 'UPDATE', 'DELETE'],
             'chuong' => ['VIEW'],
         ],
         'STUDENT' => [
-            'hoc_phan' => ['VIEW', 'DELETE'],
+            'hoc_phan' => ['VIEW'],
             'de_thi' => ['VIEW'],
             'thong_bao' => ['VIEW'],
             'tai_lieu' => ['VIEW'],
@@ -93,7 +93,7 @@ class IdentityV2Definitions
 
     private const RESTRICTED_ROLE_PERMISSION_ACTIONS = [
         'STUDENT' => [
-            'hoc_phan' => ['VIEW', 'DELETE'],
+            'hoc_phan' => ['VIEW'],
             'de_thi' => ['VIEW'],
             'thong_bao' => ['VIEW'],
             'tai_lieu' => ['VIEW'],

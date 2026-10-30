@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { environment } from "@/shared/config/environment";
 import { useAuthStore } from "@/shared/stores/useAuthStore";
 
@@ -43,12 +43,98 @@ const axiosClient = axios.create({
   withCredentials: true, // Include cookies in requests.
 });
 
+const refreshClient = axios.create({
+  baseURL: environment.apiBaseUrl,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+  },
+});
+
+type RetriableRequestConfig = InternalAxiosRequestConfig & {
+  _authRetry?: boolean;
+};
+
+let refreshInFlight: Promise<string> | null = null;
+
+const wait = (milliseconds: number) =>
+  new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+
+const requestRefreshToken = async (retry = 0): Promise<string> => {
+  try {
+    const response = await refreshClient.post("/auth/refresh");
+    // ConvertCaseMiddleware camel-cases API responses; keep a snake_case
+    // fallback for deployments that do not apply that middleware.
+    const token =
+      response.data?.data?.accessToken ?? response.data?.data?.access_token;
+    if (typeof token !== "string" || token.length === 0) {
+      throw new Error("Refresh response did not include an access token.");
+    }
+    return token;
+  } catch (error) {
+    const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+    if (status === 409 && retry < 3) {
+      await wait(150 * (retry + 1));
+      return requestRefreshToken(retry + 1);
+    }
+    throw error;
+  }
+};
+
+const refreshAccessToken = (): Promise<string> => {
+  if (!refreshInFlight) {
+    refreshInFlight = requestRefreshToken()
+      .finally(() => {
+        refreshInFlight = null;
+      });
+  }
+
+  return refreshInFlight;
+};
+
+const isPublicAuthRequest = (url: string | undefined): boolean =>
+  Boolean(
+    url &&
+      (/\/login$/.test(url) ||
+        /\/register$/.test(url) ||
+        /\/auth\/refresh$/.test(url) ||
+        /\/auth\/otp\//.test(url))
+  );
+
 // Handle expired authentication centrally.
 axiosClient.interceptors.response.use(
   (response) => normalizeApiKeys(response.data),
-  (error) => {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout(); // Clear the session when the token expires.
+  async (error) => {
+    const config = error.config as RetriableRequestConfig | undefined;
+    const hasBearerToken = Boolean(config?.headers?.Authorization);
+    const canRefresh =
+      error.response?.status === 401 &&
+      config &&
+      hasBearerToken &&
+      !config._authRetry &&
+      !isPublicAuthRequest(config.url) &&
+      Boolean(useAuthStore.getState().token);
+
+    if (canRefresh && config) {
+      config._authRetry = true;
+      try {
+        const accessToken = await refreshAccessToken();
+        useAuthStore.getState().setToken(accessToken);
+        config.headers.Authorization = `Bearer ${accessToken}`;
+        return axiosClient.request(config);
+      } catch (refreshError) {
+        useAuthStore.getState().logout();
+        return Promise.reject(refreshError);
+      }
+    }
+
+    if (
+      error.response?.status === 401 &&
+      hasBearerToken &&
+      !isPublicAuthRequest(config?.url)
+    ) {
+      useAuthStore.getState().logout();
     }
     return Promise.reject(error);
   },

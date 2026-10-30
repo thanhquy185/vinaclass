@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input } from "antd";
 import { AtSign, IdCard, LockKeyhole, UserRound } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Icon from "@/shared/components/ui/Icon/Icon";
-import type { RegisterStudentInput } from "@/features/auth/api/auth.service";
+import {
+  authService,
+  type AuthOtpChallenge,
+  type RegisterStudentInput,
+} from "@/features/auth/api/auth.service";
 import { useGoogleAuth } from "@/features/auth/hooks/useGoogleAuth";
 import { useRegister } from "@/features/auth/hooks/useRegister";
 import { getApiErrorMessage } from "@/shared/utils/apiError";
@@ -19,19 +23,116 @@ export default function RegisterForm() {
     isLoading: isGoogleLoading,
     error: googleError,
   } = useGoogleAuth();
-  const [form] = Form.useForm<RegisterStudentInput>();
+  const [form] = Form.useForm<RegisterStudentInput & { otpCode?: string }>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [challenge, setChallenge] = useState<AuthOtpChallenge | null>(null);
+  const [challengeEmail, setChallengeEmail] = useState<string | null>(null);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [otpVerificationToken, setOtpVerificationToken] = useState<string | null>(null);
+  const [isRequestingOtp, setIsRequestingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isResendingOtp, setIsResendingOtp] = useState(false);
+  const [resendSeconds, setResendSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!challenge?.resendAvailableAt) {
+      setResendSeconds(0);
+      return;
+    }
+
+    const updateCountdown = () => {
+      setResendSeconds(
+        Math.max(0, Math.ceil((Date.parse(challenge.resendAvailableAt) - Date.now()) / 1000))
+      );
+    };
+    updateCountdown();
+    const timer = window.setInterval(updateCountdown, 1000);
+    return () => window.clearInterval(timer);
+  }, [challenge?.resendAvailableAt]);
 
   const handleSubmit = async (values: RegisterStudentInput) => {
     setErrorMessage(null);
 
     try {
-      const response = await registerStudent(values);
+      if (!challenge) {
+        setIsRequestingOtp(true);
+        const requested = await authService.requestRegistrationOtp(
+          values.email.trim().toLowerCase()
+        );
+        setChallenge(requested);
+        setChallengeEmail(values.email.trim().toLowerCase());
+        setEmailVerified(false);
+        setOtpVerificationToken(null);
+        return;
+      }
+
+      if (!emailVerified || !otpVerificationToken) {
+        setErrorMessage(t("register.otp.verifyBeforeRegister"));
+        return;
+      }
+
+      const response = await registerStudent({
+        ...values,
+        otpPublicId: challenge.publicId,
+        otpVerificationToken,
+      });
       const roleCode = getAuthenticatedUserRoleCode(response.me, response.role);
 
       navigate(roleCode === "STUDENT" ? "/courses" : "/dashboard");
     } catch (error: unknown) {
       setErrorMessage(getApiErrorMessage(error) ?? t("register.error"));
+    } finally {
+      setIsRequestingOtp(false);
+    }
+  };
+
+  const verifyEmailOtp = async () => {
+    if (!challenge) return;
+    try {
+      const { otpCode } = await form.validateFields(["otpCode"]);
+      setErrorMessage(null);
+      setIsVerifyingOtp(true);
+      const verificationToken = await authService.verifyOtp(
+        challenge.publicId,
+        otpCode ?? ""
+      );
+      setOtpVerificationToken(verificationToken);
+      setEmailVerified(true);
+    } catch (error: unknown) {
+      setErrorMessage(getApiErrorMessage(error) ?? t("register.otp.verifyError"));
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const resendEmailOtp = async () => {
+    if (!challenge || resendSeconds > 0) return;
+    try {
+      setErrorMessage(null);
+      setIsResendingOtp(true);
+      setChallenge(await authService.resendOtp(challenge.publicId));
+      setEmailVerified(false);
+      setOtpVerificationToken(null);
+      form.setFieldValue("otpCode", "");
+    } catch (error: unknown) {
+      setErrorMessage(getApiErrorMessage(error) ?? t("register.otp.resendError"));
+    } finally {
+      setIsResendingOtp(false);
+    }
+  };
+
+  const handleValuesChange = (changedValues: Partial<RegisterStudentInput>) => {
+    setErrorMessage(null);
+    if (
+      typeof changedValues.email === "string" &&
+      challengeEmail &&
+      changedValues.email.trim().toLowerCase() !== challengeEmail
+    ) {
+      setChallenge(null);
+      setChallengeEmail(null);
+      setEmailVerified(false);
+      setOtpVerificationToken(null);
+      form.setFieldValue("otpCode", "");
     }
   };
 
@@ -48,12 +149,12 @@ export default function RegisterForm() {
         <span>{t("register.studentAccountNote")}</span>
       </div>
 
-      <Form<RegisterStudentInput>
+      <Form<RegisterStudentInput & { otpCode?: string }>
         form={form}
         layout="vertical"
         requiredMark={false}
         onFinish={handleSubmit}
-        onValuesChange={() => setErrorMessage(null)}
+        onValuesChange={handleValuesChange}
         autoComplete="on"
       >
         <div className="auth-register-fields">
@@ -69,7 +170,7 @@ export default function RegisterForm() {
                 message: t("register.validation.fullNameRequired"),
               },
               {
-                max: 255,
+                max: 254,
                 message: t("register.validation.fullNameMax"),
               },
             ]}
@@ -80,7 +181,7 @@ export default function RegisterForm() {
               prefix={<UserRound size={17} aria-hidden="true" />}
               placeholder={t("register.fullNamePlaceholder")}
               autoComplete="name"
-              maxLength={255}
+              maxLength={254}
             />
           </Form.Item>
 
@@ -151,6 +252,71 @@ export default function RegisterForm() {
             />
           </Form.Item>
 
+          {challenge && (
+            <div className="auth-field auth-field--full">
+              <p className="auth-register-note" role="status">
+                {emailVerified
+                  ? t("register.otp.verified")
+                  : t("register.otp.sent", { email: challenge.email })}
+              </p>
+              {!emailVerified && (
+                <>
+                  <Form.Item
+                    label={t("register.otp.codeLabel")}
+                    name="otpCode"
+                    rules={[
+                      {
+                        required: true,
+                        message: t("register.otp.codeRequired"),
+                      },
+                      {
+                        len: 6,
+                        message: t("register.otp.codeLength"),
+                      },
+                      {
+                        pattern: /^\d{6}$/,
+                        message: t("register.otp.codeDigits"),
+                      },
+                    ]}
+                  >
+                    <Input
+                      id="auth-register-otp"
+                      size="large"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      placeholder={t("register.otp.codePlaceholder")}
+                    />
+                  </Form.Item>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      type="button"
+                      className="auth-text-button"
+                      onClick={() => void verifyEmailOtp()}
+                      disabled={isVerifyingOtp || isResendingOtp}
+                    >
+                      {isVerifyingOtp
+                        ? t("register.otp.verifying")
+                        : t("register.otp.verify")}
+                    </button>
+                    <button
+                      type="button"
+                      className="auth-text-button"
+                      onClick={() => void resendEmailOtp()}
+                      disabled={isResendingOtp || isVerifyingOtp || resendSeconds > 0}
+                    >
+                      {resendSeconds > 0
+                        ? t("register.otp.resendIn", { seconds: resendSeconds })
+                        : isResendingOtp
+                          ? t("register.otp.resending")
+                          : t("register.otp.resend")}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
           <Form.Item
             label={t("register.password")}
             name="password"
@@ -220,9 +386,20 @@ export default function RegisterForm() {
         <button
           type="submit"
           className="auth-submit"
-          disabled={isRegistering || isGoogleLoading}
+          disabled={
+            isRegistering ||
+            isGoogleLoading ||
+            isRequestingOtp ||
+            (Boolean(challenge) && (!emailVerified || !otpVerificationToken))
+          }
         >
-          {isRegistering ? t("register.submitting") : t("register.submit")}
+          {isRequestingOtp
+            ? t("register.otp.sending")
+            : isRegistering
+              ? t("register.submitting")
+              : challenge
+                ? t("register.submit")
+                : t("register.otp.send")}
         </button>
       </Form>
 

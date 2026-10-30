@@ -15,6 +15,7 @@ return new class extends Migration
         'CREATE' => 'ADD',
         'UPDATE' => 'UPDATE',
         'DELETE' => 'DELETE',
+        'ASSIGN' => 'ASSIGN',
     ];
 
     public function up(): void
@@ -200,10 +201,17 @@ return new class extends Migration
                 }
 
                 foreach ($actionCodes as $actionCode) {
+                    $legacyAction = self::LEGACY_ACTIONS[$actionCode] ?? null;
+                    if ($legacyAction === null) {
+                        // PUBLISH is represented by v2 permissions. Legacy role
+                        // checks continue to map it to the existing CREATE/UPDATE grants.
+                        continue;
+                    }
+
                     $grantRows[] = [
                         'role_id' => $role->id,
                         'function_id' => $function->id,
-                        'action' => self::LEGACY_ACTIONS[$actionCode],
+                        'action' => $legacyAction,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];

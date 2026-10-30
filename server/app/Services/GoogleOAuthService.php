@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +14,8 @@ class GoogleOAuthService
 {
     public function __construct(
         private RoleService $roleService,
-        private StudentRegistrationService $studentRegistrationService
+        private StudentRegistrationService $studentRegistrationService,
+        private AuthSessionService $authSessionService
     ) {
     }
 
@@ -85,6 +85,14 @@ class GoogleOAuthService
             return ['error' => 'unauthorized_domain'];
         }
 
+        $verifiedEmail = filter_var(
+            $googleUser->getRaw()['verified_email'] ?? false,
+            FILTER_VALIDATE_BOOLEAN
+        );
+        if (!$verifiedEmail) {
+            return ['error' => 'email_not_verified'];
+        }
+
         $email = mb_strtolower(trim($email));
         $googleId = $googleUser->getId();
         $user = User::where('email', $email)->first();
@@ -110,17 +118,19 @@ class GoogleOAuthService
 
         if (!$user->ggid && $googleId) {
             $user->ggid = $googleId;
-            $user->save();
-            $user->refresh();
         }
 
-        $token = Auth::guard('api')->login($user);
-        if (!$token) {
-            return ['error' => 'login_failed'];
+        if (!$user->email_verified_at) {
+            $user->email_verified_at = now();
         }
+        $user->save();
+        $user->refresh();
+
+        $session = $this->authSessionService->issueForUser($user, request());
 
         return [
-            'access_token' => $token,
+            'access_token' => $session['access_token'],
+            'refresh_token' => $session['refresh_token'],
             'token_type' => 'bearer',
             'me' => $user,
             'role' => $user->role_id

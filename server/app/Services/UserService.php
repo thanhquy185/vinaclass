@@ -14,7 +14,8 @@ class UserService
 {
     public function __construct(
         private UserPolicy $userPolicy,
-        private UserProfileService $userProfileService
+        private UserProfileService $userProfileService,
+        private AuthSessionService $authSessionService
     ) {
     }
 
@@ -175,7 +176,12 @@ class UserService
                 ]);
             }
 
-            return (bool) $user->update(['password' => $data['new_password']]);
+            $updated = (bool) $user->update(['password' => $data['new_password']]);
+            if ($updated) {
+                $this->authSessionService->revokeAllForUser($targetId);
+            }
+
+            return $updated;
         });
     }
 
@@ -203,7 +209,12 @@ class UserService
             [$actor, $user] = $this->lockActorAndTarget($actorId, $targetId);
             abort_unless($this->userPolicy->resetPassword($actor, $user), 403);
 
-            return (bool) $user->update(['password' => $data['new_password']]);
+            $updated = (bool) $user->update(['password' => $data['new_password']]);
+            if ($updated) {
+                $this->authSessionService->revokeAllForUser($targetId);
+            }
+
+            return $updated;
         });
     }
 

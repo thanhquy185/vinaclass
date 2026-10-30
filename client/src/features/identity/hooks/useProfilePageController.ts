@@ -1,5 +1,6 @@
 import { Form } from "antd";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   useChangePassword,
@@ -17,6 +18,8 @@ export function useProfilePageController() {
   const [activeTab, setActiveTab] = useState<ProfileTab>("info");
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const { user } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
   const { changePassword: submitChangePassword, isChanging } =
     useChangePassword();
   const { updateOwnProfile: submitProfileUpdate, isUpdatingOwnProfile } =
@@ -67,6 +70,8 @@ export function useProfilePageController() {
       await submitChangePassword({ userId: user.id, data: formData });
       resetPasswordForm();
       showToast(t("profile.password.updateSuccess"), "success");
+      logout();
+      navigate("/login", { replace: true });
     } catch (error: unknown) {
       const details = getApiErrorDetails(error);
       if (

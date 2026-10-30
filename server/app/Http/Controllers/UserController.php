@@ -130,7 +130,17 @@ class UserController extends Controller
     public function changePassword(ChangePassWordRequest $request, User $user)
     {
         $data = $this->userService->changePassword($request->validated(), $user, $request->user());
-        return $this->success($data);
+        return $this->success($data)->withCookie(cookie(
+            'vinaclass_refresh',
+            '',
+            -1,
+            '/api/auth',
+            config('auth.refresh_cookie_domain') ?: null,
+            app()->environment('production') || $request->isSecure(),
+            true,
+            false,
+            (app()->environment('production') || $request->isSecure()) ? 'none' : 'lax'
+        ));
     }
 
     public function resetPassword(ResetPasswordRequest $request, User $user)

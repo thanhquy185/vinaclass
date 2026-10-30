@@ -1,6 +1,7 @@
 import { Form, Input } from "antd";
 import type { FormInstance } from "antd";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { Button } from "@/shared/components/ui";
 import type { ChangePassForm } from "@/shared/types";
 import { UserValidate } from "@/features/identity/utils/user.validate";
@@ -34,6 +35,9 @@ export default function ChangePasswordForm({
         <p className="text-helper-text mt-1 text-text-secondary">
           {t("profile.password.subtitle")}
         </p>
+        <Link to="/forgot-password" className="mt-2 inline-block text-primary-main underline">
+          {t("profile.password.resetByEmail")}
+        </Link>
       </div>
       <Form
         form={form}

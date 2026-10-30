@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Antigravity" version="21.0.0">
+  <diagram id="tbs" name="Kế hoạch thực hiện dự án (TBS)">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1600">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="root" value="Kế hoạch thực hiện dự án (TBS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0284c7;strokeColor=#0369a1;fontColor=#ffffff;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="40" width="300" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" value="1. Xác định dự án" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae6fd;strokeColor=#0284c7;fontColor=#0369a1;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="150" width="240" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b1" edge="1" parent="1" source="root" target="b1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="2. Phân tích yêu cầu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae6fd;strokeColor=#0284c7;fontColor=#0369a1;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="150" width="240" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b2" edge="1" parent="1" source="root" target="b2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="3. Thiết kế &amp; phát triển" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae6fd;strokeColor=#0284c7;fontColor=#0369a1;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="980" y="150" width="240" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b3" edge="1" parent="1" source="root" target="b3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" value="4. Kiểm thử hệ thống" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae6fd;strokeColor=#0284c7;fontColor=#0369a1;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1650" y="150" width="240" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b4" edge="1" parent="1" source="root" target="b4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" value="5. Triển khai &amp; bảo trì" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae6fd;strokeColor=#0284c7;fontColor=#0369a1;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2050" y="150" width="240" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b5" edge="1" parent="1" source="root" target="b5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

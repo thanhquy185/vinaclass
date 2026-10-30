@@ -13,6 +13,7 @@ import {
 } from "@/shared/components/ui";
 import { useAuthStore } from "@/shared/stores/useAuthStore";
 import { useThemeStore } from "@/shared/stores/useThemeStore";
+import { authService } from "@/features/auth/api/auth.service";
 
 interface HeaderProps {
   isSidebarCollapsed: boolean;
@@ -27,7 +28,8 @@ export default function Header({
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
-  const { logout, user } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((state) => state.user);
   const displayName =
     user?.profile.fullName?.trim() || user?.username || t("header.user");
 
@@ -35,6 +37,17 @@ export default function Header({
     void i18n.changeLanguage(
       currentLanguage.toLowerCase().startsWith("vi") ? "en" : "vi",
     );
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch {
+      // Clear the local session even if the API is temporarily unavailable.
+    } finally {
+      logout();
+      navigate("/login", { replace: true });
+    }
   };
 
   return (
@@ -172,7 +185,7 @@ export default function Header({
             <DropdownItem
               variant="error"
               icon={<LogOut size={16} />}
-              onClick={logout}
+              onClick={() => void handleLogout()}
             >
               {t("header.menu.logout")}
             </DropdownItem>

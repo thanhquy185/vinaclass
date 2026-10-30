@@ -112,4 +112,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'refresh_cookie_domain' => env('AUTH_REFRESH_COOKIE_DOMAIN'),
+
 ];

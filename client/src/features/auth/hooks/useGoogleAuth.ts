@@ -12,6 +12,7 @@ const GOOGLE_ERROR_TRANSLATION_KEYS: Record<string, string> = {
   unauthorized_domain: "googleAuth.errors.unauthorizedDomain",
   account_inactive: "googleAuth.errors.accountInactive",
   email_not_found: "googleAuth.errors.emailNotFound",
+  email_not_verified: "googleAuth.errors.emailNotVerified",
   login_failed: "googleAuth.errors.loginFailed",
   google_auth_error: "googleAuth.errors.connectionFailed",
 };

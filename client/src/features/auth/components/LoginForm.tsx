@@ -19,7 +19,6 @@ export default function LoginForm() {
 
   const [form] = Form.useForm<LoginFormSubmit>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showPasswordHelp, setShowPasswordHelp] = useState(false);
 
   const handleSubmit = async (values: LoginFormSubmit) => {
     setErrorMessage(null);
@@ -93,20 +92,10 @@ export default function LoginForm() {
           />
         </Form.Item>
         <div className="auth-form__options">
-          <button
-            type="button"
-            className="auth-text-button"
-            aria-expanded={showPasswordHelp}
-            onClick={() => setShowPasswordHelp((visible) => !visible)}
-          >
+          <Link to="/forgot-password" className="auth-text-button">
             {t("login.forgotPassword")}
-          </button>
+          </Link>
         </div>
-        {showPasswordHelp && (
-          <p className="auth-register-note" role="note">
-            {t("login.passwordHelp")}
-          </p>
-        )}
         {errorMessage && (
           <div className="auth-form__error" role="alert">
             {errorMessage}

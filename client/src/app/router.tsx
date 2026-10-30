@@ -37,6 +37,9 @@ const LoginPage = lazyRoutePage(
 const RegisterPage = lazyRoutePage(
   () => import("@/features/auth/pages/RegisterPage")
 );
+const ForgotPasswordPage = lazyRoutePage(
+  () => import("@/features/auth/pages/ForgotPasswordPage")
+);
 
 const developmentRoutes: RouteObject[] = import.meta.env.DEV
   ? [
@@ -80,6 +83,7 @@ export const router = createBrowserRouter([
       { path: "auth/callback", element: <GoogleCallback /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "forgot-password", element: <ForgotPasswordPage /> },
     ],
   },
   {

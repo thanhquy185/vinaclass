@@ -12,7 +12,7 @@
 */
 require __DIR__ . '/api/auth.php';
 
-Route::middleware(['auth:api', 'account.active'])->group(function () {
+Route::middleware(['auth:api', 'auth.session', 'account.active'])->group(function () {
     require __DIR__ . '/api/dashboard.php';
     require __DIR__ . '/api/users.php';
     require __DIR__ . '/api/roles.php';

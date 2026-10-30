@@ -11,8 +11,10 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class StudentRegistrationService
 {
-    public function __construct(private UserProfileService $userProfileService)
-    {
+    public function __construct(
+        private UserProfileService $userProfileService,
+        private AuthOtpService $authOtpService
+    ) {
     }
 
     public function createFromCredentials(array $data): User
@@ -34,6 +36,12 @@ class StudentRegistrationService
                     'email' => ['Email đã được sử dụng.'],
                 ]);
             }
+
+            $this->authOtpService->completeRegistration(
+                (string) $data['otp_public_id'],
+                $email,
+                (string) $data['otp_verification_token']
+            );
 
             return $this->createAccount(
                 $studentRole,
@@ -117,6 +125,7 @@ class StudentRegistrationService
                 'is_locked' => false,
                 'is_deleted' => false,
                 'ggid' => $googleId,
+                'email_verified_at' => now(),
             ],
             $this->userProfileService->legacyIdentityAttributesForCreate($personalData),
             $this->userProfileService->legacyStudentFlagAttributesForCreate(true)
